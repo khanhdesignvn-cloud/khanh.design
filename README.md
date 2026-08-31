@@ -2,9 +2,10 @@
 
 Trang chủ thương hiệu cá nhân Nguyễn Quốc Khánh, chuyển thể có chọn lọc từ cấu trúc giao diện HKM:
 
-- Một trang duy nhất: hero, giới thiệu, số liệu, dự án, quy trình, dịch vụ và project brief.
+- Một trang duy nhất: hero, giới thiệu, dự án, quy trình, dịch vụ và project brief.
 - HTML/CSS/JavaScript thuần, không framework và không dependency build.
-- 6 ảnh WebP thực tế từ kho dự án của Khánh; tổng dung lượng khoảng 304 KB.
+- Giao diện editorial bám sát mẫu Manus/HKM: hero tràn màn hình, bảng màu kem–nâu–vàng, vòng cung, project grid lệch tầng và ribbon ngang.
+- 11 ảnh WebP thực tế từ kho dự án của Khánh; không dùng ảnh nội thất hoặc asset thương hiệu HKM.
 - Responsive tại 390 px; menu bàn phím/Escape; hỗ trợ `prefers-reduced-motion`.
 - Form kiểm tra trường bắt buộc, tự lưu nháp bằng `localStorage` và chuẩn bị email gửi tới `hi@nguyenquockhanh.vn`.
 

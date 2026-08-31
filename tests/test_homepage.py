@@ -17,9 +17,6 @@ def test_homepage_has_personal_brand_structure_and_no_hkm_copy():
         'id="services"',
         'id="process"',
         'id="contact"',
-        "10+",
-        "500+",
-        "4.000+",
     ]
     assert not [item for item in required if item not in html]
     assert "HOÀNG KIM MINH" not in html
@@ -30,7 +27,7 @@ def test_projects_use_real_khanh_design_assets():
     html = PAGE.read_text(encoding="utf-8")
     for project in ["SONCA", "Hemp &amp; Co.", "Khe Sanh", "99 ý tưởng logo quả chuối"]:
         assert project in html
-    for image in ["sonca.webp", "hemp-co.webp", "khe-sanh.webp", "banana-logo.webp"]:
+    for image in ["sonca.webp", "hemp-co.webp", "khe-sanh.webp", "ribbon-banana.webp"]:
         assert f"assets/{image}" in html
         assert (ROOT / "assets" / image).exists()
     assert 'loading="lazy"' not in html
@@ -74,3 +71,16 @@ def test_content_remains_visible_without_intersection_observer():
     css = CSS.read_text(encoding="utf-8")
     assert ".reveal{opacity:0" not in css
     assert "@keyframes revealIn" in css
+
+
+def test_demo_follows_the_manus_reference_visual_system():
+    html = PAGE.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8")
+    assert 'class="hero-image"' in html
+    assert 'class="hero-arch"' in html
+    assert 'class="project-ribbon ' in html
+    assert html.count('class="ribbon-card"') == 4
+    assert "--gold:#c59b63" in css
+    assert ".hero-image" in css
+    assert ".hero-arch" in css
+    assert "--signal:" not in css
