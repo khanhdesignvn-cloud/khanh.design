@@ -256,7 +256,7 @@ class CourseApplicationHandler(BaseHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
         else:
-            self.send_header("Access-Control-Allow-Methods", "POST, PATCH, OPTIONS")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Access-Control-Max-Age", "600")
         self.send_header("Vary", "Origin")
