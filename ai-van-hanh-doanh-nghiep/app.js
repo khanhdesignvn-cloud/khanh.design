@@ -1,7 +1,7 @@
 "use strict";
 
 const DRAFT_KEY = "khanh-design-ai-course-draft-v1";
-const APPLICATION_API_URL = "https://professionals-won-embedded-bracelets.trycloudflare.com/course/apply";
+const APPLICATION_API_URL = "https://undefined-seeks-mall-disclose.trycloudflare.com/course/apply";
 const DRAFT_FIELDS = [
   "full_name",
   "phone",

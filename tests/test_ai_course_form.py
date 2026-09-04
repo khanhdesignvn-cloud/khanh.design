@@ -98,7 +98,7 @@ def test_email_fallback_is_encoded_and_requires_user_to_send():
 
 def test_api_submission_uses_approved_endpoint_and_never_echoes_pii():
     source = JS.read_text(encoding="utf-8")
-    assert "https://professionals-won-embedded-bracelets.trycloudflare.com/course/apply" in source
+    assert "https://undefined-seeks-mall-disclose.trycloudflare.com/course/apply" in source
     assert "fetchImpl(APPLICATION_API_URL" in source
     output = run_node(
         "app.submitApplication({full_name:'Nguyễn An'}, async (url, options) => ({"
