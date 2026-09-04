@@ -1,6 +1,6 @@
 [Unit]
 Description=Cloudflare quick tunnel for khanh.design course application API
-Requires=khanh-course-application.service
+Wants=khanh-course-application.service
 After=network-online.target khanh-course-application.service
 Wants=network-online.target
 
