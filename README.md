@@ -27,8 +27,14 @@ git diff --check
 
 ## Triển khai
 
-GitHub Pages phát trực tiếp từ branch `main`, thư mục gốc. Chưa tạo `CNAME`; chỉ thêm `khanh.design` sau khi DNS được chuyển sang GitHub Pages.
+GitHub Pages phát trực tiếp từ branch `main`, thư mục gốc. Tệp `CNAME` cấu hình custom domain apex là `khanh.design`.
+
+Để trỏ DNS cho GitHub Pages, tạo bốn bản ghi `A` cho `@` tới `185.199.108.153`, `185.199.109.153`, `185.199.110.153` và `185.199.111.153`; tạo `CNAME` cho `www` tới `khanhdesignvn-cloud.github.io`. Không thay đổi bản ghi `hkm`, để `hkm.khanh.design` tiếp tục chạy trên máy chủ hiện tại. Xem hướng dẫn GitHub Pages chính thức trước khi thay DNS.[1]
 
 ## Form production
 
 Bản đầu dùng email client, không gửi dữ liệu đến dịch vụ bên thứ ba và không chứa credential phía client. Khi trỏ domain có thể thay bằng endpoint server-side để lưu Drive/gửi thông báo Zalo.
+
+## References
+
+[1]: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site "Managing a custom domain for your GitHub Pages site"
