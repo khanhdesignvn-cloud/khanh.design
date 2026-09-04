@@ -1,13 +1,20 @@
-# khanh.design
+# khanh.design — AI Vận Hành Doanh Nghiệp
 
-Trang chủ thương hiệu cá nhân Nguyễn Quốc Khánh, chuyển thể có chọn lọc từ cấu trúc giao diện HKM:
+Repo chính thức cho website và bộ tài sản khóa học **AI VẬN HÀNH DOANH NGHIỆP — Xây bộ máy trợ lý AI với Claude trong 6 tuần**.
 
-- Một trang duy nhất: hero, giới thiệu, dự án, quy trình, dịch vụ và project brief.
-- HTML/CSS/JavaScript thuần, không framework và không dependency build.
-- Giao diện editorial bám sát mẫu Manus/HKM: hero tràn màn hình, bảng màu kem–nâu–vàng, vòng cung, project grid lệch tầng và ribbon ngang.
-- 11 ảnh WebP thực tế từ kho dự án của Khánh; không dùng ảnh nội thất hoặc asset thương hiệu HKM.
-- Responsive tại 390 px; menu bàn phím/Escape; hỗ trợ `prefers-reduced-motion`.
-- Form kiểm tra trường bắt buộc, tự lưu nháp bằng `localStorage` và chuẩn bị email gửi tới `hi@nguyenquockhanh.vn`.
+## Phạm vi
+
+- `index.html`: chuyển khách truy cập từ `khanh.design` tới website khóa học.
+- `ai-van-hanh-doanh-nghiep/`: landing page, countdown đóng đăng ký lúc 23:59 ngày 15/09/2026, form và tài sản tự host.
+- `course/curriculum/`: giáo án giảng viên và lộ trình 6 tuần.
+- `course/workbook/`: workbook học viên và biểu mẫu thực hành.
+- `course/workshop/`: nội dung workshop mở bán.
+- `course/launch/`: kế hoạch nội dung, bài viết, video demo và case study.
+- `course/onboarding/`: intake, quyền riêng tư và đặc tả đăng ký.
+- `course/dist/` và `dist/`: PDF/PPTX đã xuất và kiểm tra.
+- `backend/`: API đăng ký riêng tư cùng cấu hình systemd.
+- `docs/superpowers/specs/`: đề án và quy hoạch khóa học.
+- `tests/`: kiểm thử website, form, API, giáo án và tài liệu.
 
 ## Chạy local
 
@@ -15,26 +22,23 @@ Trang chủ thương hiệu cá nhân Nguyễn Quốc Khánh, chuyển thể có
 python3 -m http.server 8100
 ```
 
-Mở `http://127.0.0.1:8100/`.
+Mở `http://127.0.0.1:8100/ai-van-hanh-doanh-nghiep/`.
 
 ## Kiểm thử
 
 ```bash
-uv run --with pytest pytest tests -q
-node --check app.js
+uv run --with pytest --with reportlab --with pypdf --with python-pptx pytest tests -q
+node --check ai-van-hanh-doanh-nghiep/app.js
+python3 -m py_compile backend/*.py course/scripts/*.py
 git diff --check
 ```
 
 ## Triển khai
 
-GitHub Pages phát trực tiếp từ branch `main`, thư mục gốc. Tệp `CNAME` cấu hình custom domain apex là `khanh.design`.
+GitHub Pages phát trực tiếp từ branch `main`, thư mục gốc. `CNAME` cấu hình `khanh.design`; `www` trỏ về GitHub Pages và chuyển về apex. Subdomain `hkm.khanh.design` được giữ độc lập, không thuộc phạm vi repo này.
 
-Để trỏ DNS cho GitHub Pages, tạo bốn bản ghi `A` cho `@` tới `185.199.108.153`, `185.199.109.153`, `185.199.110.153` và `185.199.111.153`; tạo `CNAME` cho `www` tới `khanhdesignvn-cloud.github.io`. Không thay đổi bản ghi `hkm`, để `hkm.khanh.design` tiếp tục chạy trên máy chủ hiện tại. Xem hướng dẫn GitHub Pages chính thức trước khi thay DNS.[1]
+Landing page tĩnh chạy trên GitHub Pages. API form chạy tách biệt trên VPS, chỉ bind loopback và được đưa ra HTTPS qua tunnel; frontend luôn giữ email fallback nếu API tạm lỗi.
 
-## Form production
+## Nguyên tắc dữ liệu
 
-Bản đầu dùng email client, không gửi dữ liệu đến dịch vụ bên thứ ba và không chứa credential phía client. Khi trỏ domain có thể thay bằng endpoint server-side để lưu Drive/gửi thông báo Zalo.
-
-## References
-
-[1]: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site "Managing a custom domain for your GitHub Pages site"
+Form chỉ thu họ tên, số điện thoại, ngành nghề, mong muốn khi tham gia và xác nhận đồng ý xử lý dữ liệu. Không lưu mật khẩu, OTP, hợp đồng hoặc dữ liệu khách hàng; phản hồi API không trả lại PII.
