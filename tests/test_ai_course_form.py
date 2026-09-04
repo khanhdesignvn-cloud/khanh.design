@@ -98,10 +98,22 @@ def test_email_fallback_is_encoded_and_requires_user_to_send():
     assert "tự xác nhận gửi" in html
 
 
-def test_user_data_is_rendered_and_handled_without_unsafe_sinks_or_logging():
+def test_api_submission_uses_approved_endpoint_and_never_echoes_pii():
+    source = JS.read_text(encoding="utf-8")
+    assert "https://professionals-won-embedded-bracelets.trycloudflare.com/course/apply" in source
+    assert "fetchImpl(APPLICATION_API_URL" in source
+    output = run_node(
+        "app.submitApplication({full_name:'Nguyễn An'}, async (url, options) => ({"
+        "status:201,ok:true,json:async()=>({application_id:'safe-id'})"
+        "})).then(result => process.stdout.write(JSON.stringify(result)))"
+    )
+    assert json.loads(output) == {"ok": True, "application_id": "safe-id"}
+    assert "Nguyễn An" not in output
+
+
+def test_user_data_is_rendered_without_unsafe_sinks_or_logging():
     source = JS.read_text(encoding="utf-8")
     assert ".textContent" in source
     assert "innerHTML" not in source
     assert "console.log" not in source
     assert "encodeURIComponent" in source
-    assert "fetch(" not in source

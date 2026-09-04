@@ -1,6 +1,7 @@
 "use strict";
 
 const DRAFT_KEY = "khanh-design-ai-course-draft-v1";
+const APPLICATION_API_URL = "https://professionals-won-embedded-bracelets.trycloudflare.com/course/apply";
 const DRAFT_FIELDS = [
   "full_name",
   "phone",
@@ -38,6 +39,24 @@ function buildMailto(data) {
   ].join("\r\n");
 
   return `mailto:hi@nguyenquockhanh.vn?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+async function submitApplication(data, fetchImpl = fetch) {
+  const response = await fetchImpl(APPLICATION_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  let result = {};
+  try {
+    result = await response.json();
+  } catch (_) {
+    result = {};
+  }
+  if (response.status === 201) {
+    return { ok: true, application_id: result.application_id };
+  }
+  return { ok: false, error: result.error || "submission_failed" };
 }
 
 function formValues(form) {
@@ -122,7 +141,7 @@ function initialiseForm() {
     form.elements.namedItem("full_name").focus();
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.checkValidity()) {
       writeStatus(status, "Hãy hoàn thành các trường bắt buộc trước khi tiếp tục.");
@@ -137,8 +156,32 @@ function initialiseForm() {
     }
 
     saveDraft(form, status);
-    writeStatus(status, "Email đã được chuẩn bị. Hãy kiểm tra nội dung và xác nhận gửi trong ứng dụng email.");
-    window.location.href = buildMailto(values);
+    writeStatus(status, "Đang gửi đăng ký an toàn…");
+    try {
+      const result = await submitApplication(values);
+      if (result.ok) {
+        try {
+          localStorage.removeItem(DRAFT_KEY);
+        } catch (_) {
+          // The application is already received even when local storage is unavailable.
+        }
+        form.reset();
+        writeStatus(status, `Đã nhận đăng ký. Mã hồ sơ: ${result.application_id}`);
+        return;
+      }
+      if (result.error === "duplicate_application") {
+        writeStatus(status, "Thông tin này đã được đăng ký. Khánh sẽ liên hệ theo hồ sơ đã nhận.");
+        return;
+      }
+      if (result.error === "rate_limited") {
+        writeStatus(status, "Bạn đã gửi quá nhanh. Vui lòng thử lại sau ít phút.");
+        return;
+      }
+      throw new Error("submission_failed");
+    } catch (_) {
+      writeStatus(status, "Máy chủ tạm thời chưa nhận được. Email dự phòng đã được chuẩn bị để bạn kiểm tra và tự xác nhận gửi.");
+      window.location.href = buildMailto(values);
+    }
   });
 }
 
@@ -147,5 +190,5 @@ if (typeof document !== "undefined") {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { buildMailto, canPersistDraft };
+  module.exports = { buildMailto, canPersistDraft, submitApplication };
 }
