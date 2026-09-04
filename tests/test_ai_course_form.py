@@ -104,7 +104,7 @@ def test_api_submission_uses_approved_endpoint_and_never_echoes_pii():
     assert "fetchImpl(APPLICATION_API_URL" in source
     output = run_node(
         "app.submitApplication({full_name:'Nguyễn An'}, async (url, options) => ({"
-        "status:201,ok:true,json:async()=>({application_id:'safe-id'})"
+        "status:201,ok:true,json:async()=>({id:'safe-id',status:'received'})"
         "})).then(result => process.stdout.write(JSON.stringify(result)))"
     )
     assert json.loads(output) == {"ok": True, "application_id": "safe-id"}

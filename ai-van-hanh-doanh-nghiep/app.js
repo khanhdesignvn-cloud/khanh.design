@@ -54,7 +54,7 @@ async function submitApplication(data, fetchImpl = fetch) {
     result = {};
   }
   if (response.status === 201) {
-    return { ok: true, application_id: result.application_id };
+    return { ok: true, application_id: result.id };
   }
   return { ok: false, error: result.error || "submission_failed" };
 }
