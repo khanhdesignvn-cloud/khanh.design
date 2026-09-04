@@ -55,11 +55,8 @@ class CourseApplicationApiTests(unittest.TestCase):
         payload = {
             "full_name": "Nguyễn Văn An",
             "phone": "+84 912 345 678",
-            "email": "an@example.com",
-            "industry": "Bán lẻ",
-            "role": "Chủ doanh nghiệp",
-            "challenge": "Chuẩn hóa phản hồi khách hàng",
-            "commitment": True,
+            "industry": "Bán lẻ / Thương mại",
+            "expectation": "Chuẩn hóa phản hồi khách hàng",
             "data_consent": True,
             "website": "",
         }
@@ -124,7 +121,7 @@ class CourseApplicationApiTests(unittest.TestCase):
         self.assertEqual(headers["Access-Control-Allow-Origin"], ALLOWED_ORIGIN)
         self.assertEqual(set(response), {"id", "status"})
         self.assertEqual(response["status"], "received")
-        self.assertNotIn("an@example.com", body.decode("utf-8"))
+        self.assertNotIn("912 345 678", body.decode("utf-8"))
 
         stored = json.loads(self.store_path.read_text(encoding="utf-8"))
         self.assertEqual(len(stored), 1)
@@ -136,11 +133,8 @@ class CourseApplicationApiTests(unittest.TestCase):
                 "review_status",
                 "full_name",
                 "phone",
-                "email",
                 "industry",
-                "role",
-                "challenge",
-                "commitment",
+                "expectation",
                 "data_consent",
             },
         )
@@ -149,12 +143,10 @@ class CourseApplicationApiTests(unittest.TestCase):
     def test_invalid_fields_and_unknown_keys_return_safe_400_errors(self):
         invalid_cases = {
             "missing_name": ({key: value for key, value in self.valid_payload().items() if key != "full_name"}, "full_name"),
-            "bad_email": (self.valid_payload(email="not-an-email"), "email"),
             "bad_phone": (self.valid_payload(phone="call-me"), "phone"),
-            "bad_role": (self.valid_payload(role="Administrator"), "role"),
-            "false_commitment": (self.valid_payload(commitment=False), "commitment"),
+            "bad_industry": (self.valid_payload(industry="Không có trong danh sách"), "industry"),
             "string_consent": (self.valid_payload(data_consent="true"), "data_consent"),
-            "too_long": (self.valid_payload(challenge="x" * 2001), "challenge"),
+            "too_long": (self.valid_payload(expectation="x" * 2001), "expectation"),
             "unknown_key": (self.valid_payload(secret="do not accept"), "secret"),
         }
         with RunningServer(self.store_path) as api:
@@ -165,16 +157,15 @@ class CourseApplicationApiTests(unittest.TestCase):
                     self.assertEqual(status, 400)
                     self.assertEqual(response["error"], "invalid_fields")
                     self.assertIn(expected_field, response["fields"])
-                    self.assertNotIn("an@example.com", body.decode("utf-8"))
+                    self.assertNotIn("912 345 678", body.decode("utf-8"))
 
         self.assertFalse(self.store_path.exists())
 
     def test_text_is_nfc_normalized_markup_stripped_and_whitespace_collapsed(self):
         payload = self.valid_payload(
             full_name="  A\u0301n   <b>User</b>\n",
-            industry="  Bán   lẻ  ",
-            challenge="<script>alert(1)</script>   Cần\n hỗ trợ",
-            email="AN@EXAMPLE.COM",
+            industry="  Dịch   vụ  ",
+            expectation="<script>alert(1)</script>   Cần\n hỗ trợ",
         )
         with RunningServer(self.store_path) as api:
             status, _, _ = self.post(api, payload)
@@ -182,9 +173,8 @@ class CourseApplicationApiTests(unittest.TestCase):
         self.assertEqual(status, 201)
         stored = json.loads(self.store_path.read_text(encoding="utf-8"))[0]
         self.assertEqual(stored["full_name"], "Án User")
-        self.assertEqual(stored["industry"], "Bán lẻ")
-        self.assertEqual(stored["challenge"], "alert(1) Cần hỗ trợ")
-        self.assertEqual(stored["email"], "an@example.com")
+        self.assertEqual(stored["industry"], "Dịch vụ")
+        self.assertEqual(stored["expectation"], "alert(1) Cần hỗ trợ")
         self.assertNotIn("<", json.dumps(stored, ensure_ascii=False))
 
     def test_honeypot_submission_gets_no_content_and_is_not_written(self):
@@ -230,12 +220,12 @@ class CourseApplicationApiTests(unittest.TestCase):
             )
             blocked_status, _, blocked_body = self.post(
                 api,
-                self.valid_payload(email="two@example.com", phone="0988 111 222"),
+                self.valid_payload(phone="0988 111 222"),
                 **{"CF-Connecting-IP": "203.0.113.10"},
             )
             other_status, _, _ = self.post(
                 api,
-                self.valid_payload(email="three@example.com", phone="0988 111 333"),
+                self.valid_payload(phone="0988 111 333"),
                 **{"CF-Connecting-IP": "203.0.113.11"},
             )
 
@@ -253,7 +243,7 @@ class CourseApplicationApiTests(unittest.TestCase):
             )
             blocked_status, _, blocked_body = self.post(
                 api,
-                self.valid_payload(email="two@example.com", phone="0988 111 222"),
+                self.valid_payload(phone="0988 111 222"),
                 **{"CF-Connecting-IP": "not-an-ip-2"},
             )
 
@@ -261,27 +251,21 @@ class CourseApplicationApiTests(unittest.TestCase):
         self.assertEqual(blocked_status, 429)
         self.assertEqual(json.loads(blocked_body), {"error": "rate_limited"})
 
-    def test_duplicate_normalized_email_or_phone_returns_409_without_pii(self):
+    def test_duplicate_normalized_phone_returns_409_without_pii(self):
         with RunningServer(self.store_path) as api:
             first_status, _, _ = self.post(api, self.valid_payload())
-            email_status, _, email_body = self.post(
-                api,
-                self.valid_payload(email="AN@EXAMPLE.COM", phone="0988 111 222"),
-            )
             phone_status, _, phone_body = self.post(
                 api,
-                self.valid_payload(email="other@example.com", phone="+84 (912) 345-678"),
+                self.valid_payload(phone="+84 (912) 345-678"),
             )
 
         self.assertEqual(first_status, 201)
-        self.assertEqual(email_status, 409)
         self.assertEqual(phone_status, 409)
-        self.assertEqual(json.loads(email_body), {"error": "duplicate_application"})
         self.assertEqual(json.loads(phone_body), {"error": "duplicate_application"})
-        self.assertNotIn("example.com", (email_body + phone_body).decode("utf-8"))
+        self.assertNotIn("912", phone_body.decode("utf-8"))
         self.assertEqual(len(json.loads(self.store_path.read_text(encoding="utf-8"))), 1)
     def test_atomic_replace_failure_preserves_original_store(self):
-        original = b'[{"email":"prior@example.com","phone":"0900000000"}]'
+        original = b'[{"phone":"0900000000"}]'
         self.store_path.write_bytes(original)
 
         def fail_replace(_source, _destination):
@@ -293,7 +277,7 @@ class CourseApplicationApiTests(unittest.TestCase):
             rate_limit=100,
         )
         with self.assertRaises(OSError):
-            service.store({"email": "new@example.com", "phone": "0911111111"})
+            service.store({"phone": "0911111111"})
 
         self.assertEqual(self.store_path.read_bytes(), original)
         self.assertEqual(list(self.store_path.parent.glob(".*.tmp")), [])

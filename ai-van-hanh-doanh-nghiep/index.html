@@ -50,6 +50,20 @@
       <a class="btn" href="#apply">Đăng ký cohort sáng lập</a>
       <a class="btn btn-outline" href="#curriculum">Xem lộ trình 6 tuần</a>
     </div>
+    <div class="registration-countdown" data-deadline="2026-09-15T23:59:00+07:00" aria-labelledby="countdown-title">
+      <div class="countdown-copy">
+        <span>Đóng đăng ký lúc 23:59 ngày 15/09/2026</span>
+        <strong id="countdown-title">Thời gian còn lại</strong>
+      </div>
+      <div class="countdown-units" role="timer" aria-label="Thời gian còn lại để đăng ký">
+        <span><b id="countdown-days">00</b><small>Ngày</small></span>
+        <span><b id="countdown-hours">00</b><small>Giờ</small></span>
+        <span><b id="countdown-minutes">00</b><small>Phút</small></span>
+        <span><b id="countdown-seconds">00</b><small>Giây</small></span>
+      </div>
+      <a class="countdown-cta btn" href="#apply">Điền form đăng ký</a>
+      <p id="countdown-status" class="countdown-status" aria-live="polite"></p>
+    </div>
   </div>
 </header>
 
@@ -335,19 +349,16 @@
     <div class="apply-copy">
       <div class="eyebrow">Đăng ký quan tâm</div>
       <h2 id="apply-title">Mang một quy trình thật.<br>Rời lớp với một bộ máy.</h2>
-      <p>Form mất khoảng 4 phút. Đây là bước tìm hiểu mức độ phù hợp, chưa phải thanh toán.</p>
+      <p>Form mất khoảng 2 phút. Đây là bước tìm hiểu mức độ phù hợp, chưa phải thanh toán.</p>
       <p class="note">Không gửi mật khẩu, OTP, hợp đồng hoặc dữ liệu khách hàng trong biểu mẫu.</p>
     </div>
     <form class="application-form" id="course-application" action="mailto:hi@nguyenquockhanh.vn" method="post" enctype="text/plain">
       <div class="form-grid">
         <div class="field"><label for="full-name">Họ và tên</label><input id="full-name" name="full_name" autocomplete="name" required></div>
-        <div class="field"><label for="phone">Điện thoại</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
-        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="industry">Ngành nghề</label><input id="industry" name="industry" required></div>
-        <div class="field full"><label for="role">Vai trò của bạn</label><select id="role" name="role" required><option value="">Chọn vai trò</option><option>Chủ doanh nghiệp</option><option>Marketing / Nội dung</option><option>Bán hàng</option><option>Quản lý vận hành</option><option>Khác</option></select></div>
-        <div class="field full"><label for="challenge">Một vấn đề bạn muốn giải quyết bằng AI</label><textarea id="challenge" name="challenge" rows="5" required></textarea></div>
+        <div class="field"><label for="phone">Số điện thoại</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="field full"><label for="industry">Ngành nghề</label><select id="industry" name="industry" required><option value="">Chọn ngành nghề</option><option>Bán lẻ / Thương mại</option><option>Dịch vụ</option><option>F&amp;B</option><option>Giáo dục / Đào tạo</option><option>Sản xuất</option><option>Bất động sản / Xây dựng</option><option>Marketing / Truyền thông</option><option>Công nghệ</option><option>Khác</option></select></div>
+        <div class="field full"><label for="expectation">Mong muốn của bạn khi tham gia khóa học</label><textarea id="expectation" name="expectation" rows="5" maxlength="2000" required></textarea></div>
       </div>
-      <label class="check-row" for="commitment"><input id="commitment" name="commitment" type="checkbox" required><span>Tôi cam kết tham gia buổi học, thực hành và hoàn thiện sản phẩm mỗi tuần.</span></label>
       <label class="check-row" for="data-consent"><input id="data-consent" name="data_consent" type="checkbox" required><span>Tôi đồng ý để khanh.design dùng thông tin này nhằm liên hệ và đánh giá mức độ phù hợp với khóa học. Thông tin không được bán hoặc dùng cho quảng cáo bên thứ ba.</span></label>
       <p class="privacy-note">Nháp chỉ được lưu trên thiết bị này sau khi bạn đồng ý xử lý dữ liệu. Khi bấm đăng ký, thông tin được gửi đến máy chủ riêng tư; nếu máy chủ tạm lỗi, ứng dụng mở email dự phòng để bạn kiểm tra và tự xác nhận gửi.</p>
       <div class="form-actions"><button class="btn" type="submit">Gửi đăng ký</button><button class="draft-clear" type="button" id="clear-draft">Xóa nháp trên thiết bị</button></div>

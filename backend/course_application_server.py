@@ -29,11 +29,8 @@ ALLOWED_KEYS = frozenset(
     {
         "full_name",
         "phone",
-        "email",
         "industry",
-        "role",
-        "challenge",
-        "commitment",
+        "expectation",
         "data_consent",
         "website",
     }
@@ -41,24 +38,23 @@ ALLOWED_KEYS = frozenset(
 TEXT_LIMITS = {
     "full_name": 120,
     "phone": 32,
-    "email": 254,
     "industry": 120,
-    "role": 64,
-    "challenge": 2000,
+    "expectation": 2000,
 }
-ALLOWED_ROLES = frozenset(
+ALLOWED_INDUSTRIES = frozenset(
     {
-        "Chủ doanh nghiệp",
-        "Marketing/Nội dung",
-        "Marketing / Nội dung",
-        "Bán hàng",
-        "Chăm sóc khách hàng/Vận hành",
-        "Quản lý vận hành",
+        "Bán lẻ / Thương mại",
+        "Dịch vụ",
+        "F&B",
+        "Giáo dục / Đào tạo",
+        "Sản xuất",
+        "Bất động sản / Xây dựng",
+        "Marketing / Truyền thông",
+        "Công nghệ",
         "Khác",
     }
 )
 TAG_PATTERN = re.compile(r"<[^>]*>")
-EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 PHONE_CHARS_PATTERN = re.compile(r"^\+?[0-9\s().-]+$")
 MAX_BODY_BYTES = 16 * 1024
 DEFAULT_STORE_PATH = Path.home() / ".local" / "share" / "khanh-design-course" / "applications.json"
@@ -94,28 +90,23 @@ def validate_payload(payload: object) -> tuple[dict[str, Any], list[str]]:
             errors.add(field)
         else:
             cleaned[field] = value
-    email = cleaned.get("email", "")
-    if email and not EMAIL_PATTERN.fullmatch(email):
-        errors.add("email")
     phone = cleaned.get("phone", "")
     digits = re.sub(r"\D", "", phone)
     if phone and (not PHONE_CHARS_PATTERN.fullmatch(phone) or not 8 <= len(digits) <= 15):
         errors.add("phone")
-    if cleaned.get("role") not in ALLOWED_ROLES:
-        errors.add("role")
-    for field in ("commitment", "data_consent"):
-        if payload.get(field) is not True:
-            errors.add(field)
-        else:
-            cleaned[field] = True
+    if cleaned.get("industry") not in ALLOWED_INDUSTRIES:
+        errors.add("industry")
+    if payload.get("data_consent") is not True:
+        errors.add("data_consent")
+    else:
+        cleaned["data_consent"] = True
     if errors:
         return {}, sorted(errors)
-    cleaned["email"] = cleaned["email"].casefold()
     return cleaned, []
 
 
 class DuplicateApplication(Exception):
-    """Raised without PII when an email or phone is already stored."""
+    """Raised without PII when a phone number is already stored."""
 
 
 class CourseApplicationService:
@@ -170,11 +161,9 @@ class CourseApplicationService:
                 applications = json.loads(self.store_path.read_text(encoding="utf-8"))
             else:
                 applications = []
-            email_key = application["email"].casefold()
             phone_key = re.sub(r"\D", "", application["phone"])
             if any(
-                existing.get("email", "").casefold() == email_key
-                or re.sub(r"\D", "", existing.get("phone", "")) == phone_key
+                re.sub(r"\D", "", existing.get("phone", "")) == phone_key
                 for existing in applications
             ):
                 raise DuplicateApplication
