@@ -1,0 +1,32 @@
+{
+  "version": "2026-09-04",
+  "title": "Đăng ký AI VẬN HÀNH DOANH NGHIỆP — Cohort sáng lập",
+  "description": "Biểu mẫu đánh giá mức phù hợp. Nộp hồ sơ không bảo đảm nhận lớp và không yêu cầu thanh toán ngay.",
+  "response_destination": "REVIEW_REQUIRED",
+  "drive_parent_id": "1m3RM7vA5n9hzs99D8Ze4KgN1i69jR3iQ",
+  "public_response_sheet": false,
+  "collect_email": true,
+  "limit_one_response": false,
+  "confirmation_message": "Đã nhận hồ sơ. Chúng tôi sẽ đọc mức phù hợp và liên hệ qua kênh bạn cung cấp. Không gửi mật khẩu, OTP hoặc tài liệu khách hàng khi trao đổi.",
+  "privacy_notice_path": "privacy-notice.md",
+  "fields": [
+    {"id": "full_name", "label": "Họ và tên", "type": "short_text", "required": true},
+    {"id": "phone", "label": "Số điện thoại/Zalo", "type": "short_text", "required": true, "help": "Chỉ dùng để xác nhận hồ sơ và vận hành chương trình theo lựa chọn liên hệ."},
+    {"id": "email", "label": "Email", "type": "email", "required": true},
+    {"id": "industry", "label": "Ngành nghề/loại hình doanh nghiệp", "type": "short_text", "required": true},
+    {"id": "role", "label": "Vai trò hiện tại", "type": "single_choice", "required": true, "options": ["Chủ doanh nghiệp", "Marketing/Nội dung", "Bán hàng", "Chăm sóc khách hàng/Vận hành", "Khác"]},
+    {"id": "team_size", "label": "Quy mô nhóm", "type": "single_choice", "required": false, "options": ["1 người", "2–5", "6–15", "16–50", "Trên 50"]},
+    {"id": "business_problem", "label": "Một quy trình cụ thể bạn muốn cải thiện trong sáu tuần", "type": "paragraph", "required": true, "help": "Không nhập tên khách hàng, dữ liệu cá nhân hoặc thông tin mật."},
+    {"id": "current_ai_use", "label": "Bạn đang dùng AI như thế nào?", "type": "paragraph", "required": false},
+    {"id": "sample_readiness", "label": "Bạn có thể chuẩn bị dữ liệu giả lập hoặc đã ẩn danh để thực hành?", "type": "single_choice", "required": true, "options": ["Có", "Cần dùng bộ dữ liệu mẫu", "Chưa chắc — cần hướng dẫn"]},
+    {"id": "attendance_commitment", "label": "Tôi có thể dành thời gian cho 6 buổi 150 phút, AI Clinic và bài tập hằng tuần", "type": "checkbox", "required": true},
+    {"id": "tool_cost_acknowledgement", "label": "Tôi hiểu học phí không bao gồm phí Claude hoặc công cụ bên thứ ba; chi phí cần thiết phải được báo trước khi thanh toán", "type": "checkbox", "required": true},
+    {"id": "data_consent", "label": "Tôi đã đọc thông báo quyền riêng tư và đồng ý xử lý dữ liệu cần thiết để đánh giá, liên hệ và vận hành hồ sơ", "type": "checkbox", "required": true},
+    {"id": "marketing_opt_in", "label": "Tôi muốn nhận thông tin về các workshop/cohort sau", "type": "checkbox", "required": false, "default": false}
+  ],
+  "routing": {
+    "on_submit": "Store in a private response destination only after owner review; send no automated acceptance or payment request.",
+    "review_statuses": ["NEW", "NEEDS_CLARIFICATION", "FIT", "NOT_A_FIT", "WITHDRAWN"],
+    "sensitive_data_response": "If a response contains unnecessary sensitive data, restrict access, notify the owner, and follow the deletion process."
+  }
+}
