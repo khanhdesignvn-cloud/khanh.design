@@ -12,7 +12,8 @@ COURSE = ROOT / "course"
 CURRICULUM = COURSE / "curriculum"
 WORKBOOK = COURSE / "workbook"
 DIST = COURSE / "dist"
-CURRICULUM_PDF = DIST / "04-09-2026-Giao-an-AI-Van-hanh-doanh-nghiep.pdf"
+CURRICULUM_PDF = DIST / "04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.pdf"
+CURRICULUM_DOCX = DIST / "04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.docx"
 WORKBOOK_PDF = DIST / "04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf"
 
 REQUIRED_WEEK_SECTIONS = (
@@ -125,38 +126,60 @@ def test_workbook_has_all_templates_and_safe_fillable_prompts():
     assert "dữ liệu khách hàng thật" in combined.lower()
 
 
-def test_renderers_explicitly_use_dejavu_unicode_fonts():
-    for name in ("render_curriculum.py", "render_workbook.py"):
-        text = read(COURSE / "scripts" / name)
-        assert "DejaVuSans.ttf" in text
-        assert "DejaVuSans-Bold.ttf" in text
-        assert "TTFont" in text
+def test_renderers_explicitly_use_embedded_unicode_fonts():
+    workbook = read(COURSE / "scripts" / "render_workbook.py")
+    assert "DejaVuSans.ttf" in workbook
+    assert "DejaVuSans-Bold.ttf" in workbook
+    assert "TTFont" in workbook
+
+    curriculum = read(COURSE / "scripts" / "render_curriculum_horus.py")
+    for font in ("GoogleSansFlex-400.ttf", "GoogleSansFlex-500.ttf", "GoogleSansFlex-700.ttf"):
+        assert font in curriculum
+        assert (COURSE / "assets" / font).exists()
+    assert "TTFont" in curriculum
 
 
 def test_renderers_complete_without_unresolved_toc_entries(tmp_path):
     pytest.importorskip("reportlab")
-    for name in ("render_curriculum.py", "render_workbook.py"):
-        output = tmp_path / f"{Path(name).stem}.pdf"
-        result = subprocess.run(
-            [sys.executable, str(COURSE / "scripts" / name), "--output", str(output)],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            timeout=90,
-        )
-        assert result.returncode == 0, result.stderr
-        assert output.exists() and output.stat().st_size > 10_000
+    output = tmp_path / "workbook.pdf"
+    result = subprocess.run(
+        [sys.executable, str(COURSE / "scripts" / "render_workbook.py"), "--output", str(output)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=90,
+    )
+    assert result.returncode == 0, result.stderr
+    assert output.exists() and output.stat().st_size > 10_000
+
+
+def test_horus_curriculum_renderer_completes_with_pdf_and_docx(tmp_path):
+    pytest.importorskip("reportlab")
+    pytest.importorskip("docx")
+    pdf = tmp_path / "curriculum.pdf"
+    docx = tmp_path / "curriculum.docx"
+    result = subprocess.run(
+        [sys.executable, str(COURSE / "scripts" / "render_curriculum_horus.py"), "--pdf", str(pdf), "--docx", str(docx)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stderr
+    assert pdf.exists() and pdf.stat().st_size > 100_000
+    assert docx.exists() and docx.stat().st_size > 40_000
 
 
 def test_curriculum_pdf_has_vietnamese_text_toc_pages_and_embedded_font():
     reader = pdf_reader(CURRICULUM_PDF)
     text = extracted_text(reader)
     assert len(reader.pages) >= 30
-    for phrase in ("MỤC LỤC", "Tuần 1", "Tuần 6", "Quyền riêng tư", "Bài tập về nhà"):
-        assert phrase in text
-    assert "Xây bộ máy trợ lý AI với Claude trong 6 tuần" in text
-    assert len(text) >= 35_000
-    assert any("DejaVu" in name for name in embedded_base_fonts(reader))
+    for phrase in ("MỤC LỤC", "Tuần 1", "Tuần 6", "Quyền riêng tư", "Bài tập về nhà", "TÀI LIỆU DÙNG KHI ĐỨNG LỚP"):
+        assert phrase.lower() in text.lower()
+    assert "AI VẬN HÀNH DOANH NGHIỆP" in text
+    assert len(text) >= 70_000
+    assert any("GoogleSansFlex" in name for name in embedded_base_fonts(reader))
+    assert CURRICULUM_DOCX.exists() and CURRICULUM_DOCX.stat().st_size > 40_000
 
 
 def test_workbook_pdf_has_vietnamese_text_room_to_write_and_embedded_font():

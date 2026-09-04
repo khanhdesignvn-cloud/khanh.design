@@ -27,7 +27,8 @@ Các file hiện hành trong `dist/`:
 - `04-09-2026-So-tay-van-hanh-khoa-hoc-AI.docx/.pdf`: quy trình nội bộ từ đăng ký đến tốt nghiệp.
 - `04-09-2026-Lich-hoc-va-quan-ly-cohort-AI.xlsx`: dashboard, hồ sơ, lịch, tiến độ, công việc và chỉ mục tài liệu.
 - `04-09-2026-Chuong-trinh-hoc-AI-Van-hanh-doanh-nghiep.docx/.pdf`: bản chia sẻ cho ứng viên/học viên.
-- Giáo án, workbook và workshop đã xuất PDF/PPTX riêng.
+- Giáo án chi tiết Horus 6 tuần: `04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.docx/.pdf`.
+- Workbook và workshop đã xuất PDF/PPTX riêng.
 
 Lịch ngày/giờ trong bộ file mới là **dự kiến**; chỉ đổi thành chính thức sau khi chủ chương trình xác nhận.
 

@@ -438,7 +438,7 @@ def build_xlsx():
         ("Quản trị","Sổ tay vận hành khóa học AI","Nội bộ","DOCX/PDF",f"course/dist/{OPS_DOCX.name}","HIỆN HÀNH","Không gửi bảng PII cho học viên"),
         ("Chia sẻ","Chương trình học 6 tuần","Học viên/Ứng viên","PDF",f"course/dist/{SHARE_DOCX.with_suffix('.pdf').name}","HIỆN HÀNH","Có thể chia sẻ"),
         ("Lịch","Lịch học và quản lý cohort","Nội bộ","XLSX",f"course/dist/{XLSX.name}","HIỆN HÀNH","Giới hạn quyền truy cập"),
-        ("Giảng viên","Giáo án đầy đủ 6 tuần","Giảng viên","PDF","course/dist/04-09-2026-Giao-an-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Không phát toàn bộ nội bộ"),
+        ("Giảng viên","Giáo án chi tiết Horus 6 tuần","Giảng viên","DOCX/PDF","course/dist/04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Bản PDF để dạy; DOCX để chỉnh sửa"),
         ("Học viên","Workbook","Học viên","PDF","course/dist/04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Chia sẻ sau xác nhận"),
         ("Workshop","Slide workshop","Người tham dự","PPTX/PDF","course/dist/04-09-2026-Workshop-Xay-tro-ly-AI-dau-tien-voi-Claude.pdf","HIỆN HÀNH","Có thể chia sẻ theo chương trình"),
         ("Onboarding","Checklist intake","Vận hành","Source/PDF gộp","course/onboarding/intake-checklist.md","HIỆN HÀNH","Không public response sheet"),
