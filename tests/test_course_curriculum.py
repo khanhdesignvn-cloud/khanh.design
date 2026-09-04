@@ -133,17 +133,19 @@ def test_renderers_explicitly_use_dejavu_unicode_fonts():
         assert "TTFont" in text
 
 
-def test_renderers_complete_without_unresolved_toc_entries():
+def test_renderers_complete_without_unresolved_toc_entries(tmp_path):
     pytest.importorskip("reportlab")
     for name in ("render_curriculum.py", "render_workbook.py"):
+        output = tmp_path / f"{Path(name).stem}.pdf"
         result = subprocess.run(
-            [sys.executable, str(COURSE / "scripts" / name)],
+            [sys.executable, str(COURSE / "scripts" / name), "--output", str(output)],
             cwd=ROOT,
             capture_output=True,
             text=True,
             timeout=90,
         )
         assert result.returncode == 0, result.stderr
+        assert output.exists() and output.stat().st_size > 10_000
 
 
 def test_curriculum_pdf_has_vietnamese_text_toc_pages_and_embedded_font():

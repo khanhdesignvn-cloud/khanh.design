@@ -2,6 +2,7 @@
 """Kết xuất giáo án sáu tuần thành PDF Unicode có mục lục."""
 from __future__ import annotations
 
+import argparse
 import re
 from html import escape
 from pathlib import Path
@@ -189,10 +190,10 @@ class CourseDoc(BaseDocTemplate):
             self.notify("TOCEntry", (level, title, self.page, key))
 
 
-def build() -> Path:
+def build(output: Path = OUTPUT) -> Path:
     register_fonts()
     st = styles()
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    output.parent.mkdir(parents=True, exist_ok=True)
     toc = TableOfContents()
     toc.levelStyles = [st["TOCHeading"], st["TOCSub"]]
     story = [
@@ -213,11 +214,14 @@ def build() -> Path:
         if idx:
             story.append(PageBreak())
         story.extend(markdown_flows(path.read_text(encoding="utf-8"), st))
-    doc = CourseDoc(str(OUTPUT), st)
+    doc = CourseDoc(str(output), st)
     doc.multiBuild(story)
-    return OUTPUT
+    return output
 
 
 if __name__ == "__main__":
-    result = build()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    result = build(args.output)
     print(result)

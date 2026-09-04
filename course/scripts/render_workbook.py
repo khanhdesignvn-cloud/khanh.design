@@ -2,6 +2,7 @@
 """Kết xuất workbook học viên thành PDF Unicode có vùng thực hành."""
 from __future__ import annotations
 
+import argparse
 import re
 from html import escape
 from pathlib import Path
@@ -189,10 +190,10 @@ class WorkbookDoc(BaseDocTemplate):
             self.notify("TOCEntry", (level, title, self.page, key))
 
 
-def build() -> Path:
+def build(output: Path = OUTPUT) -> Path:
     register_fonts()
     st = styles()
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    output.parent.mkdir(parents=True, exist_ok=True)
     toc = TableOfContents()
     toc.levelStyles = [st["TOCHeading"], st["TOCSub"]]
     story = [
@@ -237,11 +238,14 @@ def build() -> Path:
         Spacer(1, 12 * mm),
         Paragraph("Bằng chứng cần thu thêm: _____________________________________________________", st["Body"]),
     ])
-    doc = WorkbookDoc(str(OUTPUT), st)
+    doc = WorkbookDoc(str(output), st)
     doc.multiBuild(story)
-    return OUTPUT
+    return output
 
 
 if __name__ == "__main__":
-    result = build()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    result = build(args.output)
     print(result)
