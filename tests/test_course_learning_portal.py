@@ -149,9 +149,13 @@ class LearningPortalTests(unittest.TestCase):
     def test_options_and_auth_failures_do_not_leak_or_write(self):
         with RunningPortalServer(self.folder) as api:
             status, headers, _ = api.request("OPTIONS", "/course/portal/submissions")
+            me_status, me_headers, _ = api.request("OPTIONS", "/course/portal/me")
+            dashboard_status, dashboard_headers, _ = api.request("OPTIONS", "/course/admin/dashboard")
             unauthorized, _, body = api.request("GET", "/course/portal/submissions")
             bad_origin, bad_headers, _ = api.request("OPTIONS", "/course/portal/submissions", origin="https://evil.test")
         self.assertEqual(status, 204); self.assertIn("Authorization", headers["Access-Control-Allow-Headers"])
+        self.assertEqual(me_status, 204); self.assertIn("Authorization", me_headers["Access-Control-Allow-Headers"])
+        self.assertEqual(dashboard_status, 204); self.assertIn("Authorization", dashboard_headers["Access-Control-Allow-Headers"])
         self.assertEqual(unauthorized, 401); self.assertEqual(body, {"error": "authentication_required"})
         self.assertEqual(bad_origin, 403); self.assertNotIn("Access-Control-Allow-Origin", bad_headers)
         self.assertFalse((self.folder / "submissions.json").exists())

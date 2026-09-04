@@ -77,8 +77,10 @@ DEFAULT_STATE_DIR = Path.home() / ".local" / "share" / "khanh-design-course"
 DEFAULT_PORT = 8092
 PORTAL_OPTIONS_PATHS = frozenset({
     "/course/portal/login",
+    "/course/portal/me",
     "/course/portal/submissions",
     "/course/admin/login",
+    "/course/admin/dashboard",
 })
 
 
