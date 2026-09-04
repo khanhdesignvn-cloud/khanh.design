@@ -5,16 +5,60 @@ const APPLICATION_API_URL = "https://professionals-won-embedded-bracelets.tryclo
 const DRAFT_FIELDS = [
   "full_name",
   "phone",
-  "email",
   "industry",
-  "role",
-  "challenge",
-  "commitment",
+  "expectation",
   "data_consent",
 ];
 
 function canPersistDraft(hasConsent) {
   return hasConsent === true;
+}
+
+function getCountdownParts(deadline, now = new Date()) {
+  const remaining = new Date(deadline).getTime() - new Date(now).getTime();
+  if (!Number.isFinite(remaining) || remaining <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
+  }
+  const totalSeconds = Math.floor(remaining / 1000);
+  return {
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor((totalSeconds % 86400) / 3600),
+    minutes: Math.floor((totalSeconds % 3600) / 60),
+    seconds: totalSeconds % 60,
+    expired: false,
+  };
+}
+
+function initialiseCountdown() {
+  const countdown = document.querySelector(".registration-countdown");
+  if (!countdown) return;
+  const deadline = countdown.dataset.deadline;
+  const fields = {
+    days: document.getElementById("countdown-days"),
+    hours: document.getElementById("countdown-hours"),
+    minutes: document.getElementById("countdown-minutes"),
+    seconds: document.getElementById("countdown-seconds"),
+  };
+  const status = document.getElementById("countdown-status");
+  const cta = countdown.querySelector(".countdown-cta");
+  let timer;
+  const render = () => {
+    const parts = getCountdownParts(deadline);
+    Object.entries(fields).forEach(([key, element]) => {
+      if (element) element.textContent = String(parts[key]).padStart(2, "0");
+    });
+    if (parts.expired) {
+      if (status) status.textContent = "Đăng ký cohort này đã kết thúc.";
+      if (cta) {
+        cta.textContent = "Đã đóng đăng ký";
+        cta.removeAttribute("href");
+        cta.setAttribute("aria-disabled", "true");
+      }
+      if (timer) window.clearInterval(timer);
+    }
+    return parts.expired;
+  };
+  if (!render()) timer = window.setInterval(render, 1000);
 }
 
 function encodeLine(label, value) {
@@ -29,11 +73,9 @@ function buildMailto(data) {
     "Tôi muốn đăng ký quan tâm cohort sáng lập AI Vận Hành Doanh Nghiệp.",
     "",
     encodeLine("Họ và tên", data.full_name),
-    encodeLine("Điện thoại", data.phone),
-    encodeLine("Email", data.email),
+    encodeLine("Số điện thoại", data.phone),
     encodeLine("Ngành nghề", data.industry),
-    encodeLine("Vai trò", data.role),
-    encodeLine("Vấn đề muốn giải quyết", data.challenge),
+    encodeLine("Mong muốn khi tham gia khóa học", data.expectation),
     "",
     "Tôi đã đọc thông báo sử dụng dữ liệu và chủ động xác nhận gửi email này.",
   ].join("\r\n");
@@ -186,9 +228,10 @@ function initialiseForm() {
 }
 
 if (typeof document !== "undefined") {
+  initialiseCountdown();
   initialiseForm();
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { buildMailto, canPersistDraft, submitApplication };
+  module.exports = { buildMailto, canPersistDraft, getCountdownParts, submitApplication };
 }

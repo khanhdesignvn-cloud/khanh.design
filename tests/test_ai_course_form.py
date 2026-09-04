@@ -55,14 +55,12 @@ def test_application_collects_only_declared_required_fields_with_labels():
     required = {
         "full_name",
         "phone",
-        "email",
         "industry",
-        "role",
-        "challenge",
-        "commitment",
+        "expectation",
         "data_consent",
     }
     assert required == set(form.fields)
+    assert '<select id="industry" name="industry" required>' in HTML.read_text(encoding="utf-8")
     assert all("required" in form.fields[name] for name in required)
     assert {attrs["id"] for attrs in form.fields.values()} <= form.labels
     assert len(form.forms) == 1
@@ -86,8 +84,8 @@ def test_draft_storage_is_explicitly_gated_by_data_consent():
 def test_email_fallback_is_encoded_and_requires_user_to_send():
     output = run_node(
         "process.stdout.write(app.buildMailto({"
-        "full_name:'Nguyễn An',phone:'0900 000 000',email:'an@example.com',"
-        "industry:'Dịch vụ',role:'Chủ doanh nghiệp',challenge:'Chuẩn hóa CSKH'"
+        "full_name:'Nguyễn An',phone:'0900 000 000',"
+        "industry:'Dịch vụ',expectation:'Chuẩn hóa CSKH'"
         "}))"
     )
     assert output.startswith("mailto:hi@nguyenquockhanh.vn?")
