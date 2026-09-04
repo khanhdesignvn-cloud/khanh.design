@@ -17,6 +17,21 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
+try:
+    from backend.course_learning_portal import (
+        CourseLearningPortal,
+        PortalAuthenticationError,
+        PortalValidationError,
+        public_weeks,
+    )
+except ModuleNotFoundError:  # Installed service runs the two modules side by side.
+    from course_learning_portal import (  # type: ignore[no-redef]
+        CourseLearningPortal,
+        PortalAuthenticationError,
+        PortalValidationError,
+        public_weeks,
+    )
+
 
 ALLOWED_ORIGINS = frozenset(
     {
@@ -58,7 +73,13 @@ TAG_PATTERN = re.compile(r"<[^>]*>")
 PHONE_CHARS_PATTERN = re.compile(r"^\+?[0-9\s().-]+$")
 MAX_BODY_BYTES = 16 * 1024
 DEFAULT_STORE_PATH = Path.home() / ".local" / "share" / "khanh-design-course" / "applications.json"
+DEFAULT_STATE_DIR = Path.home() / ".local" / "share" / "khanh-design-course"
 DEFAULT_PORT = 8092
+PORTAL_OPTIONS_PATHS = frozenset({
+    "/course/portal/login",
+    "/course/portal/submissions",
+    "/course/admin/login",
+})
 
 
 def validate_bind_host(host: str) -> str:
@@ -120,6 +141,7 @@ class CourseApplicationService:
         rate_limit: int = 5,
         rate_window_seconds: float = 60,
         clock=time.monotonic,
+        portal: CourseLearningPortal | None = None,
     ):
         if rate_limit < 1 or rate_window_seconds <= 0:
             raise ValueError("rate limit and window must be positive")
@@ -131,6 +153,7 @@ class CourseApplicationService:
         self.clock = clock
         self.rate_lock = threading.Lock()
         self.rate_events: dict[str, list[float]] = {}
+        self.portal = portal
 
     def make_server(
         self,
@@ -217,7 +240,8 @@ class CourseApplicationHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_OPTIONS(self) -> None:
-        if self.path != "/course/apply":
+        review_path = self.path.startswith("/course/admin/submissions/")
+        if self.path != "/course/apply" and self.path not in PORTAL_OPTIONS_PATHS and not review_path:
             self._send_json(404, {"error": "not_found"})
             return
         origin = self.headers.get("Origin")
@@ -226,16 +250,80 @@ class CourseApplicationHandler(BaseHTTPRequestHandler):
             return
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", origin)
-        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        if self.path == "/course/apply":
+            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        else:
+            self.send_header("Access-Control-Allow-Methods", "POST, PATCH, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Access-Control-Max-Age", "600")
         self.send_header("Vary", "Origin")
         self.send_header("Content-Length", "0")
         self.end_headers()
 
+    def _portal(self) -> CourseLearningPortal | None:
+        return self.service.portal
+
+    def _bearer(self) -> str | None:
+        value = self.headers.get("Authorization", "")
+        if not value.startswith("Bearer "):
+            return None
+        token = value[7:].strip()
+        return token or None
+
+    def _read_json(self) -> object:
+        if self.headers.get_content_type() != "application/json":
+            raise TypeError("json_required")
+        try:
+            content_length = int(self.headers.get("Content-Length", ""))
+        except ValueError:
+            raise ValueError("invalid_request") from None
+        if content_length < 0:
+            raise ValueError("invalid_request")
+        if content_length > MAX_BODY_BYTES:
+            raise OverflowError("payload_too_large")
+        try:
+            return json.loads(self.rfile.read(content_length))
+        except (ValueError, json.JSONDecodeError, UnicodeDecodeError):
+            raise ValueError("invalid_json") from None
+
+    def _require_subject(self, role: str) -> str | None:
+        portal = self._portal()
+        if portal is None:
+            self._send_json(503, {"error": "portal_unavailable"})
+            return None
+        try:
+            return portal.verify_token(self._bearer(), role)
+        except PortalAuthenticationError:
+            status = 403 if self._bearer() else 401
+            error = "forbidden" if status == 403 else "authentication_required"
+            self._send_json(status, {"error": error})
+            return None
+
     def do_GET(self) -> None:
         if self.path == "/health":
             self._send_json(200, {"status": "ok"})
+            return
+        if self.path == "/course/portal/weeks":
+            self._send_json(200, {"weeks": public_weeks()})
+            return
+        if self.path == "/course/portal/me":
+            subject = self._require_subject("student")
+            if subject is not None:
+                try:
+                    self._send_json(200, self._portal().student_profile(subject))  # type: ignore[union-attr]
+                except PortalAuthenticationError:
+                    self._send_json(401, {"error": "authentication_required"})
+            return
+        if self.path == "/course/portal/submissions":
+            subject = self._require_subject("student")
+            if subject is not None:
+                self._send_json(200, {"submissions": self._portal().list_submissions(subject)})  # type: ignore[union-attr]
+            return
+        if self.path == "/course/admin/dashboard":
+            subject = self._require_subject("admin")
+            if subject is not None:
+                self._send_json(200, self._portal().dashboard())  # type: ignore[union-attr]
             return
         self._send_json(404, {"error": "not_found"})
 
@@ -253,7 +341,53 @@ class CourseApplicationHandler(BaseHTTPRequestHandler):
                 pass
         return str(peer_address)
 
+    def _portal_post(self) -> bool:
+        if self.path not in PORTAL_OPTIONS_PATHS:
+            return False
+        if self.headers.get("Origin") not in ALLOWED_ORIGINS:
+            self._send_json(403, {"error": "origin_not_allowed"})
+            return True
+        if not self.service.allow_request(self._client_key()):
+            self._send_json(429, {"error": "rate_limited"})
+            return True
+        portal = self._portal()
+        if portal is None:
+            self._send_json(503, {"error": "portal_unavailable"})
+            return True
+        try:
+            payload = self._read_json()
+            if self.path == "/course/portal/login":
+                if not isinstance(payload, dict) or set(payload) != {"application_id", "phone"}:
+                    raise PortalValidationError(["credentials"])
+                self._send_json(200, portal.student_login(payload.get("application_id"), payload.get("phone")))
+                return True
+            if self.path == "/course/admin/login":
+                if not isinstance(payload, dict) or set(payload) != {"key"}:
+                    raise PortalValidationError(["credentials"])
+                self._send_json(200, portal.admin_login(payload.get("key")))
+                return True
+            subject = self._require_subject("student")
+            if subject is not None:
+                self._send_json(201, portal.submit(subject, payload))
+            return True
+        except TypeError:
+            self._send_json(415, {"error": "json_required"})
+        except OverflowError:
+            self._send_json(413, {"error": "payload_too_large"})
+        except PortalValidationError as exc:
+            self._send_json(400, {"error": "invalid_fields", "fields": exc.fields})
+        except PortalAuthenticationError:
+            self._send_json(401, {"error": "invalid_credentials"})
+        except RuntimeError as exc:
+            error = "admin_not_configured" if str(exc) == "admin_not_configured" else "portal_unavailable"
+            self._send_json(503, {"error": error})
+        except (ValueError, json.JSONDecodeError, OSError):
+            self._send_json(500, {"error": "storage_unavailable"})
+        return True
+
     def do_POST(self) -> None:
+        if self._portal_post():
+            return
         if self.path != "/course/apply":
             self._send_json(404, {"error": "not_found"})
             return
@@ -307,6 +441,33 @@ class CourseApplicationHandler(BaseHTTPRequestHandler):
             return
         self._send_json(201, {"id": application_id, "status": "received"})
 
+    def do_PATCH(self) -> None:
+        prefix = "/course/admin/submissions/"
+        if not self.path.startswith(prefix) or not self.path[len(prefix):]:
+            self._send_json(404, {"error": "not_found"})
+            return
+        if self.headers.get("Origin") not in ALLOWED_ORIGINS:
+            self._send_json(403, {"error": "origin_not_allowed"})
+            return
+        subject = self._require_subject("admin")
+        if subject is None:
+            return
+        portal = self._portal()
+        try:
+            payload = self._read_json()
+            reviewed = portal.review(self.path[len(prefix):], payload)  # type: ignore[union-attr]
+            self._send_json(200, reviewed)
+        except TypeError:
+            self._send_json(415, {"error": "json_required"})
+        except OverflowError:
+            self._send_json(413, {"error": "payload_too_large"})
+        except PortalValidationError as exc:
+            self._send_json(400, {"error": "invalid_fields", "fields": exc.fields})
+        except KeyError:
+            self._send_json(404, {"error": "submission_not_found"})
+        except (ValueError, json.JSONDecodeError, OSError):
+            self._send_json(500, {"error": "storage_unavailable"})
+
     def log_message(self, format: str, *args: object) -> None:
         # Avoid logs containing paths or other request-controlled data.
         return
@@ -317,16 +478,24 @@ def main() -> int:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--store", type=Path, default=DEFAULT_STORE_PATH)
+    parser.add_argument("--state-dir", type=Path, default=DEFAULT_STATE_DIR)
     parser.add_argument("--rate-limit", type=int, default=5)
     parser.add_argument("--rate-window", type=float, default=60)
     args = parser.parse_args()
     host = validate_bind_host(args.host)
     if not 1 <= args.port <= 65535:
         parser.error("--port must be between 1 and 65535")
+    portal = CourseLearningPortal(
+        students_path=args.state_dir / "students.json",
+        submissions_path=args.state_dir / "submissions.json",
+        token_secret_path=args.state_dir / "portal-token-secret",
+        admin_key_path=args.state_dir / "admin-key.json",
+    )
     service = CourseApplicationService(
         args.store,
         rate_limit=args.rate_limit,
         rate_window_seconds=args.rate_window,
+        portal=portal,
     )
     server = service.make_server((host, args.port), CourseApplicationHandler)
     print(f"Course application API listening on {host}:{args.port}", flush=True)

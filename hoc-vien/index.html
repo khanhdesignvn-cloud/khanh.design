@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Cổng học viên — AI Vận Hành Doanh Nghiệp</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Bỏ qua đến nội dung</a>
+<header class="topbar"><a class="brand" href="/ai-van-hanh-doanh-nghiep/">khanh<span>.design</span></a><span>Cổng học viên</span></header>
+<main id="main" class="shell">
+  <section class="hero">
+    <p class="overline">AI VẬN HÀNH DOANH NGHIỆP</p>
+    <h1>Mỗi tuần một sản phẩm.<br>Sáu tuần thành một hệ thống.</h1>
+    <p>Đăng nhập bằng mã hồ sơ đã nhận và số điện thoại dùng khi đăng ký.</p>
+  </section>
+
+  <section class="panel login-panel" id="login-panel">
+    <div><p class="overline dark">TRUY CẬP RIÊNG</p><h2>Vào không gian học tập</h2><p>Hồ sơ phải được kích hoạt sau khi hoàn tất onboarding.</p></div>
+    <form id="student-login">
+      <label>Mã hồ sơ<input name="application_id" autocomplete="off" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></label>
+      <label>Số điện thoại<input name="phone" type="tel" autocomplete="tel" required placeholder="Số đã dùng khi đăng ký"></label>
+      <button type="submit">Đăng nhập</button>
+      <p class="status" id="login-status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div id="student-app" hidden>
+    <section class="welcome row-between"><div><p class="overline dark">BẢNG ĐIỀU KHIỂN</p><h2 id="student-name">Học viên</h2><p id="student-cohort"></p></div><button class="secondary" id="logout" type="button">Đăng xuất</button></section>
+    <section aria-labelledby="progress-title"><div class="section-head"><span>01</span><div><p>TIẾN ĐỘ</p><h2 id="progress-title">Sáu sản phẩm của bạn</h2></div></div><div class="week-grid" id="week-list"></div></section>
+    <section class="submit-layout" aria-labelledby="submit-title">
+      <div class="section-head"><span>02</span><div><p>NỘP BÀI</p><h2 id="submit-title">Gửi phiên bản mới</h2></div></div>
+      <form id="submission-form" class="panel" hidden>
+        <input type="hidden" name="week">
+        <div class="submission-heading"><p class="overline dark" id="selected-week-label">TUẦN</p><h3 id="selected-week-title"></h3><p id="selected-week-artifact"></p></div>
+        <label>Link sản phẩm<input name="artifact_url" type="url" inputmode="url" required placeholder="https://..."></label>
+        <label>Ghi chú cho giảng viên<textarea name="note" rows="4" required maxlength="1000" placeholder="Nêu phần đã hoàn thành, dữ liệu đã ẩn danh và điều cần góp ý."></textarea></label>
+        <fieldset><legend>Tự đánh giá trước khi nộp</legend>
+          <label>Đủ đầu ra <output data-score="completeness">3/4</output><input type="range" name="self_completeness" min="1" max="4" value="3"></label>
+          <label>Chất lượng sử dụng <output data-score="quality">3/4</output><input type="range" name="self_quality" min="1" max="4" value="3"></label>
+          <label>An toàn dữ liệu <output data-score="safety">3/4</output><input type="range" name="self_safety" min="1" max="4" value="3"></label>
+          <label>Khả năng lặp lại <output data-score="repeatability">3/4</output><input type="range" name="self_repeatability" min="1" max="4" value="3"></label>
+        </fieldset>
+        <button type="submit">Nộp phiên bản này</button><p class="status" id="submission-status" aria-live="polite"></p>
+      </form>
+      <p class="empty" id="submission-empty">Chọn một tuần ở trên để bắt đầu nộp bài.</p>
+    </section>
+    <section aria-labelledby="history-title"><div class="section-head"><span>03</span><div><p>PHẢN HỒI</p><h2 id="history-title">Lịch sử bài nộp</h2></div></div><div id="submission-history" class="history-list"></div></section>
+  </div>
+</main>
+<footer>khanh.design · Tài liệu và dữ liệu học tập được giới hạn cho cohort.</footer>
+</body>
+</html>

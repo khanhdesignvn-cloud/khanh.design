@@ -32,6 +32,15 @@ Các file hiện hành trong `dist/`:
 
 Lịch ngày/giờ trong bộ file mới là **dự kiến**; chỉ đổi thành chính thức sau khi chủ chương trình xác nhận.
 
+## Cổng học viên và quản lý bài tập
+
+- `/hoc-vien/`: học viên đăng nhập bằng mã hồ sơ + số điện thoại, xem 6 tuần, nộp link sản phẩm, tự chấm rubric và xem lịch sử phản hồi.
+- `/quan-ly/`: dashboard riêng của giảng viên, không liên kết công khai từ landing page; dùng khóa quản trị chỉ lưu trên VPS.
+- Dữ liệu portal nằm trong `/var/lib/khanh-course/`, không đưa lên GitHub.
+- Sau khi xác nhận phù hợp và hoàn tất thanh toán, kích hoạt học viên bằng:
+  `sudo -u khanh-course /usr/local/lib/khanh-course/manage_course_portal.py activate <MÃ_HỒ_SƠ> --cohort 2026-09`
+- Đổi khóa quản trị bằng cách chạy `configure-admin`; công cụ đọc khóa từ stdin/terminal và không in lại giá trị.
+
 ## Trạng thái biểu mẫu
 
 Landing page gửi hồ sơ tới API riêng tư; API chỉ trả mã hồ sơ, không phản hồi dữ liệu cá nhân. Khi API tạm lỗi, frontend dùng email fallback để người đăng ký tự kiểm tra và xác nhận gửi.
