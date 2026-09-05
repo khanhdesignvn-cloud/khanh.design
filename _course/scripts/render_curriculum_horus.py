@@ -36,9 +36,9 @@ from reportlab.platypus import (
 from reportlab.platypus.tableofcontents import TableOfContents
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "course" / "curriculum"
-ASSETS = ROOT / "course" / "assets"
-DIST = ROOT / "course" / "dist"
+SOURCE = ROOT / "_course" / "curriculum"
+ASSETS = ROOT / "_course" / "assets"
+DIST = ROOT / "_course" / "dist"
 PREFIX = "04-09-2026"
 DEFAULT_PDF = DIST / f"{PREFIX}-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.pdf"
 DEFAULT_DOCX = DIST / f"{PREFIX}-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.docx"

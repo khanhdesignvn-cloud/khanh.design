@@ -18,7 +18,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
 ROOT = Path(__file__).resolve().parents[2]
-DIST = ROOT / "course" / "dist"
+DIST = ROOT / "_course" / "dist"
 DATE_PREFIX = "04-09-2026"
 OPS_DOCX = DIST / f"{DATE_PREFIX}-So-tay-van-hanh-khoa-hoc-AI.docx"
 SHARE_DOCX = DIST / f"{DATE_PREFIX}-Chuong-trinh-hoc-AI-Van-hanh-doanh-nghiep.docx"
@@ -435,13 +435,13 @@ def build_xlsx():
     ws = wb.create_sheet("Chỉ mục tài liệu")
     ws.append(["Nhóm", "Tài liệu", "Đối tượng", "Định dạng", "Đường dẫn trong repo", "Trạng thái", "Quy tắc chia sẻ"])
     docs = [
-        ("Quản trị","Sổ tay vận hành khóa học AI","Nội bộ","DOCX/PDF",f"course/dist/{OPS_DOCX.name}","HIỆN HÀNH","Không gửi bảng PII cho học viên"),
-        ("Chia sẻ","Chương trình học 6 tuần","Học viên/Ứng viên","PDF",f"course/dist/{SHARE_DOCX.with_suffix('.pdf').name}","HIỆN HÀNH","Có thể chia sẻ"),
-        ("Lịch","Lịch học và quản lý cohort","Nội bộ","XLSX",f"course/dist/{XLSX.name}","HIỆN HÀNH","Giới hạn quyền truy cập"),
-        ("Giảng viên","Giáo án chi tiết Horus 6 tuần","Giảng viên","DOCX/PDF","course/dist/04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Bản PDF để dạy; DOCX để chỉnh sửa"),
-        ("Học viên","Workbook","Học viên","PDF","course/dist/04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Chia sẻ sau xác nhận"),
-        ("Workshop","Slide workshop","Người tham dự","PPTX/PDF","course/dist/04-09-2026-Workshop-Xay-tro-ly-AI-dau-tien-voi-Claude.pdf","HIỆN HÀNH","Có thể chia sẻ theo chương trình"),
-        ("Onboarding","Checklist intake","Vận hành","Source/PDF gộp","course/onboarding/intake-checklist.md","HIỆN HÀNH","Không public response sheet"),
+        ("Quản trị","Sổ tay vận hành khóa học AI","Nội bộ","DOCX/PDF",f"_course/dist/{OPS_DOCX.name}","HIỆN HÀNH","Không gửi bảng PII cho học viên"),
+        ("Chia sẻ","Chương trình học 6 tuần","Học viên/Ứng viên","PDF",f"_course/dist/{SHARE_DOCX.with_suffix('.pdf').name}","HIỆN HÀNH","Có thể chia sẻ"),
+        ("Lịch","Lịch học và quản lý cohort","Nội bộ","XLSX",f"_course/dist/{XLSX.name}","HIỆN HÀNH","Giới hạn quyền truy cập"),
+        ("Giảng viên","Giáo án chi tiết Horus 6 tuần","Giảng viên","DOCX/PDF","_course/dist/04-09-2026-Giao-an-chi-tiet-Horus-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Bản PDF để dạy; DOCX để chỉnh sửa"),
+        ("Học viên","Workbook","Học viên","PDF","_course/dist/04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Chia sẻ sau xác nhận"),
+        ("Workshop","Slide workshop","Người tham dự","PPTX/PDF","_course/dist/04-09-2026-Workshop-Xay-tro-ly-AI-dau-tien-voi-Claude.pdf","HIỆN HÀNH","Có thể chia sẻ theo chương trình"),
+        ("Onboarding","Checklist intake","Vận hành","Source/PDF gộp","_course/onboarding/intake-checklist.md","HIỆN HÀNH","Không public response sheet"),
         ("Website","Landing page","Công khai","HTML","ai-learning/","LIVE","https://khanh.design/ai-learning/"),
     ]
     for row in docs: ws.append(row)

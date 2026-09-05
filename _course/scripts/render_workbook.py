@@ -28,8 +28,8 @@ from reportlab.platypus import (
 from reportlab.platypus.tableofcontents import TableOfContents
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "course" / "workbook"
-OUTPUT = ROOT / "course" / "dist" / "04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf"
+SOURCE = ROOT / "_course" / "workbook"
+OUTPUT = ROOT / "_course" / "dist" / "04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf"
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 REGULAR = FONT_DIR / "DejaVuSans.ttf"
 BOLD = FONT_DIR / "DejaVuSans-Bold.ttf"

@@ -6,12 +6,12 @@ Repo chính thức cho website và bộ tài sản khóa học **AI VẬN HÀNH 
 
 - `index.html`: chuyển khách truy cập từ `khanh.design` tới website khóa học.
 - `ai-learning/`: landing page, countdown đóng đăng ký lúc 23:59 ngày 15/09/2026, form và tài sản tự host.
-- `course/curriculum/`: giáo án giảng viên và lộ trình 6 tuần.
-- `course/workbook/`: workbook học viên và biểu mẫu thực hành.
-- `course/workshop/`: nội dung workshop mở bán.
-- `course/launch/`: kế hoạch nội dung, bài viết, video demo và case study.
-- `course/onboarding/`: intake, quyền riêng tư và đặc tả đăng ký.
-- `course/dist/` và `dist/`: PDF/PPTX đã xuất và kiểm tra.
+- `_course/curriculum/`: giáo án giảng viên và lộ trình 6 tuần.
+- `_course/workbook/`: workbook học viên và biểu mẫu thực hành.
+- `_course/workshop/`: nội dung workshop mở bán.
+- `_course/launch/`: kế hoạch nội dung, bài viết, video demo và case study.
+- `_course/onboarding/`: intake, quyền riêng tư và đặc tả đăng ký.
+- `_course/dist/` và `dist/`: PDF/PPTX đã xuất và kiểm tra.
 - `backend/`: API đăng ký riêng tư cùng cấu hình systemd.
 - `docs/superpowers/specs/`: đề án và quy hoạch khóa học.
 - `tests/`: kiểm thử website, form, API, giáo án và tài liệu.
@@ -29,7 +29,7 @@ Mở `http://127.0.0.1:8100/ai-learning/`.
 ```bash
 uv run --with pytest --with reportlab --with pypdf --with python-pptx pytest tests -q
 node --check ai-learning/app.js
-python3 -m py_compile backend/*.py course/scripts/*.py
+python3 -m py_compile backend/*.py _course/scripts/*.py
 git diff --check
 ```
 
