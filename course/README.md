@@ -49,9 +49,9 @@ Landing page gửi hồ sơ tới API riêng tư; API chỉ trả mã hồ sơ, 
 
 ```bash
 uv run --with pytest pytest tests -q
-node --check ai-van-hanh-doanh-nghiep/app.js
+node --check ai-learning/app.js
 ```
 
 ## Phát hành
 
-Microsite nằm tại `/ai-van-hanh-doanh-nghiep/` trên branch `course/ai-van-hanh-doanh-nghiep`. Không merge hoặc deploy production nếu chưa có xác nhận riêng của cậu chủ.
+Microsite nằm tại `/ai-learning/` trên branch `course/ai-learning`. Không merge hoặc deploy production nếu chưa có xác nhận riêng của cậu chủ.

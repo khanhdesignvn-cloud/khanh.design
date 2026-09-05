@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE = ROOT / "ai-van-hanh-doanh-nghiep"
+SITE = ROOT / "ai-learning"
 HTML = SITE / "index.html"
 JS = SITE / "app.js"
 DEADLINE = "2026-09-15T23:59:00+07:00"

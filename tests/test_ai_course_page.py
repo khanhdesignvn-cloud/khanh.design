@@ -4,7 +4,7 @@ import re
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE = ROOT / "ai-van-hanh-doanh-nghiep"
+SITE = ROOT / "ai-learning"
 PAGE = SITE / "index.html"
 CSS = SITE / "styles.css"
 
@@ -63,7 +63,7 @@ def test_microsite_has_course_metadata_and_relative_assets():
     css = CSS.read_text(encoding="utf-8")
     assert "AI Vận Hành Doanh Nghiệp" in "".join(page.title)
     assert "6 tuần" in page.meta["description"]
-    assert page.meta["canonical"].endswith("/ai-van-hanh-doanh-nghiep/")
+    assert page.meta["canonical"].endswith("/ai-learning/")
     assert 'href="styles.css"' in html
     assert 'href="favicon.svg"' in html
     assert (SITE / "favicon.svg").exists()

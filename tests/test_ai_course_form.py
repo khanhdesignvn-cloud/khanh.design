@@ -4,7 +4,7 @@ import json
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE = ROOT / "ai-van-hanh-doanh-nghiep"
+SITE = ROOT / "ai-learning"
 HTML = SITE / "index.html"
 JS = SITE / "app.js"
 

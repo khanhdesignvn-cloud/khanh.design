@@ -5,7 +5,7 @@ Repo chính thức cho website và bộ tài sản khóa học **AI VẬN HÀNH 
 ## Phạm vi
 
 - `index.html`: chuyển khách truy cập từ `khanh.design` tới website khóa học.
-- `ai-van-hanh-doanh-nghiep/`: landing page, countdown đóng đăng ký lúc 23:59 ngày 15/09/2026, form và tài sản tự host.
+- `ai-learning/`: landing page, countdown đóng đăng ký lúc 23:59 ngày 15/09/2026, form và tài sản tự host.
 - `course/curriculum/`: giáo án giảng viên và lộ trình 6 tuần.
 - `course/workbook/`: workbook học viên và biểu mẫu thực hành.
 - `course/workshop/`: nội dung workshop mở bán.
@@ -22,13 +22,13 @@ Repo chính thức cho website và bộ tài sản khóa học **AI VẬN HÀNH 
 python3 -m http.server 8100
 ```
 
-Mở `http://127.0.0.1:8100/ai-van-hanh-doanh-nghiep/`.
+Mở `http://127.0.0.1:8100/ai-learning/`.
 
 ## Kiểm thử
 
 ```bash
 uv run --with pytest --with reportlab --with pypdf --with python-pptx pytest tests -q
-node --check ai-van-hanh-doanh-nghiep/app.js
+node --check ai-learning/app.js
 python3 -m py_compile backend/*.py course/scripts/*.py
 git diff --check
 ```

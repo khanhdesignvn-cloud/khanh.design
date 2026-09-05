@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 STUDENT = ROOT / "hoc-vien"
 ADMIN = ROOT / "quan-ly"
-LANDING = ROOT / "ai-van-hanh-doanh-nghiep" / "index.html"
+LANDING = ROOT / "ai-learning" / "index.html"
 
 
 def read(path):
@@ -36,7 +36,7 @@ def test_student_page_has_accessible_login_submission_and_progress_regions():
     ):
         assert marker in html
     assert html.count('type="range"') == 4
-    assert 'href="/ai-van-hanh-doanh-nghiep/"' in html
+    assert 'href="/ai-learning/"' in html
 
 
 def test_admin_page_has_login_summary_filters_and_review_form():

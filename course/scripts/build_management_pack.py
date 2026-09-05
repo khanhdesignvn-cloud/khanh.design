@@ -322,7 +322,7 @@ def build_share_doc():
         "Việc ghi hình, dùng phát biểu hoặc case study được xin phép riêng, không mặc định.",
     ])
     doc.add_heading("Đăng ký", level=1)
-    doc.add_paragraph("Xem thông tin và nộp hồ sơ tại: https://khanh.design/ai-van-hanh-doanh-nghiep/\nNộp hồ sơ không bảo đảm nhận lớp. Chương trình đọc mức phù hợp trước khi mời thanh toán.")
+    doc.add_paragraph("Xem thông tin và nộp hồ sơ tại: https://khanh.design/ai-learning/\nNộp hồ sơ không bảo đảm nhận lớp. Chương trình đọc mức phù hợp trước khi mời thanh toán.")
     add_footer(doc, "khanh.design · AI Vận Hành Doanh Nghiệp · Chương trình dự kiến")
     doc.save(SHARE_DOCX)
 
@@ -442,7 +442,7 @@ def build_xlsx():
         ("Học viên","Workbook","Học viên","PDF","course/dist/04-09-2026-Workbook-AI-Van-hanh-doanh-nghiep.pdf","HIỆN HÀNH","Chia sẻ sau xác nhận"),
         ("Workshop","Slide workshop","Người tham dự","PPTX/PDF","course/dist/04-09-2026-Workshop-Xay-tro-ly-AI-dau-tien-voi-Claude.pdf","HIỆN HÀNH","Có thể chia sẻ theo chương trình"),
         ("Onboarding","Checklist intake","Vận hành","Source/PDF gộp","course/onboarding/intake-checklist.md","HIỆN HÀNH","Không public response sheet"),
-        ("Website","Landing page","Công khai","HTML","ai-van-hanh-doanh-nghiep/","LIVE","https://khanh.design/ai-van-hanh-doanh-nghiep/"),
+        ("Website","Landing page","Công khai","HTML","ai-learning/","LIVE","https://khanh.design/ai-learning/"),
     ]
     for row in docs: ws.append(row)
     style_ws(ws, [17,38,22,16,67,18,42])
