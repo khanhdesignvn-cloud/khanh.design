@@ -23,7 +23,7 @@ class SlideAdminFrontendTests(unittest.TestCase):
 
                 def api(route, request):
                     requests.append((request.method, request.url, request.post_data))
-                    path = request.url.split("/slide-admin-api", 1)[-1]
+                    path = request.url.split("sslip.io", 1)[-1]
                     if path == "/setup-status":
                         route.fulfill(json={"setup_required": False})
                     elif path == "/login":
@@ -39,7 +39,7 @@ class SlideAdminFrontendTests(unittest.TestCase):
                     else:
                         route.fulfill(status=404, json={"error": "not_found"})
 
-                page.route("**/slide-admin-api/**", api)
+                page.route("https://slide-admin.103-142-26-14.sslip.io/**", api)
                 page.goto(ADMIN.as_uri(), wait_until="load")
                 self.assertTrue(page.locator("#login-view").is_visible())
                 self.assertTrue(page.locator("#workspace").is_hidden())
@@ -92,7 +92,7 @@ class SlideAdminFrontendTests(unittest.TestCase):
                 page = browser.new_page()
 
                 def api(route, request):
-                    path = request.url.split("/slide-admin-api", 1)[-1]
+                    path = request.url.split("sslip.io", 1)[-1]
                     if path == "/setup-status":
                         route.fulfill(json={"setup_required": True})
                     elif path == "/setup":
@@ -103,7 +103,7 @@ class SlideAdminFrontendTests(unittest.TestCase):
                     else:
                         route.fulfill(status=404, json={"error": "not_found"})
 
-                page.route("**/slide-admin-api/**", api)
+                page.route("https://slide-admin.103-142-26-14.sslip.io/**", api)
                 page.goto(ADMIN.as_uri(), wait_until="load")
                 page.locator("#setup-form").wait_for(state="visible")
                 self.assertTrue(page.locator("#login-form").is_hidden())
