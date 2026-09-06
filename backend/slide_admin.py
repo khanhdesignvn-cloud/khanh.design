@@ -179,7 +179,7 @@ def validate_slide_config(config: object, base_ids: list[str]) -> dict:
     }
 
 
-def save_draft_atomic(path, payload: dict) -> None:
+def save_draft_atomic(path, payload: object) -> None:
     target = os.fspath(path)
     parent = os.path.dirname(target)
     os.makedirs(parent, mode=0o700, exist_ok=True)

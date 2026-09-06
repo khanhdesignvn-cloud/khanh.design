@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import ipaddress
 import json
+import subprocess
 import time
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -13,6 +14,7 @@ from typing import Any
 
 try:
     from backend.slide_admin import (
+        PublishBusy,
         SessionStore,
         SlideValidationError,
         process_uploaded_image,
@@ -22,6 +24,7 @@ try:
     )
 except ModuleNotFoundError:  # Installed modules live side by side.
     from slide_admin import (  # type: ignore[no-redef]
+        PublishBusy,
         SessionStore,
         SlideValidationError,
         process_uploaded_image,
@@ -29,6 +32,11 @@ except ModuleNotFoundError:  # Installed modules live side by side.
         validate_slide_config,
         verify_password,
     )
+
+try:
+    from backend.slide_publisher import SlidePublisher
+except ModuleNotFoundError:
+    from slide_publisher import SlidePublisher  # type: ignore[no-redef]
 
 
 ALLOWED_ORIGINS = frozenset({"https://khanh.design", "https://www.khanh.design"})
@@ -59,6 +67,7 @@ class SlideAdminService:
         max_json_bytes: int = 512 * 1024,
         image_dir: str | Path | None = None,
         max_upload_bytes: int = 8 * 1024 * 1024,
+        publisher: Any | None = None,
         clock=time.monotonic,
     ):
         if not password_hash:
@@ -75,6 +84,7 @@ class SlideAdminService:
         self.max_json_bytes = max_json_bytes
         self.image_dir = Path(image_dir) if image_dir is not None else self.published_path.parent / "assets/admin"
         self.max_upload_bytes = max_upload_bytes
+        self.publisher = publisher
         self.clock = clock
         self._login_attempts: dict[str, list[float]] = {}
 
@@ -181,7 +191,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self) -> None:
         if self._reject_bad_origin():
             return
-        if self.path not in {"/login", "/logout", "/slides", "/draft", "/images"}:
+        if self.path not in {"/login", "/logout", "/slides", "/draft", "/images", "/publish", "/rollback"}:
             self._send_json(404, {"error": "not_found"})
             return
         self.send_response(204)
@@ -197,6 +207,18 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/health":
             self._send_json(200, {"status": "ok"})
+            return
+        if self.path.startswith("/deployment/"):
+            if self._require_session() is None:
+                return
+            if self.service.publisher is None:
+                self._send_json(503, {"error": "publisher_unavailable"})
+                return
+            try:
+                deployment_id = self.path.removeprefix("/deployment/")
+                self._send_json(200, self.service.publisher.deployment(deployment_id))
+            except KeyError:
+                self._send_json(404, {"error": "deployment_not_found"})
             return
         if self.path != "/slides":
             self._send_json(404, {"error": "not_found"})
@@ -223,7 +245,43 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
         if self.path == "/images":
             self._upload_image()
             return
+        if self.path in {"/publish", "/rollback"}:
+            self._publication_action()
+            return
         self._send_json(404, {"error": "not_found"})
+
+    def _publication_action(self) -> None:
+        if self._require_session(csrf=True) is None:
+            return
+        try:
+            payload = self._read_json()
+            if payload != {}:
+                raise ValueError("invalid request")
+            if self.service.publisher is None:
+                self._send_json(503, {"error": "publisher_unavailable"})
+                return
+            if self.path == "/publish":
+                if not self.service.draft_path.exists():
+                    self._send_json(409, {"error": "draft_required"})
+                    return
+                config = json.loads(self.service.draft_path.read_text(encoding="utf-8"))
+                result = self.service.publisher.publish(config)
+            else:
+                result = self.service.publisher.rollback()
+            status = 202 if result.get("state") in {"queued", "building"} else 200
+            if result.get("state") == "failure":
+                status = 502
+            self._send_json(status, result)
+        except TypeError:
+            self._send_json(415, {"error": "json_required"})
+        except OverflowError:
+            self._send_json(413, {"error": "payload_too_large"})
+        except PublishBusy:
+            self._send_json(409, {"error": "publish_in_progress"})
+        except (ValueError, SlideValidationError, json.JSONDecodeError):
+            self._send_json(400, {"error": "invalid_publication"})
+        except (OSError, subprocess.SubprocessError):
+            self._send_json(500, {"error": "publisher_unavailable"})
 
     def _upload_image(self) -> None:
         if self._require_session(csrf=True) is None:
@@ -325,6 +383,7 @@ def main() -> int:
         published_path=published_path,
         draft_path=args.state_dir / "draft.json",
         base_ids=base_ids,
+        publisher=SlidePublisher(args.repo, args.state_dir / "deployments.json"),
     )
     server = service.make_server((validate_bind_host(args.host), args.port), SlideAdminHandler)
     server.serve_forever()

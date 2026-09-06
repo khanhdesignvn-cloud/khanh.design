@@ -1,5 +1,6 @@
 import http.client
 import json
+import subprocess
 import tempfile
 import threading
 import unittest
@@ -10,6 +11,7 @@ from PIL import Image
 
 from backend.slide_admin import hash_password
 from backend.slide_admin_server import SlideAdminService, SlideAdminHandler
+from backend.slide_publisher import SlidePublisher
 
 
 ORIGIN = "https://khanh.design"
@@ -30,6 +32,16 @@ class SlideAdminApiTests(unittest.TestCase):
             "custom_slides": [],
         }
         self.published.write_text(json.dumps(self.config), encoding="utf-8")
+        subprocess.run(["git", "init", "-b", "main", str(root / "repo")], check=True, capture_output=True)
+        subprocess.run(["git", "init", "--bare", str(root / "remote.git")], check=True, capture_output=True)
+        for args in (
+            ("config", "user.name", "Test"), ("config", "user.email", "test@example.com"),
+            ("remote", "add", "origin", str(root / "remote.git")),
+            ("add", "100/slide-config.json"), ("commit", "-m", "initial"),
+            ("push", "-u", "origin", "main"),
+        ):
+            subprocess.run(["git", *args], cwd=root / "repo", check=True, capture_output=True)
+        self.publisher = SlidePublisher(root / "repo", root / "state/ledger.json")
         self.service = SlideAdminService(
             password_hash=hash_password("correct horse"),
             published_path=self.published,
@@ -38,6 +50,7 @@ class SlideAdminApiTests(unittest.TestCase):
             login_limit=2,
             login_window_seconds=60,
             image_dir=root / "repo" / "100/assets/admin",
+            publisher=self.publisher,
         )
         self.server = self.service.make_server(("127.0.0.1", 0), SlideAdminHandler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -150,6 +163,22 @@ class SlideAdminApiTests(unittest.TestCase):
             "POST", "/images", raw=b"fake",
             headers={"Content-Type": "image/png", "Cookie": cookie, "X-CSRF-Token": csrf},
         )[0])
+
+    def test_publish_rollback_and_deployment_endpoints(self):
+        cookie, csrf = self.login()
+        draft = dict(self.config, revision="published-2", hidden=["base-one"])
+        auth = {"Cookie": cookie, "X-CSRF-Token": csrf}
+        self.assertEqual(200, self.request("PUT", "/draft", draft, auth)[0])
+        status, deployment, _ = self.request("POST", "/publish", {}, auth)
+        self.assertEqual((202, "queued"), (status, deployment["state"]))
+        status, fetched, _ = self.request(
+            "GET", f"/deployment/{deployment['id']}", headers={"Cookie": cookie}
+        )
+        self.assertEqual((200, deployment["id"]), (status, fetched["id"]))
+        status, rolled_back, _ = self.request("POST", "/rollback", {}, auth)
+        self.assertEqual((202, "queued"), (status, rolled_back["state"]))
+        restored = json.loads(self.published.read_text(encoding="utf-8"))
+        self.assertEqual("published-1", restored["revision"])
 
 
 if __name__ == "__main__":
