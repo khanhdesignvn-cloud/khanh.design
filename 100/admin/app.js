@@ -214,19 +214,54 @@ byId("rollback").addEventListener("click", async () => {
   catch (_) { message.textContent = "Không thể hoàn tác lúc này."; }
 });
 
+async function enterWorkspace(authenticated) {
+  state.csrf = authenticated.csrf_token;
+  const slides = await api("/slides");
+  state.published = slides.published;
+  state.config = safeLocalRead() || slides.draft || slides.published;
+  state.selected = state.config.order[0];
+  loginView.hidden = true;
+  workspace.hidden = false;
+  renderList(); renderProperties(); renderPreview();
+}
+
 byId("login-form").addEventListener("submit", async event => {
   event.preventDefault();
   byId("login-error").textContent = "";
   try {
     const result = await api("/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: byId("password").value }) });
-    state.csrf = result.csrf_token;
     byId("password").value = "";
-    const slides = await api("/slides");
-    state.published = slides.published;
-    state.config = safeLocalRead() || slides.draft || slides.published;
-    state.selected = state.config.order[0];
-    loginView.hidden = true;
-    workspace.hidden = false;
-    renderList(); renderProperties(); renderPreview();
+    await enterWorkspace(result);
   } catch (_) { byId("login-error").textContent = "Đăng nhập không thành công. Kiểm tra mật khẩu và thử lại."; }
+});
+
+byId("setup-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const password = byId("new-password");
+  const confirmation = byId("confirm-password");
+  byId("login-error").textContent = "";
+  if (password.value !== confirmation.value) {
+    byId("login-error").textContent = "Hai mật khẩu chưa khớp.";
+    return;
+  }
+  try {
+    const result = await api("/setup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: password.value }) });
+    password.value = "";
+    confirmation.value = "";
+    await enterWorkspace(result);
+  } catch (_) {
+    password.value = "";
+    confirmation.value = "";
+    byId("login-error").textContent = "Không thể tạo mật khẩu. Tải lại trang và thử lại.";
+  }
+});
+
+api("/setup-status").then(status => {
+  if (!status.setup_required) return;
+  byId("login-title").textContent = "Tạo mật khẩu quản trị";
+  byId("login-description").textContent = "Đây là lần thiết lập đầu tiên. Mật khẩu chỉ được gửi trực tiếp tới dịch vụ bảo mật và không lưu trong trình duyệt.";
+  byId("login-form").hidden = true;
+  byId("setup-form").hidden = false;
+}).catch(() => {
+  byId("login-error").textContent = "Không thể kiểm tra trạng thái dịch vụ. Vui lòng thử lại.";
 });

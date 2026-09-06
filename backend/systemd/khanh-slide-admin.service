@@ -7,6 +7,8 @@ Wants=network-online.target
 Type=simple
 User=khanh-slide-admin
 Group=khanh-slide-admin
+# Root-owned EnvironmentFile supplies either SLIDE_ADMIN_PASSWORD_HASH or
+# the one-time SLIDE_ADMIN_SETUP_ENABLED flag; no credential is embedded here.
 EnvironmentFile=/etc/khanh-slide-admin/env
 Environment=PYTHONDONTWRITEBYTECODE=1
 StateDirectory=khanh-slide-admin

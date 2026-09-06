@@ -11,12 +11,16 @@ if [[ ${EUID} -ne 0 ]]; then
   printf 'Run as root.\n' >&2
   exit 1
 fi
-if [[ ! -f "$ENV_FILE" ]]; then
-  printf 'Create %s with SLIDE_ADMIN_PASSWORD_HASH, owner root, mode 0600.\n' "$ENV_FILE" >&2
+if [[ ! -f "$ENV_FILE" || -L "$ENV_FILE" ]]; then
+  printf 'Create a regular %s with either SLIDE_ADMIN_PASSWORD_HASH or SLIDE_ADMIN_SETUP_ENABLED, owner root, mode 0600.\n' "$ENV_FILE" >&2
   exit 1
 fi
 if [[ "$(stat -c "%a" "$ENV_FILE")" != "600" ]]; then
   printf '%s must have mode 0600.\n' "$ENV_FILE" >&2
+  exit 1
+fi
+if [[ "$(stat -c "%U:%G" "$ENV_FILE")" != "root:root" ]]; then
+  printf '%s must be owned by root:root.\n' "$ENV_FILE" >&2
   exit 1
 fi
 if [[ ! -d "$REPO_DIR/.git" || ! -f "$REPO_DIR/100/slide-config.json" ]]; then

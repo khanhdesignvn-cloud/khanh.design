@@ -7,6 +7,8 @@ import ipaddress
 import json
 import os
 import subprocess
+import tempfile
+import threading
 import time
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -18,6 +20,7 @@ try:
         PublishBusy,
         SessionStore,
         SlideValidationError,
+        hash_password,
         process_uploaded_image,
         save_draft_atomic,
         validate_slide_config,
@@ -28,6 +31,7 @@ except ModuleNotFoundError:  # Installed modules live side by side.
         PublishBusy,
         SessionStore,
         SlideValidationError,
+        hash_password,
         process_uploaded_image,
         save_draft_atomic,
         validate_slide_config,
@@ -54,6 +58,27 @@ def resolve_password_hash(cli_value: str, environ: dict[str, str] | os._Environ[
     return value
 
 
+def resolve_auth_state(
+    state_dir: str | Path,
+    cli_password_hash: str,
+    environ: dict[str, str] | os._Environ[str] | None = None,
+) -> tuple[str, bool, Path]:
+    """Resolve persisted credentials or an explicitly enabled first-run state."""
+    environment = os.environ if environ is None else environ
+    password_hash_path = Path(state_dir) / "password.hash"
+    if password_hash_path.exists():
+        password_hash = password_hash_path.read_text(encoding="utf-8").strip()
+        if not password_hash:
+            raise ValueError("stored password hash is empty")
+        return password_hash, False, password_hash_path
+    try:
+        return resolve_password_hash(cli_password_hash, environment), False, password_hash_path
+    except ValueError:
+        if environment.get("SLIDE_ADMIN_SETUP_ENABLED") != "1":
+            raise
+        return "", True, password_hash_path
+
+
 def validate_bind_host(host: str) -> str:
     try:
         address = ipaddress.ip_address(host)
@@ -69,6 +94,8 @@ class SlideAdminService:
         self,
         *,
         password_hash: str,
+        password_hash_path: str | Path | None = None,
+        setup_enabled: bool = False,
         published_path: str | Path,
         draft_path: str | Path,
         base_ids: list[str],
@@ -80,8 +107,13 @@ class SlideAdminService:
         publisher: Any | None = None,
         clock=time.monotonic,
     ):
-        if not password_hash:
+        self.password_hash_path = Path(password_hash_path) if password_hash_path is not None else None
+        if self.password_hash_path is not None and self.password_hash_path.exists():
+            password_hash = self.password_hash_path.read_text(encoding="utf-8").strip()
+        if not password_hash and not setup_enabled:
             raise ValueError("password hash is required")
+        if not password_hash and self.password_hash_path is None:
+            raise ValueError("password hash path is required during setup")
         if login_limit < 1 or login_window_seconds <= 0:
             raise ValueError("invalid login rate limit")
         self.password_hash = password_hash
@@ -97,6 +129,7 @@ class SlideAdminService:
         self.publisher = publisher
         self.clock = clock
         self._login_attempts: dict[str, list[float]] = {}
+        self._setup_lock = threading.Lock()
 
     def make_server(self, address, handler_class):
         server = ThreadingHTTPServer(address, handler_class)
@@ -119,6 +152,47 @@ class SlideAdminService:
         published = json.loads(self.published_path.read_text(encoding="utf-8"))
         draft = json.loads(self.draft_path.read_text(encoding="utf-8")) if self.draft_path.exists() else None
         return {"published": published, "draft": draft}
+
+    @property
+    def setup_required(self) -> bool:
+        with self._setup_lock:
+            return not bool(self.password_hash)
+
+    def set_initial_password(self, password: str) -> bool:
+        if not isinstance(password, str) or not 12 <= len(password) <= 1024:
+            raise ValueError("invalid password")
+        with self._setup_lock:
+            if self.password_hash or self.password_hash_path is None or self.password_hash_path.exists():
+                return False
+            encoded = hash_password(password)
+            target = self.password_hash_path
+            target.parent.mkdir(parents=True, mode=0o700, exist_ok=True)
+            fd, temporary = tempfile.mkstemp(prefix=".password-", dir=target.parent)
+            try:
+                os.fchmod(fd, 0o600)
+                with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                    fd = -1
+                    stream.write(encoded)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                try:
+                    os.link(temporary, target)
+                except FileExistsError:
+                    return False
+                self.password_hash = encoded
+                directory_fd = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory_fd)
+                finally:
+                    os.close(directory_fd)
+                return True
+            finally:
+                if fd >= 0:
+                    os.close(fd)
+                try:
+                    os.unlink(temporary)
+                except FileNotFoundError:
+                    pass
 
 
 class SlideAdminHandler(BaseHTTPRequestHandler):
@@ -144,6 +218,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
         self._cors()
         self.end_headers()
         self.wfile.write(body)
@@ -155,6 +230,18 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
         if clear_cookie:
             self.send_header("Set-Cookie", "slide_admin_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict")
         self.end_headers()
+
+    def _send_authenticated_session(self) -> None:
+        token, csrf = self.service.sessions.create()
+        body = json.dumps({"csrf_token": csrf}, separators=(",", ":")).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Set-Cookie", f"slide_admin_session={token}; Path=/; HttpOnly; Secure; SameSite=Strict")
+        self.send_header("Cache-Control", "no-store")
+        self._cors()
+        self.end_headers()
+        self.wfile.write(body)
 
     def _read_json(self) -> object:
         if self.headers.get_content_type() != "application/json":
@@ -201,7 +288,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self) -> None:
         if self._reject_bad_origin():
             return
-        if self.path not in {"/login", "/logout", "/slides", "/draft", "/images", "/publish", "/rollback"}:
+        if self.path not in {"/setup", "/setup-status", "/login", "/logout", "/slides", "/draft", "/images", "/publish", "/rollback"}:
             self._send_json(404, {"error": "not_found"})
             return
         self.send_response(204)
@@ -217,6 +304,9 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/health":
             self._send_json(200, {"status": "ok"})
+            return
+        if self.path == "/setup-status":
+            self._send_json(200, {"setup_required": self.service.setup_required})
             return
         if self.path.startswith("/deployment/"):
             if self._require_session() is None:
@@ -241,7 +331,13 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
             self._send_json(500, {"error": "storage_unavailable"})
 
     def do_POST(self) -> None:
+        if self.path == "/setup" and self.headers.get("Origin") not in ALLOWED_ORIGINS:
+            self._send_json(403, {"error": "origin_not_allowed"})
+            return
         if self._reject_bad_origin():
+            return
+        if self.path == "/setup":
+            self._setup()
             return
         if self.path == "/login":
             self._login()
@@ -259,6 +355,27 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
             self._publication_action()
             return
         self._send_json(404, {"error": "not_found"})
+
+    def _setup(self) -> None:
+        if not self.service.setup_required:
+            self._send_json(409, {"error": "setup_unavailable"})
+            return
+        try:
+            payload = self._read_json()
+            if not isinstance(payload, dict) or set(payload) != {"password"}:
+                raise ValueError("invalid request")
+            if not self.service.set_initial_password(payload["password"]):
+                self._send_json(409, {"error": "setup_unavailable"})
+                return
+            self._send_authenticated_session()
+        except TypeError:
+            self._send_json(415, {"error": "json_required"})
+        except OverflowError:
+            self._send_json(413, {"error": "payload_too_large"})
+        except ValueError:
+            self._send_json(400, {"error": "invalid_setup"})
+        except OSError:
+            self._send_json(500, {"error": "storage_unavailable"})
 
     def _publication_action(self) -> None:
         if self._require_session(csrf=True) is None:
@@ -339,15 +456,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
             self._send_json(401, {"error": "invalid_credentials"})
             return
         self.service.clear_login_attempts(client)
-        token, csrf = self.service.sessions.create()
-        self.send_response(200)
-        body = json.dumps({"csrf_token": csrf}, separators=(",", ":")).encode()
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.send_header("Set-Cookie", f"slide_admin_session={token}; Path=/; HttpOnly; Secure; SameSite=Strict")
-        self._cors()
-        self.end_headers()
-        self.wfile.write(body)
+        self._send_authenticated_session()
 
     def do_PUT(self) -> None:
         if self._reject_bad_origin():
@@ -383,14 +492,18 @@ def main() -> int:
     parser.add_argument("--password-hash", default="")
     args = parser.parse_args()
     try:
-        password_hash = resolve_password_hash(args.password_hash)
+        password_hash, setup_enabled, password_hash_path = resolve_auth_state(
+            args.state_dir, args.password_hash
+        )
     except ValueError:
-        parser.error("--password-hash or SLIDE_ADMIN_PASSWORD_HASH is required")
+        parser.error("a password hash is required unless first-run setup is explicitly enabled")
     published_path = args.repo / "100/slide-config.json"
     published = json.loads(published_path.read_text(encoding="utf-8"))
     base_ids = [item for item in published["order"] if not item.startswith("custom-")]
     service = SlideAdminService(
         password_hash=password_hash,
+        password_hash_path=password_hash_path,
+        setup_enabled=setup_enabled,
         published_path=published_path,
         draft_path=args.state_dir / "draft.json",
         base_ids=base_ids,

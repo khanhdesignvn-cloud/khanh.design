@@ -24,7 +24,9 @@ class SlideAdminFrontendTests(unittest.TestCase):
                 def api(route, request):
                     requests.append((request.method, request.url, request.post_data))
                     path = request.url.split("/slide-admin-api", 1)[-1]
-                    if path == "/login":
+                    if path == "/setup-status":
+                        route.fulfill(json={"setup_required": False})
+                    elif path == "/login":
                         route.fulfill(json={"csrf_token": "csrf-test"})
                     elif path == "/slides":
                         route.fulfill(json={"published": published, "draft": None})
@@ -75,6 +77,55 @@ class SlideAdminFrontendTests(unittest.TestCase):
                 page.locator("#login-form button").click()
                 page.locator("#workspace").wait_for(state="visible")
                 self.assertGreater(page.locator(".slide-item.custom").count(), 0)
+            finally:
+                browser.close()
+
+    def test_first_run_requires_confirmation_and_never_stores_password(self):
+        published = {
+            "schema_version": 1, "revision": "published-1", "order": ["base-one"],
+            "hidden": [], "overrides": {}, "custom_slides": [],
+        }
+        setup_payloads = []
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+            try:
+                page = browser.new_page()
+
+                def api(route, request):
+                    path = request.url.split("/slide-admin-api", 1)[-1]
+                    if path == "/setup-status":
+                        route.fulfill(json={"setup_required": True})
+                    elif path == "/setup":
+                        setup_payloads.append(json.loads(request.post_data))
+                        route.fulfill(json={"csrf_token": "setup-csrf"})
+                    elif path == "/slides":
+                        route.fulfill(json={"published": published, "draft": None})
+                    else:
+                        route.fulfill(status=404, json={"error": "not_found"})
+
+                page.route("**/slide-admin-api/**", api)
+                page.goto(ADMIN.as_uri(), wait_until="load")
+                page.locator("#setup-form").wait_for(state="visible")
+                self.assertTrue(page.locator("#login-form").is_hidden())
+                self.assertGreaterEqual(int(page.locator("#new-password").get_attribute("minlength")), 12)
+
+                page.locator("#new-password").fill("a private password")
+                page.locator("#confirm-password").fill("does not match")
+                page.locator("#setup-form button").click()
+                self.assertEqual([], setup_payloads)
+                self.assertIn("khớp", page.locator("#login-error").text_content())
+
+                secret = '<img src=x onerror="window.xss=1">long-password'
+                page.locator("#new-password").fill(secret)
+                page.locator("#confirm-password").fill(secret)
+                page.locator("#setup-form button").click()
+                page.locator("#workspace").wait_for(state="visible")
+                self.assertEqual([{"password": secret}], setup_payloads)
+                self.assertEqual("", page.locator("#new-password").input_value())
+                self.assertEqual("", page.locator("#confirm-password").input_value())
+                self.assertNotIn(secret, page.evaluate("JSON.stringify(localStorage)"))
+                self.assertIsNone(page.evaluate("window.xss"))
+                self.assertEqual(0, page.locator("img[src='x']").count())
             finally:
                 browser.close()
 

@@ -1,5 +1,6 @@
 import http.client
 import json
+import stat
 import subprocess
 import tempfile
 import threading
@@ -92,6 +93,10 @@ class SlideAdminApiTests(unittest.TestCase):
         self.assertEqual(ORIGIN, headers["Access-Control-Allow-Origin"])
         self.assertEqual("true", headers["Access-Control-Allow-Credentials"])
 
+    def test_setup_status_reports_only_that_setup_is_not_required(self):
+        status, body, _ = self.request("GET", "/setup-status")
+        self.assertEqual((200, {"setup_required": False}), (status, body))
+
     def test_origin_is_exact_and_preflight_allows_credentials(self):
         status, _, headers = self.request("OPTIONS", "/draft", headers={"Origin": "https://evil.example"})
         self.assertEqual(403, status)
@@ -180,6 +185,103 @@ class SlideAdminApiTests(unittest.TestCase):
         self.assertEqual((202, "queued"), (status, rolled_back["state"]))
         restored = json.loads(self.published.read_text(encoding="utf-8"))
         self.assertEqual("published-1", restored["revision"])
+
+
+class SlideAdminSetupApiTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        root = Path(self.temp.name)
+        self.password_file = root / "state" / "password.hash"
+        published = root / "repo/100/slide-config.json"
+        published.parent.mkdir(parents=True)
+        published.write_text(json.dumps({
+            "schema_version": 1, "revision": "initial", "order": ["base-one"],
+            "hidden": [], "overrides": {}, "custom_slides": [],
+        }), encoding="utf-8")
+        self.service = SlideAdminService(
+            password_hash="", password_hash_path=self.password_file, setup_enabled=True,
+            published_path=published, draft_path=root / "state/draft.json", base_ids=["base-one"],
+        )
+        self.server = self.service.make_server(("127.0.0.1", 0), SlideAdminHandler)
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start()
+        self.port = self.server.server_address[1]
+
+    def tearDown(self):
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join()
+        self.temp.cleanup()
+
+    def request(self, method, path, payload=None, origin=ORIGIN):
+        connection = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        headers = {"Content-Type": "application/json"}
+        if origin is not None:
+            headers["Origin"] = origin
+        body = json.dumps(payload).encode() if payload is not None else None
+        connection.request(method, path, body=body, headers=headers)
+        response = connection.getresponse()
+        raw = response.read()
+        result = json.loads(raw) if raw else None
+        response_headers = dict(response.getheaders())
+        connection.close()
+        return response.status, result, response_headers
+
+    def test_service_refuses_passwordless_start_without_explicit_setup_enable(self):
+        with self.assertRaises(ValueError):
+            SlideAdminService(
+                password_hash="", password_hash_path=self.password_file,
+                published_path=self.service.published_path, draft_path=self.service.draft_path,
+                base_ids=["base-one"], setup_enabled=False,
+            )
+
+    def test_setup_status_says_only_whether_setup_is_required(self):
+        status, body, headers = self.request("GET", "/setup-status")
+        self.assertEqual((200, {"setup_required": True}), (status, body))
+        self.assertEqual({"setup_required"}, set(body))
+        self.assertEqual("no-store", headers["Cache-Control"])
+
+    def test_setup_requires_exact_allowed_origin_and_reasonable_password(self):
+        for origin in (None, "https://evil.example", "https://khanh.design.evil.example"):
+            self.assertEqual(403, self.request("POST", "/setup", {"password": "long enough password"}, origin)[0])
+        self.assertEqual(400, self.request("POST", "/setup", {"password": "short"})[0])
+        self.assertFalse(self.password_file.exists())
+
+    def test_setup_atomically_persists_scrypt_hash_and_authenticates(self):
+        password = "a private first password"
+        status, body, headers = self.request("POST", "/setup", {"password": password})
+        self.assertEqual(200, status)
+        self.assertTrue(body["csrf_token"])
+        self.assertIn("slide_admin_session=", headers["Set-Cookie"])
+        cookie = headers["Set-Cookie"].split(";", 1)[0]
+        connection = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        connection.request("GET", "/slides", headers={"Origin": ORIGIN, "Cookie": cookie})
+        authenticated = connection.getresponse()
+        authenticated.read()
+        connection.close()
+        self.assertEqual(200, authenticated.status)
+        stored = self.password_file.read_text(encoding="utf-8")
+        self.assertTrue(stored.startswith("scrypt$"))
+        self.assertNotIn(password, stored)
+        self.assertEqual(0o600, stat.S_IMODE(self.password_file.stat().st_mode))
+        self.assertEqual((200, {"setup_required": False}), self.request("GET", "/setup-status")[:2])
+        self.assertEqual(409, self.request("POST", "/setup", {"password": "another private password"})[0])
+
+    def test_concurrent_setup_allows_exactly_one_password(self):
+        barrier = threading.Barrier(6)
+        statuses = []
+
+        def submit(index):
+            barrier.wait()
+            statuses.append(self.request("POST", "/setup", {"password": f"password number {index:02d}"})[0])
+
+        workers = [threading.Thread(target=submit, args=(index,)) for index in range(6)]
+        for worker in workers:
+            worker.start()
+        for worker in workers:
+            worker.join()
+        self.assertEqual([200], sorted(status for status in statuses if status == 200))
+        self.assertEqual(5, statuses.count(409))
 
 
 if __name__ == "__main__":
