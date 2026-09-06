@@ -3,7 +3,10 @@ import json
 import tempfile
 import threading
 import unittest
+from io import BytesIO
 from pathlib import Path
+
+from PIL import Image
 
 from backend.slide_admin import hash_password
 from backend.slide_admin_server import SlideAdminService, SlideAdminHandler
@@ -34,6 +37,7 @@ class SlideAdminApiTests(unittest.TestCase):
             base_ids=["base-one"],
             login_limit=2,
             login_window_seconds=60,
+            image_dir=root / "repo" / "100/assets/admin",
         )
         self.server = self.service.make_server(("127.0.0.1", 0), SlideAdminHandler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -128,6 +132,24 @@ class SlideAdminApiTests(unittest.TestCase):
         self.assertEqual(400, self.request("POST", "/login", raw=b"{", headers={"Content-Type": "application/json"})[0])
         oversized = b"x" * (self.service.max_json_bytes + 1)
         self.assertEqual(413, self.request("POST", "/login", raw=oversized, headers={"Content-Type": "application/json"})[0])
+
+    def test_image_upload_requires_auth_csrf_and_real_supported_image(self):
+        source = BytesIO()
+        Image.new("RGB", (40, 20), "red").save(source, "PNG")
+        data = source.getvalue()
+        self.assertEqual(401, self.request("POST", "/images", raw=data, headers={"Content-Type": "image/png"})[0])
+        cookie, csrf = self.login()
+        status, body, _ = self.request(
+            "POST", "/images", raw=data,
+            headers={"Content-Type": "image/png", "Cookie": cookie, "X-CSRF-Token": csrf},
+        )
+        self.assertEqual(201, status)
+        self.assertRegex(body["path"], r"^assets/admin/[0-9a-f-]{36}\.webp$")
+        self.assertTrue((self.service.image_dir.parent.parent / body["path"]).exists())
+        self.assertEqual(400, self.request(
+            "POST", "/images", raw=b"fake",
+            headers={"Content-Type": "image/png", "Cookie": cookie, "X-CSRF-Token": csrf},
+        )[0])
 
 
 if __name__ == "__main__":

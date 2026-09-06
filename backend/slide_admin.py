@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import io
 import json
 import os
 import re
@@ -13,8 +14,11 @@ import tempfile
 import threading
 import time
 import unicodedata
+import uuid
 from contextlib import contextmanager
 from pathlib import Path, PurePosixPath
+
+from PIL import Image, ImageOps, UnidentifiedImageError
 
 
 _SCRYPT_N = 1 << 14
@@ -229,3 +233,55 @@ def ensure_repo_path(repo_root, relative_path: str) -> Path:
     except ValueError as exc:
         raise SlideValidationError("path escapes 100") from exc
     return destination
+
+
+def process_uploaded_image(
+    data: bytes,
+    claimed_mime: str,
+    target_dir: str | Path,
+    *,
+    max_bytes: int = 8 * 1024 * 1024,
+    max_pixels: int = 40_000_000,
+) -> str:
+    """Verify and normalize a user image, returning its public relative path."""
+    if not isinstance(data, bytes) or not data or len(data) > max_bytes:
+        raise SlideValidationError("invalid image size")
+    mime_formats = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP"}
+    expected_format = mime_formats.get(claimed_mime.lower() if isinstance(claimed_mime, str) else "")
+    if expected_format is None:
+        raise SlideValidationError("unsupported image type")
+    try:
+        with Image.open(io.BytesIO(data)) as source:
+            source.verify()
+        with Image.open(io.BytesIO(data)) as source:
+            if source.format != expected_format or source.width * source.height > max_pixels:
+                raise SlideValidationError("image content does not match request")
+            normalized = ImageOps.exif_transpose(source)
+            normalized.thumbnail((1600, 900), Image.Resampling.LANCZOS)
+            if normalized.mode not in ("RGB", "RGBA"):
+                normalized = normalized.convert("RGBA" if "transparency" in normalized.info else "RGB")
+            normalized.load()
+    except SlideValidationError:
+        raise
+    except (UnidentifiedImageError, OSError, SyntaxError, ValueError, Image.DecompressionBombError) as exc:
+        raise SlideValidationError("invalid image") from exc
+
+    directory = Path(target_dir)
+    directory.mkdir(parents=True, mode=0o700, exist_ok=True)
+    name = f"{uuid.uuid4()}.webp"
+    destination = directory / name
+    descriptor, temporary = tempfile.mkstemp(prefix=".upload-", suffix=".tmp", dir=directory)
+    try:
+        with os.fdopen(descriptor, "wb") as output:
+            normalized.save(output, "WEBP", quality=86, method=6)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, destination)
+        os.chmod(destination, 0o600)
+    except BaseException:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+        raise
+    return f"assets/admin/{name}"

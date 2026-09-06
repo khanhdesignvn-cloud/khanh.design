@@ -15,6 +15,7 @@ try:
     from backend.slide_admin import (
         SessionStore,
         SlideValidationError,
+        process_uploaded_image,
         save_draft_atomic,
         validate_slide_config,
         verify_password,
@@ -23,6 +24,7 @@ except ModuleNotFoundError:  # Installed modules live side by side.
     from slide_admin import (  # type: ignore[no-redef]
         SessionStore,
         SlideValidationError,
+        process_uploaded_image,
         save_draft_atomic,
         validate_slide_config,
         verify_password,
@@ -55,6 +57,8 @@ class SlideAdminService:
         login_limit: int = 5,
         login_window_seconds: float = 60,
         max_json_bytes: int = 512 * 1024,
+        image_dir: str | Path | None = None,
+        max_upload_bytes: int = 8 * 1024 * 1024,
         clock=time.monotonic,
     ):
         if not password_hash:
@@ -69,6 +73,8 @@ class SlideAdminService:
         self.login_limit = login_limit
         self.login_window_seconds = login_window_seconds
         self.max_json_bytes = max_json_bytes
+        self.image_dir = Path(image_dir) if image_dir is not None else self.published_path.parent / "assets/admin"
+        self.max_upload_bytes = max_upload_bytes
         self.clock = clock
         self._login_attempts: dict[str, list[float]] = {}
 
@@ -175,7 +181,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self) -> None:
         if self._reject_bad_origin():
             return
-        if self.path not in {"/login", "/logout", "/slides", "/draft"}:
+        if self.path not in {"/login", "/logout", "/slides", "/draft", "/images"}:
             self._send_json(404, {"error": "not_found"})
             return
         self.send_response(204)
@@ -214,7 +220,35 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
                 self.service.sessions.revoke(token)
                 self._send_empty(204, clear_cookie=True)
             return
+        if self.path == "/images":
+            self._upload_image()
+            return
         self._send_json(404, {"error": "not_found"})
+
+    def _upload_image(self) -> None:
+        if self._require_session(csrf=True) is None:
+            return
+        try:
+            size = int(self.headers.get("Content-Length", ""))
+        except ValueError:
+            self._send_json(400, {"error": "invalid_request"})
+            return
+        if size < 1:
+            self._send_json(400, {"error": "invalid_image"})
+            return
+        if size > self.service.max_upload_bytes:
+            self._send_json(413, {"error": "payload_too_large"})
+            return
+        try:
+            path = process_uploaded_image(
+                self.rfile.read(size), self.headers.get_content_type(), self.service.image_dir,
+                max_bytes=self.service.max_upload_bytes,
+            )
+            self._send_json(201, {"path": path})
+        except SlideValidationError:
+            self._send_json(400, {"error": "invalid_image"})
+        except OSError:
+            self._send_json(500, {"error": "storage_unavailable"})
 
     def _login(self) -> None:
         client = self.client_address[0]

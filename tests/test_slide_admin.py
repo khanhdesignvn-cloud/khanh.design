@@ -1,6 +1,9 @@
 import tempfile
 import unittest
+from io import BytesIO
 from pathlib import Path
+
+from PIL import Image
 
 from backend.slide_admin import (
     PublishBusy,
@@ -9,6 +12,7 @@ from backend.slide_admin import (
     SlideValidationError,
     ensure_repo_path,
     hash_password,
+    process_uploaded_image,
     sanitize_text,
     save_draft_atomic,
     validate_slide_config,
@@ -96,6 +100,44 @@ class SlideAdminTests(unittest.TestCase):
             for unsafe in ("README.md", "100/../README.md", "/etc/passwd", "100x/file"):
                 with self.subTest(unsafe=unsafe), self.assertRaises(SlideValidationError):
                     ensure_repo_path(repo, unsafe)
+
+    def test_uploaded_image_is_verified_resized_and_stripped(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = BytesIO()
+            image = Image.new("RGB", (2000, 1000), "#a63d2f")
+            image.getexif()[270] = "private metadata"
+            image.save(source, "JPEG", exif=image.getexif())
+            relative = process_uploaded_image(
+                source.getvalue(), "image/jpeg", Path(directory) / "100/assets/admin"
+            )
+            self.assertRegex(relative, r"^assets/admin/[0-9a-f-]{36}\.webp$")
+            saved = Path(directory) / "100" / relative
+            self.assertTrue(saved.exists())
+            with Image.open(saved) as result:
+                self.assertEqual((1600, 800), result.size)
+                self.assertEqual("WEBP", result.format)
+                self.assertFalse(result.getexif())
+
+    def test_uploaded_image_rejects_fake_mime_broken_and_oversized_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "100/assets/admin"
+            png = BytesIO()
+            Image.new("RGB", (20, 20)).save(png, "PNG")
+            with self.assertRaises(SlideValidationError):
+                process_uploaded_image(png.getvalue(), "image/jpeg", target)
+            with self.assertRaises(SlideValidationError):
+                process_uploaded_image(b"not an image", "image/png", target)
+            with self.assertRaises(SlideValidationError):
+                process_uploaded_image(b"x" * 101, "image/png", target, max_bytes=100)
+
+    def test_uploaded_image_rejects_excessive_pixels(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = BytesIO()
+            Image.new("RGB", (101, 101)).save(source, "WEBP")
+            with self.assertRaises(SlideValidationError):
+                process_uploaded_image(
+                    source.getvalue(), "image/webp", Path(directory), max_pixels=10_000
+                )
 
 
 if __name__ == "__main__":
