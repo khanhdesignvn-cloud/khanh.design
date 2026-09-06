@@ -114,7 +114,7 @@ class SlideAdminApiTests(unittest.TestCase):
         self.assertEqual(200, status)
         self.assertTrue(body["csrf_token"])
         cookie = headers["Set-Cookie"]
-        for flag in ("HttpOnly", "Secure", "SameSite=Strict", "Path=/"):
+        for flag in ("HttpOnly", "Secure", "SameSite=None", "Partitioned", "Path=/"):
             self.assertIn(flag, cookie)
 
     def test_slides_require_login_and_return_published_plus_draft(self):

@@ -79,7 +79,7 @@ class SlideAdminDeploymentTests(unittest.TestCase):
 
     def test_frontend_uses_stable_https_api_path(self):
         text = APP.read_text(encoding="utf-8")
-        self.assertIn('"https://khanh.design/slide-admin-api"', text)
+        self.assertIn('"https://quockhanh.tino.page/slide-admin-api"', text)
         self.assertNotIn("trycloudflare.com", text)
         self.assertNotIn("http://", text)
 

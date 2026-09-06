@@ -228,7 +228,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", "0")
         self._cors()
         if clear_cookie:
-            self.send_header("Set-Cookie", "slide_admin_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict")
+            self.send_header("Set-Cookie", "slide_admin_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None; Partitioned")
         self.end_headers()
 
     def _send_authenticated_session(self) -> None:
@@ -237,7 +237,7 @@ class SlideAdminHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Set-Cookie", f"slide_admin_session={token}; Path=/; HttpOnly; Secure; SameSite=Strict")
+        self.send_header("Set-Cookie", f"slide_admin_session={token}; Path=/; HttpOnly; Secure; SameSite=None; Partitioned")
         self.send_header("Cache-Control", "no-store")
         self._cors()
         self.end_headers()

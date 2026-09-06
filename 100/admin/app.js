@@ -1,6 +1,6 @@
 "use strict";
 
-const API_BASE = window.SLIDE_ADMIN_API || "https://khanh.design/slide-admin-api";
+const API_BASE = window.SLIDE_ADMIN_API || "https://quockhanh.tino.page/slide-admin-api";
 const LOCAL_KEY = "khanh-slide-admin-draft-v1";
 const state = { config: null, published: null, selected: null, csrf: "", dirty: false };
 
