@@ -150,8 +150,21 @@ svg{display:block;max-width:100%;max-height:100%}
 #menu button{background:none;border:0;border-bottom:1px solid rgba(241,231,212,.1);color:var(--paper);font-family:var(--sans);font-size:16px;font-weight:400;text-align:left;padding:9px 4px;cursor:pointer;display:flex;gap:16px;transition:color .18s,padding .18s}
 #menu button i{font-family:var(--serif);font-weight:600;font-style:normal;color:var(--wheat);min-width:28px}
 #menu button:hover,#menu button:focus-visible{color:var(--wheat-2);padding-left:10px;outline:none}
-.zone{position:absolute;top:0;bottom:0;width:15%;z-index:15;cursor:pointer;border:0;background:none}
-.zone.l{left:0}.zone.r{right:0}
+.zone{position:absolute;top:50%;width:58px;height:58px;z-index:24;cursor:pointer;border:1px solid rgba(239,221,182,.55);border-radius:50%;background:rgba(11,42,29,.72);color:#fff;transform:translateY(-50%);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.24);backdrop-filter:blur(8px);transition:transform .2s ease,background .2s ease,opacity .2s ease}
+.zone:hover{background:var(--red);transform:translateY(-50%) scale(1.06)}
+.zone:disabled{opacity:.22;cursor:default}.zone:disabled:hover{background:rgba(11,42,29,.72);transform:translateY(-50%)}
+.zone:before{font-family:system-ui,sans-serif;font-size:30px;line-height:1}
+.zone.l{left:24px}.zone.l:before{content:"‹"}.zone.r{right:24px}.zone.r:before{content:"›"}
+.light .zone,.paper .zone{background:rgba(250,245,236,.9);border-color:rgba(74,44,23,.28);color:var(--ink);box-shadow:0 8px 24px rgba(74,44,23,.15)}
+.light .zone:hover,.paper .zone:hover{background:var(--red);color:#fff}
+#pages{position:absolute;left:50%;bottom:15px;transform:translateX(-50%);z-index:24;display:flex;gap:3px;align-items:center}
+#pages button{width:27px;height:23px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--paper);font:600 10px/1 var(--sans);opacity:.42;cursor:pointer}
+#pages button:hover{opacity:1;background:rgba(255,255,255,.12)}
+#pages button.on{opacity:1;background:var(--red);color:#fff}
+.light #pages button,.paper #pages button{color:var(--ink)}
+.light #pages button:hover,.paper #pages button:hover{background:rgba(74,44,23,.1)}
+.light #pages button.on,.paper #pages button.on{background:var(--red);color:#fff}
+#hud,#tip{bottom:47px}
 :focus-visible{outline:2px solid var(--wheat);outline-offset:3px}
 
 .draw{stroke-dasharray:1;stroke-dashoffset:1}
@@ -357,7 +370,11 @@ svg{display:block;max-width:100%;max-height:100%}
 
 <section class="s paper" data-t="Nhóm 03 · Bộ quà tặng kỷ niệm"><div class="chap"><span class="num"></span><span class="ttl">Nhóm 03 · Bộ quà tặng kỷ niệm</span><span class="rule"></span></div><div class="group-label"><i></i>Ý TƯỞNG: MỞ HỘP LÀ MỞ MỘT LỚP CÂU CHUYỆN KHE SANH</div><div class="grid g2 mid"><div class="logo-show" style="background:#4A2C17;position:relative"><div style="width:580px;height:390px;background:#A63D2F;transform:perspective(700px) rotateX(4deg) rotateY(-8deg);box-shadow:25px 35px 45px rgba(0,0,0,.28);padding:55px;display:grid;grid-template-columns:170px 1fr;align-items:center;color:#FAF5EC"><img class="logo-pdf logo-reverse" src="assets/logo-dau-chan-vector.svg" alt="Biểu trưng dấu chân" style="height:220px"><div><div style="font-family:var(--serif);font-size:35px;line-height:1.08">Theo dấu chân</div><div style="font-size:12px;letter-spacing:.17em;margin-top:13px">BỘ QUÀ KỶ NIỆM 100 NĂM</div><div style="height:65px;margin-top:28px;overflow:hidden"><svg viewBox="0 0 300 70"><path d="M0 35 20 15 40 35 60 15 80 35 100 15 120 35 140 15 160 35 180 15 200 35 220 15 240 35 260 15 280 35 300 15" fill="none" stroke="#C89B3C" stroke-width="5"/><path d="M0 55 20 35 40 55 60 35 80 55 100 35 120 55 140 35 160 55 180 35 200 55 220 35 240 55 260 35 280 55 300 35" fill="none" stroke="#FAF5EC" stroke-width="4"/></svg></div></div></div><div class="giftbox-caption">HỘP QUÀ PHIÊN BẢN KỶ NIỆM</div></div><div><h2>Một bộ quà,<br><em class="mark">ba tầng trải nghiệm.</em></h2><div class="rule-list" style="margin-top:25px"><div class="rule-box"><b>Lớp ngoài · Dấu chân</b><p>Logo lớn, màu đỏ bazan và tên sự kiện rõ ràng.</p></div><div class="rule-box"><b>Lớp giữa · Hoa văn</b><p>Dải hoa văn dẫn tay mở hộp như một đường đi.</p></div><div class="rule-box"><b>Lớp trong · Câu chuyện</b><p>Thẻ kể về người giữ đất, vùng trồng và hạt cà phê.</p></div><div class="rule-box"><b>Sản phẩm gợi ý</b><p>Hai túi cà phê, ly gốm, huy hiệu và hộ chiếu kỷ niệm.</p></div></div><div class="note-chip">PHÙ HỢP KHÁCH MỜI · ĐỐI TÁC · QUÀ LƯU NIỆM GIỚI HẠN</div></div></div></section>
 
+<section class="s light user-page" data-t="Ứng dụng · Bộ quà tặng sự kiện"><div class="chap"><span class="num"></span><span class="ttl">Ứng dụng · Bộ quà tặng sự kiện</span><span class="rule"></span></div><div class="user-page-layout"><figure class="user-board"><img src="assets/user-pages/09-bo-qua-tang-su-kien.jpg" alt="Bộ quà tặng sự kiện 100 năm Cà phê Khe Sanh"></figure><aside class="user-notes"><div class="eyebrow">TRANG ỨNG DỤNG TỪ BẢN SOẠN</div><h2>Mang hành trình<br>về cùng người dự.</h2><ul><li>Hộp quà quy tụ bình giữ nhiệt, cà phê, sổ tay, bút và móc khóa trong một trải nghiệm mở hộp.</li><li>Túi vải, trang phục và vật phẩm nhỏ cùng dùng xanh đậm, đỏ quả chín và nét núi Khe Sanh.</li><li>Họa tiết hạt, lá và hoa văn tạo khả năng mở rộng cho nhiều chất liệu quà tặng.</li></ul><div class="user-note-tag">BỘ QUÀ TẶNG · GIỮ NGUYÊN BẢNG THIẾT KẾ</div></aside></div></section>
+
 <section class="s light"  data-t="Nhóm 04 · Cộng đồng & truyền thông"><div class="chap"><span class="num"></span><span class="ttl">Nhóm 04 · Cộng đồng & truyền thông</span><span class="rule"></span></div><div class="group-label"><i></i>Ý TƯỞNG: DẤU CHÂN XUẤT HIỆN KHẮP KHE SANH TRƯỚC NGÀY KHAI MẠC</div><div class="use-cards"><div class="use-card"><div class="mock"><div style="width:82%;height:55%;border:7px solid #C89B3C;background:#4A2C17;display:flex;align-items:center;gap:20px;padding:25px"><img class="logo-pdf logo-reverse" src="assets/logo-dau-chan-vector.svg" alt="Biểu trưng dấu chân" style="height:120px"><div style="font-family:var(--serif);font-size:25px;color:#FAF5EC">QUÁN HƯỞNG ỨNG<br>100 NĂM CÀ PHÊ KHE SANH</div></div></div><h3>Biển quán hưởng ứng</h3><p>Hàng chục quán cùng treo một dấu hiệu để phủ nhận diện trên địa bàn.</p><span class="idea-pill">LAN TỎA CỘNG ĐỒNG</span></div><div class="use-card"><div class="mock"><div style="width:235px;height:235px;border-radius:50%;border:18px solid #A63D2F;background:#FAF5EC;display:grid;place-items:center"><img class="logo-pdf logo-standard" src="assets/logo-dau-chan-vector.svg" alt="Biểu trưng dấu chân" style="height:145px"></div></div><h3>Khung ảnh đại diện</h3><p>Miễn phí, dễ tham gia và tạo hiệu ứng đồng loạt trước sự kiện.</p><span class="idea-pill">TRUYỀN THÔNG SỐ</span></div><div class="use-card"><div class="mock"><div style="width:78%;height:78%;background:#FAF5EC;color:#4A2C17;padding:26px"><img class="logo-pdf logo-standard" src="assets/logo-dau-chan-vector.svg" alt="Biểu trưng dấu chân" style="height:130px"><div style="font-family:var(--serif);font-size:23px;margin-top:12px">THEO DẤU CHÂN</div><div style="font-size:12px;margin-top:9px">Chuỗi nội dung: người · đất · hạt · tương lai</div><svg viewBox="0 0 500 100" preserveAspectRatio="none"><rect width="500" height="100" fill="#4A2C17"/><path d="M0 40 25 15 50 40 75 15 100 40 125 15 150 40 175 15 200 40 225 15 250 40 275 15 300 40 325 15 350 40 375 15 400 40 425 15 450 40 475 15 500 40" fill="none" stroke="#A63D2F" stroke-width="6"/><path d="M0 70 25 45 50 70 75 45 100 70 125 45 150 70 175 45 200 70 225 45 250 70 275 45 300 70 325 45 350 70 375 45 400 70 425 45 450 70 475 45 500 70" fill="none" stroke="#C89B3C" stroke-width="6"/></svg></div></div><h3>Bộ bài đăng & báo chí</h3><p>Một khung thống nhất cho mạng xã hội, báo chí và màn hình sự kiện.</p><span class="idea-pill">KỂ CHUYỆN NHẤT QUÁN</span></div></div></section>
+
+<section class="s light user-page" data-t="Ứng dụng · Bộ nhận diện & ấn phẩm"><div class="chap"><span class="num"></span><span class="ttl">Ứng dụng · Bộ nhận diện & ấn phẩm</span><span class="rule"></span></div><div class="user-page-layout"><figure class="user-board"><img src="assets/user-pages/10-bo-nhan-dien-an-pham.jpg" alt="Bộ nhận diện và ấn phẩm sự kiện 100 năm Cà phê Khe Sanh"></figure><aside class="user-notes"><div class="eyebrow">TRANG ỨNG DỤNG TỪ BẢN SOẠN</div><h2>Một hệ thống,<br>nhiều điểm chạm.</h2><ul><li>Ấn phẩm văn phòng, quà tặng và truyền thông được đặt trong cùng một ngôn ngữ nhận diện.</li><li>Logo, núi rừng, cành cà phê và hoa văn giữ vai trò nhất quán từ giấy mời đến sân khấu.</li><li>Bảng màu và module họa tiết giúp kiểm soát triển khai trên cả nền sáng lẫn nền xanh.</li></ul><div class="user-note-tag">TỔNG HỢP HỆ THỐNG · GIỮ NGUYÊN BẢNG THIẾT KẾ</div></aside></div></section>
 
 <section class="s deep user-page" data-t="Ứng dụng · Tổng thể triển lãm"><div class="chap"><span class="num"></span><span class="ttl">Ứng dụng · Tổng thể triển lãm</span><span class="rule"></span></div><div class="user-page-layout"><figure class="user-board"><img src="assets/user-pages/04-khong-gian-trien-lam.jpg" alt="Ứng dụng · Tổng thể triển lãm do người dùng soạn"></figure><aside class="user-notes"><div class="eyebrow">TRANG PHÁT TRIỂN TỪ BẢN SOẠN</div><h2>Không gian trở thành<br>một dấu chân lớn.</h2><ul><li>Trung tâm là biểu tượng hạt cà phê mở, tổ chức dòng người theo vòng hành trình.</li><li>Các lớp treo kể đồng thời cảnh quan, hoa văn và ký ức 100 năm.</li><li>Năm phân khu cân bằng lịch sử, tương tác, sản phẩm, sáng tạo và check-in.</li></ul><div class="user-note-tag">GIỮ NGUYÊN Ý TƯỞNG · BỔ SUNG DIỄN GIẢI</div></aside></div></section>
 <section class="s deep user-page" data-t="Ứng dụng · Hành trình triển lãm"><div class="chap"><span class="num"></span><span class="ttl">Ứng dụng · Hành trình triển lãm</span><span class="rule"></span></div><div class="user-page-layout"><figure class="user-board"><img src="assets/user-pages/05-hanh-trinh-trien-lam.jpg" alt="Ứng dụng · Hành trình triển lãm do người dùng soạn"></figure><aside class="user-notes"><div class="eyebrow">TRANG PHÁT TRIỂN TỪ BẢN SOẠN</div><h2>Đi qua không gian<br>như đi qua thời gian.</h2><ul><li>Cổng hình hạt mở đầu hành trình; tuyến lịch sử đặt ở lớp nền liên tục.</li><li>Trải nghiệm đa giác quan giúp người xem chạm, nghe và cảm nhận câu chuyện.</li><li>Khu sản phẩm và check-in khép lại bằng hình ảnh Khe Sanh hướng tới tương lai.</li></ul><div class="user-note-tag">GIỮ NGUYÊN Ý TƯỞNG · BỔ SUNG DIỄN GIẢI</div></aside></div></section>
@@ -366,9 +383,10 @@ svg{display:block;max-width:100%;max-height:100%}
 <section class="s deep"  data-t="Ưu tiên triển khai"><div class="chap"><span class="num"></span><span class="ttl">Ưu tiên triển khai</span><span class="rule"></span></div><div class="grid g2 mid"><div><h2>Ba hạng mục tạo<br><em class="mark">đòn bẩy lan tỏa.</em></h2><div class="priority" style="grid-template-columns:1fr;margin-top:30px"><div><b>Hộ chiếu 100 năm</b><p>Vật phẩm duy nhất khách mang về và giữ lại sau sự kiện; biến trải nghiệm thành hành trình.</p></div><div><b>Biển quán hưởng ứng</b><p>Chi phí thấp nhưng đưa nhận diện xuất hiện tại nhiều điểm trong khu vực.</p></div><div><b>Khung ảnh mạng xã hội</b><p>Lan tỏa nhanh, tạo hiệu ứng cộng đồng trước ngày khai mạc.</p></div></div></div><div style="display:grid;place-items:center;text-align:center"><img class="logo-pdf logo-reverse" src="assets/logo-dau-chan-vector.svg" alt="Biểu trưng dấu chân" style="height:360px"><div style="font-family:var(--serif);font-size:42px;color:var(--wheat-2);margin-top:20px">CÓ NGƯỜI ĐÃ ĐI QUA ĐÂY.</div><div style="font-size:12px;letter-spacing:.18em;margin-top:14px;opacity:.62">BẢN ĐỀ XUẤT · CHỜ BAN TỔ CHỨC BAN HÀNH CHÍNH THỨC</div></div></div></section>
 <div id="toc" style="display:none"></div>
 <div class="mobile-hint">Xoay ngang điện thoại để xem rõ hơn</div>
-<button class="zone l" id="prev" aria-label="Slide trước"></button>
-<button class="zone r" id="next" aria-label="Slide sau"></button>
+<button class="zone l" id="prev" aria-label="Slide trước" title="Slide trước"></button>
+<button class="zone r" id="next" aria-label="Slide sau" title="Slide sau"></button>
 <div id="hud"><b id="cur">01</b> / <span id="tot"></span></div>
+<nav id="pages" aria-label="Chọn số trang"></nav>
 <div id="tip">← → chuyển slide · M mục lục · F toàn màn hình</div>
 <nav id="menu" aria-label="Mục lục"><h4>Mục lục</h4></nav>
 </div></div>
@@ -843,7 +861,7 @@ document.querySelectorAll('[data-ico]').forEach(el => el.innerHTML = icon(el.dat
 
 /* ---------- điều khiển ---------- */
 const slides = [...document.querySelectorAll('.s')];
-const bar = document.getElementById('bar'), cur = document.getElementById('cur'), menu = document.getElementById('menu');
+const bar = document.getElementById('bar'), cur = document.getElementById('cur'), menu = document.getElementById('menu'), pages = document.getElementById('pages');
 document.getElementById('tot').textContent = String(slides.length).padStart(2, '0');
 let i = 0;
 
@@ -865,6 +883,13 @@ slides.forEach((s, k) => {
   b.innerHTML = `<i>${String(k + 1).padStart(2, '0')}</i> ${s.dataset.t}`;
   b.onclick = () => { go(k); menu.classList.remove('on'); };
   menu.appendChild(b);
+  const p = document.createElement('button');
+  p.type = 'button';
+  p.textContent = String(k + 1).padStart(2, '0');
+  p.title = `${String(k + 1).padStart(2, '0')} · ${s.dataset.t}`;
+  p.setAttribute('aria-label', `Đến slide ${k + 1}: ${s.dataset.t}`);
+  p.onclick = () => go(k);
+  pages.appendChild(p);
 });
 
 function go(n){
@@ -872,6 +897,9 @@ function go(n){
   slides.forEach((s, k) => s.classList.toggle('on', k === i));
   bar.style.width = ((i + 1) / slides.length * 100) + '%';
   cur.textContent = String(i + 1).padStart(2, '0');
+  pages.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === i));
+  document.getElementById('prev').disabled = i === 0;
+  document.getElementById('next').disabled = i === slides.length - 1;
   const st = document.getElementById('stage');
   st.classList.toggle('light', slides[i].classList.contains('light'));
   st.classList.toggle('paper', slides[i].classList.contains('paper'));
