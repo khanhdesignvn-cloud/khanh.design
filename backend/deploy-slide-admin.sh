@@ -36,6 +36,7 @@ install -o root -g root -m 0644 "$ROOT/backend/slide_admin.py" "$INSTALL_DIR/sli
 install -o root -g root -m 0644 "$ROOT/backend/slide_admin_server.py" "$INSTALL_DIR/slide_admin_server.py"
 install -o root -g root -m 0644 "$ROOT/backend/slide_publisher.py" "$INSTALL_DIR/slide_publisher.py"
 install -o root -g root -m 0644 "$ROOT/backend/systemd/$SERVICE" "/etc/systemd/system/$SERVICE"
+chown khanh-slide-admin:khanh-slide-admin "$REPO_DIR"
 chown -R khanh-slide-admin:khanh-slide-admin "$REPO_DIR/.git" "$REPO_DIR/100"
 systemd-analyze verify "/etc/systemd/system/$SERVICE"
 systemctl daemon-reload
