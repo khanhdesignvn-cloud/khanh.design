@@ -1,0 +1,45 @@
+[Unit]
+Description=khanh.design slide administration API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=khanh-slide-admin
+Group=khanh-slide-admin
+EnvironmentFile=/etc/khanh-slide-admin/env
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=khanh-slide-admin
+StateDirectoryMode=0700
+WorkingDirectory=/srv/khanh.design
+ExecStart=/usr/bin/python3 /usr/local/lib/khanh-slide-admin/slide_admin_server.py --host 127.0.0.1 --port 8093 --repo /srv/khanh.design --state-dir /var/lib/khanh-slide-admin
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/khanh-slide-admin /srv/khanh.design/.git /srv/khanh.design/100
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import ipaddress
 import json
+import os
 import subprocess
 import time
 from http.cookies import SimpleCookie
@@ -42,6 +43,15 @@ except ModuleNotFoundError:
 ALLOWED_ORIGINS = frozenset({"https://khanh.design", "https://www.khanh.design"})
 DEFAULT_PORT = 8093
 DEFAULT_STATE_DIR = Path.home() / ".local/share/khanh-slide-admin"
+
+
+def resolve_password_hash(cli_value: str, environ: dict[str, str] | os._Environ[str] | None = None) -> str:
+    """Resolve the password verifier without requiring it in the process list."""
+    environment = os.environ if environ is None else environ
+    value = cli_value or environment.get("SLIDE_ADMIN_PASSWORD_HASH", "")
+    if not value:
+        raise ValueError("password hash is required")
+    return value
 
 
 def validate_bind_host(host: str) -> str:
@@ -372,9 +382,10 @@ def main() -> int:
     parser.add_argument("--state-dir", type=Path, default=DEFAULT_STATE_DIR)
     parser.add_argument("--password-hash", default="")
     args = parser.parse_args()
-    password_hash = args.password_hash
-    if not password_hash:
-        parser.error("--password-hash or service environment configuration is required")
+    try:
+        password_hash = resolve_password_hash(args.password_hash)
+    except ValueError:
+        parser.error("--password-hash or SLIDE_ADMIN_PASSWORD_HASH is required")
     published_path = args.repo / "100/slide-config.json"
     published = json.loads(published_path.read_text(encoding="utf-8"))
     base_ids = [item for item in published["order"] if not item.startswith("custom-")]
