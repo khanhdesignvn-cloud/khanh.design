@@ -49,6 +49,7 @@ class SlideAdminApiTests(unittest.TestCase):
             base_ids=["base-one"],
             login_limit=2,
             login_window_seconds=60,
+            max_json_bytes=1024,
             image_dir=root / "repo" / "100/assets/admin",
             publisher=self.publisher,
         )
