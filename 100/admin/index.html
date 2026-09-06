@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Quản trị hành trình slide · Khe Sanh</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <section id="login-view" class="login-card" aria-labelledby="login-title">
+      <p class="eyebrow">100 năm cà phê Khe Sanh</p>
+      <h1 id="login-title">Mở bàn biên tập</h1>
+      <p>Nhập mật khẩu quản trị. Mật khẩu chỉ được gửi tới dịch vụ bảo mật và không lưu trong trình duyệt.</p>
+      <form id="login-form">
+        <label for="password">Mật khẩu</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Đăng nhập</button>
+      </form>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+
+    <div id="workspace" hidden>
+      <header class="topbar">
+        <div><p class="eyebrow">Bàn biên tập</p><h1>Hành trình 100 năm</h1></div>
+        <div class="actions">
+          <span id="draft-status" class="status">Đã đồng bộ</span>
+          <button id="save-draft" type="button">Lưu bản nháp</button>
+          <button id="publish" class="primary" type="button">Lưu và xuất bản</button>
+          <button id="rollback" class="quiet" type="button">Hoàn tác</button>
+        </div>
+      </header>
+      <div class="workspace">
+        <section class="journey panel" aria-labelledby="list-title">
+          <div class="panel-head"><h2 id="list-title">Dải hành trình</h2><button id="add-slide" type="button">+ Thêm slide</button></div>
+          <p class="hint">Kéo dấu mốc hoặc dùng mũi tên để đổi thứ tự.</p>
+          <ol id="slide-list"></ol>
+        </section>
+        <section class="stage panel" aria-labelledby="preview-heading">
+          <div class="panel-head"><h2 id="preview-heading">Xem trước</h2><span>16:9</span></div>
+          <div id="preview">
+            <img id="preview-image" alt="" hidden>
+            <div><p id="preview-eyebrow" class="eyebrow"></p><h3 id="preview-title"></h3><div id="preview-body"></div><small id="preview-note"></small></div>
+          </div>
+        </section>
+        <section class="properties panel" aria-labelledby="properties-title">
+          <div class="panel-head"><h2 id="properties-title">Thuộc tính</h2></div>
+          <form id="properties-form">
+            <label for="field-eyebrow">Nhãn nhỏ</label><input id="field-eyebrow" maxlength="120">
+            <label for="field-title">Tiêu đề</label><textarea id="field-title" maxlength="240" rows="3"></textarea>
+            <label for="field-body">Nội dung <span>(mỗi dòng một ý)</span></label><textarea id="field-body" maxlength="2000" rows="7"></textarea>
+            <label for="field-note">Ghi chú cuối</label><textarea id="field-note" maxlength="300" rows="3"></textarea>
+            <label class="upload" for="field-image">Tải ảnh JPG, PNG hoặc WebP</label><input id="field-image" type="file" accept="image/jpeg,image/png,image/webp">
+            <button id="delete-slide" class="danger" type="button">Xóa slide mới</button>
+          </form>
+          <p id="message" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="app.js" defer></script>
+</body>
+</html>
