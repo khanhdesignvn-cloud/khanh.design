@@ -169,7 +169,6 @@
       `${done} / ${items.length}`;
     document.querySelector("[data-progress-bar]").style.width =
       `${items.length ? (done / items.length) * 100 : 0}%`;
-    document.querySelector(".project-summary").hidden = false;
     document.querySelector(".board").hidden = false;
     renderLegend();
     renderView();
@@ -186,11 +185,7 @@
         "aria-selected",
         String(project.id === state.activeProjectId),
       );
-      tab.append(
-        "▱ ",
-        el("b", null, project.name),
-        el("small", null, String(allItems(project).length)),
-      );
+      tab.append(el("b", null, project.name));
       tabs.append(tab);
     });
   }

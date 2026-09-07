@@ -13,50 +13,13 @@
   </head>
   <body>
     <a class="skip-link" href="#workspace">Đi đến nội dung chính</a>
-    <header class="topbar">
-      <a class="brand" href="/" aria-label="Horus Branding Studio — Trang chủ">
-        <svg aria-hidden="true" viewBox="0 0 32 32">
-          <path d="M4 7l17 5 7 7-9 9-7-7L4 7zm8 5 2 7 5 2 3-3-3-3-7-3z" />
-          <circle cx="17" cy="17" r="2.4" />
-        </svg>
-        <span><b>HORUS</b><small>BRANDING STUDIO</small></span>
-      </a>
-      <nav aria-label="Đường dẫn">
-        <span>Không gian làm việc</span><i>›</i><span>Dự án thiết kế</span>
-      </nav>
-      <button class="avatar" type="button" aria-label="Tài khoản Khánh">
-        K
-      </button>
-      <button
-        class="mobile-menu"
-        data-mobile-menu
-        type="button"
-        aria-label="Mở trình đơn"
-      >
-        ☰
-      </button>
-    </header>
-
     <main id="workspace">
-      <section class="intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">CREATIVE WORKSPACE</p>
-          <h1 id="page-title">Dự án thiết kế<span>.</span></h1>
-          <p>Từ ý tưởng đầu tiên đến thiết kế hoàn thiện.</p>
-        </div>
-        <button class="button primary" type="button" data-action="new-project">
-          <span>＋</span> Dự án mới
-        </button>
+      <section class="project-strip" aria-label="Chọn dự án">
+        <button class="project-add" type="button" data-action="new-project" aria-label="Dự án mới">＋</button>
+        <div class="project-tabs" role="tablist" aria-label="Dự án" data-project-tabs></div>
       </section>
 
-      <div
-        class="project-tabs"
-        role="tablist"
-        aria-label="Dự án"
-        data-project-tabs
-      ></div>
-
-      <section class="project-summary" aria-live="polite">
+      <section class="project-summary" aria-live="polite" hidden>
         <div>
           <p class="eyebrow" data-project-code></p>
           <div class="title-row">
@@ -149,16 +112,13 @@
         Khôi phục dữ liệu mẫu
       </button>
     </main>
-    <footer>
-      <span>HORUS BRANDING</span><span>Không gian của những ý tưởng tốt.</span>
-    </footer>
     <div class="toast" role="alert" aria-live="assertive" hidden></div>
 
     <dialog id="editor-dialog" aria-labelledby="editor-title">
       <form method="dialog">
         <header>
           <div>
-            <p class="eyebrow">HORUS WORKSPACE</p>
+            <p class="eyebrow">QUẢN LÝ HẠNG MỤC</p>
             <h3 id="editor-title"></h3>
           </div>
           <button value="cancel" aria-label="Đóng">×</button>

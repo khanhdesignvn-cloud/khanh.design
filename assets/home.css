@@ -14,6 +14,9 @@
 * {
   box-sizing: border-box;
 }
+[hidden] {
+  display: none !important;
+}
 html {
   background: var(--ink);
   scroll-behavior: smooth;
@@ -107,7 +110,7 @@ textarea {
   font-size: 24px;
 }
 main {
-  padding: 37px 24px 0;
+  padding: 18px 24px 0;
 }
 .intro,
 .project-summary {
@@ -160,26 +163,46 @@ main {
   background: #a94f3e;
   color: white;
 }
-.project-tabs {
-  height: 65px;
-  margin: 29px 18px 0;
+.project-strip {
+  height: 58px;
+  margin: 0 0 14px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   border-bottom: 1px solid var(--line);
+  gap: 10px;
+}
+.project-add {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--gold);
+  color: #111;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+.project-tabs {
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
   gap: 10px;
   overflow: auto;
 }
 .project-tabs button {
   border: 0;
-  border-bottom: 2px solid transparent;
-  padding: 17px;
+  padding: 12px 14px;
+  border-radius: 7px;
   background: none;
   color: #a8a997;
   white-space: nowrap;
+  font-size: 16px;
 }
 .project-tabs button[aria-selected="true"] {
   color: var(--gold);
-  border-color: var(--gold);
+  background: #24271d;
 }
 .project-tabs b {
   font-weight: 500;
@@ -959,8 +982,14 @@ dialog form > footer {
   .intro > .button span {
     font-size: 20px;
   }
-  .project-tabs {
-    margin: 22px 4px 0;
+  .project-strip {
+    height: 56px;
+    margin: 0 0 10px;
+  }
+  .project-tabs button {
+    max-width: calc(100vw - 86px);
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .project-summary {
     padding: 18px 4px;

@@ -44,10 +44,19 @@ def page(browser, site_url):
 
 
 def test_seed_views_search_filter_and_map_controls(page):
-    expect(page.locator("h2", has_text="100 năm cà phê Khe Sanh")).to_be_visible()
+    expect(page.locator(".project-strip")).to_be_visible()
+    expect(page.get_by_role("button", name="Dự án mới")).to_be_visible()
+    expect(page.get_by_role("tab", name="100 năm cà phê Khe Sanh", exact=True)).to_be_visible()
+    expect(page.locator(".topbar")).to_have_count(0)
+    expect(page.locator(".intro")).to_have_count(0)
+    expect(page.locator(".project-summary")).to_be_hidden()
+    strip_box = page.locator(".project-strip").bounding_box()
+    plus_box = page.get_by_role("button", name="Dự án mới").bounding_box()
+    name_box = page.get_by_role("tab", name="100 năm cà phê Khe Sanh", exact=True).bounding_box()
+    assert abs((plus_box["y"] + plus_box["height"] / 2) - (name_box["y"] + name_box["height"] / 2)) < 2
+    assert strip_box["height"] <= 72
     expect(page.locator("[data-group-card]")).to_have_count(4)
     expect(page.locator("[data-item-card]")).to_have_count(13)
-    expect(page.get_by_text("0 / 13", exact=True)).to_be_visible()
     expected_groups = {
         "core": ["Logo & biểu tượng", "Màu sắc & typography", "Pattern & brand guidelines"],
         "media": ["Key visual & poster", "Banner & bài đăng mạng xã hội", "Video giới thiệu"],
@@ -113,10 +122,8 @@ def test_group_item_crud_status_and_local_storage_persistence(page):
     item.click()
     page.get_by_label("Trạng thái", exact=True).select_option("done")
     page.get_by_role("button", name="Lưu", exact=True).click()
-    expect(page.get_by_text("1 / 14", exact=True)).to_be_visible()
     page.reload()
     expect(page.get_by_text("Nhóm thử nghiệm", exact=True)).to_be_visible()
-    expect(page.get_by_text("1 / 14", exact=True)).to_be_visible()
 
     page.locator("[data-group-card]", has_text="Nhóm thử nghiệm").get_by_role("button", name="Sửa nhóm").click()
     page.get_by_label("Tên nhóm").fill("Nhóm đã sửa")
@@ -133,15 +140,7 @@ def test_project_crud_image_indexeddb_reset_and_storage_error(page):
     page.get_by_label("Mã dự án").fill("MUA26")
     page.get_by_label("Mô tả").fill("Bộ nhận diện mới")
     page.get_by_role("button", name="Lưu", exact=True).click()
-    expect(page.locator("h2", has_text="Dự án mùa thu")).to_be_visible()
-    page.get_by_role("button", name="Sửa dự án").click()
-    page.get_by_label("Tên dự án").fill("Dự án mùa thu 2026")
-    page.get_by_role("button", name="Lưu", exact=True).click()
-    expect(page.locator("h2", has_text="Dự án mùa thu 2026")).to_be_visible()
-
-    page.get_by_role("button", name="Xóa dự án").click()
-    page.get_by_role("button", name="Xác nhận xóa").click()
-    expect(page.locator("h2", has_text="100 năm cà phê Khe Sanh")).to_be_visible()
+    expect(page.get_by_role("tab", name="Dự án mùa thu", exact=True)).to_be_visible()
 
     page.get_by_role("tab", name="Showcase").click()
     page.get_by_label("Thêm ảnh showcase").set_input_files({
@@ -212,7 +211,8 @@ def test_mobile_layout_focus_and_no_page_overflow(browser, site_url):
     context = browser.new_context(viewport={"width": 390, "height": 844}, reduced_motion="reduce")
     page = context.new_page()
     page.goto(site_url)
-    expect(page.locator("[data-mobile-menu]")).to_be_visible()
+    expect(page.locator(".topbar")).to_have_count(0)
+    expect(page.locator(".project-strip")).to_be_visible()
     root = page.locator(".root-card")
     core = page.locator('[data-group-card][data-group-id="core"]')
     expect(root).to_be_visible()
