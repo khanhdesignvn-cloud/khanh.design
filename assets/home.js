@@ -277,7 +277,7 @@
       const remove = button("Xóa nhóm", "delete-group");
       remove.textContent = "×";
       remove.dataset.groupId = group.id;
-      actions.append(add, edit, remove);
+      actions.append(edit, remove, add);
       groupCard.append(actions);
       stage.append(groupCard);
       visibleItems.forEach((entry, itemIndex) => {

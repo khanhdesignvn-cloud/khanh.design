@@ -56,8 +56,12 @@ def test_seed_views_search_filter_and_map_controls(page):
     }
     previous_bottom = None
     for group_id, names in expected_groups.items():
+        group_card = page.locator(f'[data-group-card][data-group-id="{group_id}"]')
         cards = page.locator(f'[data-item-card][data-group-id="{group_id}"]')
         assert cards.locator("h4").all_inner_texts() == names
+        group_box = group_card.bounding_box()
+        add_box = group_card.get_by_role("button", name="Thêm hạng mục").bounding_box()
+        assert add_box["x"] >= group_box["x"] + group_box["width"] - add_box["width"] - 12
         boxes = [cards.nth(index).bounding_box() for index in range(cards.count())]
         top, bottom = min(box["y"] for box in boxes), max(box["y"] + box["height"] for box in boxes)
         if previous_bottom is not None:
