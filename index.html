@@ -1,10 +1,192 @@
 <!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>khanh.design</title>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#11140f" />
+    <title>Horus Workspace — khanh.design</title>
+    <meta
+      name="description"
+      content="Không gian quản lý dự án thiết kế của Khánh."
+    />
+    <link rel="stylesheet" href="assets/home.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Đi đến nội dung chính</a>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Horus Branding Studio — Trang chủ">
+        <svg aria-hidden="true" viewBox="0 0 32 32">
+          <path d="M4 7l17 5 7 7-9 9-7-7L4 7zm8 5 2 7 5 2 3-3-3-3-7-3z" />
+          <circle cx="17" cy="17" r="2.4" />
+        </svg>
+        <span><b>HORUS</b><small>BRANDING STUDIO</small></span>
+      </a>
+      <nav aria-label="Đường dẫn">
+        <span>Không gian làm việc</span><i>›</i><span>Dự án thiết kế</span>
+      </nav>
+      <button class="avatar" type="button" aria-label="Tài khoản Khánh">
+        K
+      </button>
+      <button
+        class="mobile-menu"
+        data-mobile-menu
+        type="button"
+        aria-label="Mở trình đơn"
+      >
+        ☰
+      </button>
+    </header>
+
+    <main id="workspace">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">CREATIVE WORKSPACE</p>
+          <h1 id="page-title">Dự án thiết kế<span>.</span></h1>
+          <p>Từ ý tưởng đầu tiên đến thiết kế hoàn thiện.</p>
+        </div>
+        <button class="button primary" type="button" data-action="new-project">
+          <span>＋</span> Dự án mới
+        </button>
+      </section>
+
+      <div
+        class="project-tabs"
+        role="tablist"
+        aria-label="Dự án"
+        data-project-tabs
+      ></div>
+
+      <section class="project-summary" aria-live="polite">
+        <div>
+          <p class="eyebrow" data-project-code></p>
+          <div class="title-row">
+            <h2 data-project-title></h2>
+            <button
+              class="icon-button"
+              type="button"
+              data-action="edit-project"
+              aria-label="Sửa dự án"
+            >
+              ✎</button
+            ><button
+              class="icon-button danger"
+              type="button"
+              data-action="delete-project"
+              aria-label="Xóa dự án"
+            >
+              ×
+            </button>
+          </div>
+          <p data-project-description></p>
+        </div>
+        <div class="progress">
+          <div>
+            <strong data-progress></strong><span>hạng mục hoàn thành</span>
+          </div>
+          <div class="progress-track"><i data-progress-bar></i></div>
+        </div>
+      </section>
+
+      <section class="board" aria-label="Không gian dự án">
+        <div class="toolbar">
+          <div class="view-tabs" role="tablist" aria-label="Chế độ xem">
+            <button role="tab" aria-selected="true" data-view="map">
+              ⌘ <span>Sơ đồ</span>
+            </button>
+            <button role="tab" aria-selected="false" data-view="table">
+              ▦ <span>Bảng</span>
+            </button>
+            <button role="tab" aria-selected="false" data-view="showcase">
+              ▧ <span>Showcase</span>
+            </button>
+          </div>
+          <div class="tools">
+            <label class="search"
+              ><span aria-hidden="true">⌕</span
+              ><input
+                type="search"
+                aria-label="Tìm hạng mục"
+                placeholder="Tìm hạng mục thiết kế..." /></label
+            ><select aria-label="Lọc trạng thái">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="todo">Chưa bắt đầu</option>
+              <option value="designing">Đang thiết kế</option>
+              <option value="review">Chờ duyệt</option>
+              <option value="revision">Cần chỉnh sửa</option>
+              <option value="done">Hoàn thành</option></select
+            ><button
+              class="button outline"
+              type="button"
+              data-action="new-group"
+            >
+              ＋ Nhóm mới
+            </button>
+          </div>
+        </div>
+        <div class="view-host" data-view-host></div>
+        <div class="board-footer">
+          <span class="map-hint"
+            >Kéo để di chuyển · Bấm hạng mục để xem chi tiết</span
+          >
+          <div class="map-controls">
+            <button type="button" aria-label="Thu nhỏ" data-action="zoom-out">
+              −</button
+            ><output data-zoom>100%</output
+            ><button type="button" aria-label="Phóng to" data-action="zoom-in">
+              ＋</button
+            ><button
+              type="button"
+              aria-label="Vừa màn hình"
+              data-action="fit-map"
+            >
+              ⛶
+            </button>
+          </div>
+        </div>
+        <div class="legend" aria-label="Chú thích trạng thái"></div>
+      </section>
+      <button class="reset-link" type="button" data-action="reset">
+        Khôi phục dữ liệu mẫu
+      </button>
+    </main>
+    <footer>
+      <span>HORUS BRANDING</span><span>Không gian của những ý tưởng tốt.</span>
+    </footer>
+    <div class="toast" role="alert" aria-live="assertive" hidden></div>
+
+    <dialog id="editor-dialog" aria-labelledby="editor-title">
+      <form method="dialog">
+        <header>
+          <div>
+            <p class="eyebrow">HORUS WORKSPACE</p>
+            <h3 id="editor-title"></h3>
+          </div>
+          <button value="cancel" aria-label="Đóng">×</button>
+        </header>
+        <div data-form-fields></div>
+        <footer>
+          <button class="button ghost" value="cancel">Hủy</button
+          ><button class="button primary" value="save">Lưu</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+      <form method="dialog">
+        <h3 id="confirm-title"></h3>
+        <p data-confirm-copy></p>
+        <footer>
+          <button class="button ghost" value="cancel">Hủy</button
+          ><button
+            class="button danger-fill"
+            value="confirm"
+            data-confirm-button
+          >
+            Xác nhận xóa
+          </button>
+        </footer>
+      </form>
+    </dialog>
+    <script src="assets/home-db.js"></script>
+    <script src="assets/home.js"></script>
+  </body>
 </html>
