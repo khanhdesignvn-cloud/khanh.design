@@ -40,3 +40,35 @@ test("rejects malformed WebP and GIF signatures", async () => {
   assert.match(validateUpload("image/webp", new TextEncoder().encode("RIFFxxxxNOPE")), /không khớp/i);
   assert.match(validateUpload("image/gif", new TextEncoder().encode("GIF00a")), /không khớp/i);
 });
+
+test("rejects unsafe password-hash parameters", async () => {
+  const { parsePasswordHash } = await vite.ssrLoadModule("/app/password-hash.ts");
+  const digest = "ab".repeat(32);
+  assert.equal(parsePasswordHash(`1:${"ab".repeat(16)}:${digest}`), null);
+  assert.equal(parsePasswordHash(`120000:${"ab".repeat(8)}:${digest}`), null);
+  assert.equal(parsePasswordHash(`120000:${"ab".repeat(16)}:${"ab".repeat(8)}`), null);
+  assert.equal(parsePasswordHash(`120000:${"ab".repeat(16)}:${digest}`)?.rounds, 120000);
+});
+
+test("bounded body reader stops chunked requests before buffering excess data", async () => {
+  const { readBodyLimited } = await vite.ssrLoadModule("/app/request-limits.ts");
+  const request = new Request("https://example.test/api", {
+    method: "POST",
+    body: new ReadableStream({
+      start(controller) {
+        controller.enqueue(new Uint8Array(1500));
+        controller.enqueue(new Uint8Array(1500));
+        controller.close();
+      },
+    }),
+    duplex: "half",
+  });
+  await assert.rejects(() => readBodyLimited(request, 2048), /too large/i);
+});
+
+test("logout revokes server-side session state", async () => {
+  const source = await readFile(path.join(root, "app/api/auth/logout/route.ts"), "utf8");
+  const migration = await readFile(path.join(root, "drizzle/0002_admin_sessions.sql"), "utf8");
+  assert.match(source, /revokeSession/);
+  assert.match(migration, /CREATE TABLE.*admin_sessions/is);
+});
