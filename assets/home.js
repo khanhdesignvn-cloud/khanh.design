@@ -42,17 +42,17 @@
             items: [
               item("Cổng chào & sân khấu"),
               item("Gian hàng & bảng chỉ dẫn"),
-              item("Khu trải nghiệm cà phê"),
+              item("Photobooth & check-in"),
             ],
           },
           {
             id: "gift",
-            name: "Quà tặng & ấn phẩm",
+            name: "Ấn phẩm & quà tặng",
             items: [
-              item("Bao bì cà phê phiên bản 100 năm"),
-              item("Bộ quà tặng đại biểu"),
-              item("Brochure câu chuyện Khe Sanh"),
-              item("Thẻ tên & vật phẩm sự kiện"),
+              item("Thư mời & vé tham dự"),
+              item("Túi quà & bao bì cà phê"),
+              item("Áo, mũ & quà lưu niệm"),
+              item("Ví dụ"),
             ],
           },
         ],
@@ -82,7 +82,9 @@
     view = "map",
     query = "",
     filter = "all",
-    transform = { x: 0, y: 0, scale: 1 },
+    transform = matchMedia("(max-width: 700px)").matches
+      ? { x: 0, y: 0, scale: 0.45 }
+      : { x: 0, y: 0, scale: 1 },
     urls = [];
   const host = document.querySelector("[data-view-host]");
   function load() {
@@ -216,19 +218,32 @@
     viewport.dataset.x = String(transform.x);
     viewport.dataset.transform = JSON.stringify(transform);
     const stage = el("div", "map-stage");
+    const layout = [];
+    let cursorY = 32;
+    project.groups.forEach((group) => {
+      const visibleItems = filtered(group.items);
+      const itemHeight = visibleItems.length ? visibleItems.length * 78 - 9 : 69;
+      const groupTop = cursorY + Math.max(0, (itemHeight - 76) / 2);
+      layout.push({ group, visibleItems, itemTop: cursorY, groupTop });
+      cursorY += Math.max(itemHeight, 76) + 58;
+    });
+    const stageHeight = Math.max(660, cursorY + 18);
+    const rootTop = Math.max(28, (stageHeight - 190) / 2);
+    stage.style.height = `${stageHeight}px`;
     stage.style.transform = `translate(${transform.x}px,${transform.y}px) scale(${transform.scale})`;
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.classList.add("map-lines");
-    svg.setAttribute("viewBox", "0 0 1290 660");
-    project.groups.forEach((group, index) => {
-      const gy = 35 + index * 153;
-      line(svg, 306, 355, 405, gy + 38);
-      filtered(group.items).forEach((entry, itemIndex) =>
-        line(svg, 665, gy + 38, 720, gy - 3 + itemIndex * 78 + 34),
+    svg.setAttribute("viewBox", `0 0 1290 ${stageHeight}`);
+    layout.forEach(({ visibleItems, itemTop, groupTop }) => {
+      const groupCenter = groupTop + 38;
+      line(svg, 306, rootTop + 95, 405, groupCenter);
+      visibleItems.forEach((entry, itemIndex) =>
+        line(svg, 665, groupCenter, 720, itemTop + itemIndex * 78 + 34),
       );
     });
     stage.append(svg);
     const root = el("article", "root-card");
+    root.style.top = `${rootTop}px`;
     root.append(
       el(
         "small",
@@ -238,11 +253,15 @@
       el("h3", null, project.name),
       el("p", null, "Đang triển khai"),
     );
+    const rootAdd = button("Thêm nhóm từ sơ đồ", "new-group", "root-add");
+    rootAdd.textContent = "＋";
+    root.append(rootAdd);
     stage.append(root);
-    project.groups.forEach((group, index) => {
+    layout.forEach(({ group, visibleItems, itemTop, groupTop }, index) => {
       const groupCard = el("article", "group-card");
       groupCard.dataset.groupCard = "";
-      groupCard.style.top = `${35 + index * 153}px`;
+      groupCard.dataset.groupId = group.id;
+      groupCard.style.top = `${groupTop}px`;
       groupCard.append(
         el("span", "number", String(index + 1).padStart(2, "0")),
         el("h3", null, group.name),
@@ -261,12 +280,12 @@
       actions.append(add, edit, remove);
       groupCard.append(actions);
       stage.append(groupCard);
-      filtered(group.items).forEach((entry, itemIndex) => {
+      visibleItems.forEach((entry, itemIndex) => {
         const card = el("article", `item-card status-${entry.status}`);
         card.dataset.itemCard = "";
         card.dataset.itemId = entry.id;
         card.dataset.groupId = group.id;
-        card.style.top = `${32 + index * 153 + itemIndex * 78}px`;
+        card.style.top = `${itemTop + itemIndex * 78}px`;
         card.append(
           el("span", "cube", "◇"),
           el("h4", null, entry.name),

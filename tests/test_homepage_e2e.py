@@ -48,6 +48,21 @@ def test_seed_views_search_filter_and_map_controls(page):
     expect(page.locator("[data-group-card]")).to_have_count(4)
     expect(page.locator("[data-item-card]")).to_have_count(13)
     expect(page.get_by_text("0 / 13", exact=True)).to_be_visible()
+    expected_groups = {
+        "core": ["Logo & biểu tượng", "Màu sắc & typography", "Pattern & brand guidelines"],
+        "media": ["Key visual & poster", "Banner & bài đăng mạng xã hội", "Video giới thiệu"],
+        "space": ["Cổng chào & sân khấu", "Gian hàng & bảng chỉ dẫn", "Photobooth & check-in"],
+        "gift": ["Thư mời & vé tham dự", "Túi quà & bao bì cà phê", "Áo, mũ & quà lưu niệm", "Ví dụ"],
+    }
+    previous_bottom = None
+    for group_id, names in expected_groups.items():
+        cards = page.locator(f'[data-item-card][data-group-id="{group_id}"]')
+        assert cards.locator("h4").all_inner_texts() == names
+        boxes = [cards.nth(index).bounding_box() for index in range(cards.count())]
+        top, bottom = min(box["y"] for box in boxes), max(box["y"] + box["height"] for box in boxes)
+        if previous_bottom is not None:
+            assert top >= previous_bottom + 20
+        previous_bottom = bottom
 
     page.get_by_role("tab", name="Bảng").click()
     expect(page.get_by_role("table")).to_be_visible()
@@ -151,6 +166,17 @@ def test_mobile_layout_focus_and_no_page_overflow(browser, site_url):
     page = context.new_page()
     page.goto(site_url)
     expect(page.locator("[data-mobile-menu]")).to_be_visible()
+    root = page.locator(".root-card")
+    core = page.locator('[data-group-card][data-group-id="core"]')
+    expect(root).to_be_visible()
+    expect(core).to_be_visible()
+    host_box = page.locator(".view-host").bounding_box()
+    for card in (root, core):
+        box = card.bounding_box()
+        assert box["x"] < host_box["x"] + host_box["width"]
+        assert box["x"] + box["width"] > host_box["x"]
+        assert box["y"] < host_box["y"] + host_box["height"]
+        assert box["y"] + box["height"] > host_box["y"]
     assert page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
     page.keyboard.press("Tab")
     assert page.evaluate("document.activeElement === document.querySelector('.skip-link')")
