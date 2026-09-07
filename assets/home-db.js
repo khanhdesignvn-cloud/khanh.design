@@ -23,9 +23,19 @@
   }
   window.HorusDB = {
     put: (record) => transact("readwrite", (store) => store.put(record)),
+    get: (id) => transact("readonly", (store) => store.get(id)),
+    remove: (id) => transact("readwrite", (store) => store.delete(id)),
     list: (projectId) =>
       transact("readonly", (store) => store.getAll()).then((rows) =>
-        rows.filter((row) => row.projectId === projectId),
+        rows
+          .filter((row) => row.projectId === projectId)
+          .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)),
+      ),
+    listItem: (itemId) =>
+      transact("readonly", (store) => store.getAll()).then((rows) =>
+        rows
+          .filter((row) => row.itemId === itemId)
+          .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)),
       ),
     clear: () => transact("readwrite", (store) => store.clear()),
   };

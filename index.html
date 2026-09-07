@@ -186,6 +186,28 @@
         </footer>
       </form>
     </dialog>
+    <dialog id="media-review-dialog" aria-labelledby="media-review-title">
+      <section class="review-shell">
+        <header>
+          <div>
+            <p class="eyebrow">REVIEW SẢN PHẨM</p>
+            <h3 id="media-review-title">Review sản phẩm</h3>
+          </div>
+          <button type="button" aria-label="Đóng review" data-review-close>×</button>
+        </header>
+        <div class="review-toolbar" aria-label="Điều khiển review">
+          <button type="button" aria-label="Tệp trước" data-review-prev>←</button>
+          <span data-review-count></span>
+          <button type="button" aria-label="Tệp tiếp theo" data-review-next>→</button>
+          <span class="review-spacer"></span>
+          <button type="button" aria-label="Thu nhỏ ảnh" data-review-zoom-out>−</button>
+          <button type="button" aria-label="Phóng to ảnh" data-review-zoom-in>＋</button>
+          <a class="button ghost" data-review-download>Tải xuống</a>
+        </div>
+        <div class="review-stage" data-review-stage></div>
+        <footer data-review-caption></footer>
+      </section>
+    </dialog>
     <script src="assets/home-db.js"></script>
     <script src="assets/home.js"></script>
   </body>

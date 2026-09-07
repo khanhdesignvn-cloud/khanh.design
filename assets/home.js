@@ -85,7 +85,12 @@
     transform = matchMedia("(max-width: 700px)").matches
       ? { x: 0, y: 0, scale: 0.45 }
       : { x: 0, y: 0, scale: 1 },
-    urls = [];
+    urls = [],
+    editorUrls = [],
+    reviewFiles = [],
+    reviewIndex = 0,
+    reviewUrl = "",
+    reviewZoom = 1;
   const host = document.querySelector("[data-view-host]");
   function load() {
     try {
@@ -101,7 +106,13 @@
         0,
       );
     }
-    return seed();
+    const initial = seed();
+    try {
+      localStorage.setItem(KEY, JSON.stringify(initial));
+    } catch (error) {
+      // The workspace still works for this visit when browser storage is blocked.
+    }
+    return initial;
   }
   function persist(next) {
     try {
@@ -291,6 +302,15 @@
           el("h4", null, entry.name),
           el("small", null, statuses[entry.status]),
         );
+        const itemEdit = button(
+          `Sửa hạng mục ${entry.name}`,
+          "edit-item",
+          "item-edit-button",
+        );
+        itemEdit.textContent = "✎";
+        itemEdit.dataset.itemId = entry.id;
+        itemEdit.dataset.groupId = group.id;
+        card.append(itemEdit);
         stage.append(card);
       });
     });
@@ -406,11 +426,14 @@
     input.addEventListener("change", uploadImages);
     try {
       const rows = await window.HorusDB.list(active().id);
-      if (!rows.length)
+      const images = rows.filter((row) =>
+        (row.mimeType || row.blob.type).startsWith("image/"),
+      );
+      if (!images.length)
         gallery.append(
           el("p", "empty", "Chưa có hình ảnh. Hãy thêm thiết kế đầu tiên."),
         );
-      rows.forEach((row) => {
+      images.forEach((row) => {
         const figure = el("figure"),
           img = el("img");
         const url = URL.createObjectURL(row.blob);
@@ -435,6 +458,9 @@
           id: uid(),
           projectId: active().id,
           name: file.name,
+          mimeType: file.type,
+          size: file.size,
+          createdAt: Date.now(),
           blob: file,
         });
       } catch (error) {
@@ -469,6 +495,162 @@
     wrap.append(select);
     return wrap;
   }
+  function formatBytes(size) {
+    if (!size) return "0 KB";
+    if (size < 1024 * 1024)
+      return `${Math.max(1, Math.round(size / 1024))} KB`;
+    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  }
+  function clearEditorUrls() {
+    editorUrls.forEach(URL.revokeObjectURL);
+    editorUrls = [];
+  }
+  async function renderItemMedia(itemId, panel) {
+    clearEditorUrls();
+    const grid = panel.querySelector("[data-item-media-grid]");
+    grid.replaceChildren(el("p", "item-media-empty", "Đang tải tệp…"));
+    try {
+      const rows = await window.HorusDB.listItem(itemId);
+      grid.replaceChildren();
+      if (!rows.length) {
+        grid.append(el("p", "item-media-empty", "Chưa có ảnh hoặc PDF."));
+        return;
+      }
+      rows.forEach((row, index) => {
+        const tile = el("article", "item-media-tile");
+        const preview = button(`Xem ${row.name}`, null, "item-media-preview");
+        preview.type = "button";
+        preview.textContent = "";
+        if ((row.mimeType || row.blob.type).startsWith("image/")) {
+          const image = el("img");
+          const url = URL.createObjectURL(row.blob);
+          editorUrls.push(url);
+          image.src = url;
+          image.alt = "";
+          preview.append(image);
+        } else {
+          preview.append(el("span", "pdf-badge", "PDF"));
+        }
+        preview.append(el("span", "item-media-name", row.name));
+        preview.addEventListener("click", () => openMediaReview(rows, index));
+        const meta = el(
+          "small",
+          null,
+          formatBytes(row.size || row.blob.size),
+        );
+        const remove = button(`Xóa ${row.name}`, null, "item-media-remove");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.addEventListener("click", async () => {
+          await window.HorusDB.remove(row.id);
+          await renderItemMedia(itemId, panel);
+        });
+        tile.append(preview, meta, remove);
+        grid.append(tile);
+      });
+    } catch (error) {
+      grid.replaceChildren(
+        el("p", "item-media-empty", "Không thể đọc tệp trên thiết bị này."),
+      );
+    }
+  }
+  function itemMediaPanel(itemId) {
+    const panel = el("section", "item-media-panel");
+    panel.append(el("h4", null, "Ảnh & tài liệu sản phẩm"));
+    if (!itemId) {
+      panel.append(
+        el(
+          "p",
+          "item-media-empty",
+          "Lưu hạng mục trước, sau đó mở lại để tải tệp.",
+        ),
+      );
+      return panel;
+    }
+    const upload = el("label", "item-upload-zone");
+    upload.append(
+      el("strong", null, "Kéo thả hoặc chọn nhiều tệp"),
+      el("span", null, "Ảnh JPG, PNG, WebP… hoặc PDF · tối đa 25 MB/tệp"),
+    );
+    const input = el("input");
+    input.type = "file";
+    input.multiple = true;
+    input.accept = "image/*,application/pdf";
+    input.setAttribute("aria-label", "Tải ảnh hoặc PDF cho hạng mục");
+    upload.append(input);
+    const grid = el("div", "item-media-grid");
+    grid.dataset.itemMediaGrid = "";
+    panel.append(upload, grid);
+    input.addEventListener("change", async () => {
+      for (const file of input.files) {
+        const accepted =
+          file.type.startsWith("image/") || file.type === "application/pdf";
+        if (!accepted || file.size > 25 * 1024 * 1024) {
+          notify(`${file.name}: chỉ nhận ảnh/PDF tối đa 25 MB.`);
+          continue;
+        }
+        try {
+          await window.HorusDB.put({
+            id: uid(),
+            projectId: active().id,
+            itemId,
+            name: file.name,
+            mimeType: file.type,
+            size: file.size,
+            createdAt: Date.now(),
+            blob: file,
+          });
+        } catch (error) {
+          notify("Không thể lưu tệp trên thiết bị này.");
+          break;
+        }
+      }
+      input.value = "";
+      await renderItemMedia(itemId, panel);
+    });
+    renderItemMedia(itemId, panel);
+    return panel;
+  }
+  function openMediaReview(rows, index) {
+    reviewFiles = rows;
+    reviewIndex = index;
+    reviewZoom = 1;
+    renderMediaReview();
+    document.querySelector("#media-review-dialog").showModal();
+  }
+  function renderMediaReview() {
+    const dialog = document.querySelector("#media-review-dialog"),
+      stage = dialog.querySelector("[data-review-stage]"),
+      row = reviewFiles[reviewIndex];
+    if (!row) return;
+    if (reviewUrl) URL.revokeObjectURL(reviewUrl);
+    reviewUrl = URL.createObjectURL(row.blob);
+    stage.replaceChildren();
+    const isImage = (row.mimeType || row.blob.type).startsWith("image/");
+    if (isImage) {
+      const image = el("img");
+      image.src = reviewUrl;
+      image.alt = row.name;
+      image.dataset.reviewImage = "";
+      image.dataset.zoom = String(reviewZoom);
+      image.style.transform = `scale(${reviewZoom})`;
+      stage.append(image);
+    } else {
+      const frame = el("iframe");
+      frame.src = reviewUrl;
+      frame.title = row.name;
+      stage.append(frame);
+    }
+    dialog.querySelector("[data-review-count]").textContent =
+      `${reviewIndex + 1} / ${reviewFiles.length}`;
+    dialog.querySelector("[data-review-caption]").textContent =
+      `${row.name} · ${formatBytes(row.size || row.blob.size)}`;
+    const download = dialog.querySelector("[data-review-download]");
+    download.href = reviewUrl;
+    download.download = row.name;
+    dialog.querySelector("[data-review-zoom-in]").disabled = !isImage;
+    dialog.querySelector("[data-review-zoom-out]").disabled = !isImage;
+  }
   function openEditor(kind, data = {}) {
     const dialog = document.querySelector("#editor-dialog"),
       fields = dialog.querySelector("[data-form-fields]");
@@ -494,6 +676,7 @@
         field("Tên hạng mục", "name", data.name),
         statusField(data.status || "todo"),
         field("Ghi chú", "notes", data.notes, "textarea"),
+        itemMediaPanel(data.id),
       );
     dialog.showModal();
   }
@@ -663,7 +846,42 @@
     .querySelector("#editor-dialog")
     .addEventListener("close", (event) => {
       if (event.target.returnValue === "save") saveEditor(event.target);
+      clearEditorUrls();
     });
+  const reviewDialog = document.querySelector("#media-review-dialog");
+  reviewDialog
+    .querySelector("[data-review-close]")
+    .addEventListener("click", () => reviewDialog.close());
+  reviewDialog
+    .querySelector("[data-review-prev]")
+    .addEventListener("click", () => {
+      reviewIndex = (reviewIndex - 1 + reviewFiles.length) % reviewFiles.length;
+      reviewZoom = 1;
+      renderMediaReview();
+    });
+  reviewDialog
+    .querySelector("[data-review-next]")
+    .addEventListener("click", () => {
+      reviewIndex = (reviewIndex + 1) % reviewFiles.length;
+      reviewZoom = 1;
+      renderMediaReview();
+    });
+  reviewDialog
+    .querySelector("[data-review-zoom-in]")
+    .addEventListener("click", () => {
+      reviewZoom = Math.min(3, reviewZoom + 0.25);
+      renderMediaReview();
+    });
+  reviewDialog
+    .querySelector("[data-review-zoom-out]")
+    .addEventListener("click", () => {
+      reviewZoom = Math.max(0.5, reviewZoom - 0.25);
+      renderMediaReview();
+    });
+  reviewDialog.addEventListener("close", () => {
+    if (reviewUrl) URL.revokeObjectURL(reviewUrl);
+    reviewUrl = "";
+  });
   document
     .querySelector("#confirm-dialog")
     .addEventListener("close", (event) => {

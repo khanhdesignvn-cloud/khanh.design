@@ -99,20 +99,20 @@ def test_seed_views_search_filter_and_map_controls(page):
 def test_group_item_crud_status_and_local_storage_persistence(page):
     page.get_by_role("button", name="Nhóm mới").click()
     page.get_by_label("Tên nhóm").fill("Nhóm thử nghiệm")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.get_by_text("Nhóm thử nghiệm", exact=True)).to_be_visible()
 
     group = page.locator("[data-group-card]", has_text="Nhóm thử nghiệm")
     group.get_by_role("button", name="Thêm hạng mục").click()
     page.get_by_label("Tên hạng mục").fill("Hạng mục an toàn <img src=x onerror=alert(1)>")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     item = page.locator("[data-item-card]", has_text="Hạng mục an toàn")
     expect(item).to_be_visible()
     expect(item.locator("img")).to_have_count(0)
 
     item.click()
     page.get_by_label("Trạng thái", exact=True).select_option("done")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.get_by_text("1 / 14", exact=True)).to_be_visible()
     page.reload()
     expect(page.get_by_text("Nhóm thử nghiệm", exact=True)).to_be_visible()
@@ -120,7 +120,7 @@ def test_group_item_crud_status_and_local_storage_persistence(page):
 
     page.locator("[data-group-card]", has_text="Nhóm thử nghiệm").get_by_role("button", name="Sửa nhóm").click()
     page.get_by_label("Tên nhóm").fill("Nhóm đã sửa")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.get_by_text("Nhóm đã sửa", exact=True)).to_be_visible()
     page.locator("[data-group-card]", has_text="Nhóm đã sửa").get_by_role("button", name="Xóa nhóm").click()
     page.get_by_role("button", name="Xác nhận xóa").click()
@@ -132,11 +132,11 @@ def test_project_crud_image_indexeddb_reset_and_storage_error(page):
     page.get_by_label("Tên dự án").fill("Dự án mùa thu")
     page.get_by_label("Mã dự án").fill("MUA26")
     page.get_by_label("Mô tả").fill("Bộ nhận diện mới")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.locator("h2", has_text="Dự án mùa thu")).to_be_visible()
     page.get_by_role("button", name="Sửa dự án").click()
     page.get_by_label("Tên dự án").fill("Dự án mùa thu 2026")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.locator("h2", has_text="Dự án mùa thu 2026")).to_be_visible()
 
     page.get_by_role("button", name="Xóa dự án").click()
@@ -161,8 +161,51 @@ def test_project_crud_image_indexeddb_reset_and_storage_error(page):
     page.evaluate("Object.defineProperty(Storage.prototype, 'setItem', {value() { throw new DOMException('full', 'QuotaExceededError') }})")
     page.get_by_role("button", name="Nhóm mới").click()
     page.get_by_label("Tên nhóm").fill("Không lưu được")
-    page.get_by_role("button", name="Lưu").click()
+    page.get_by_role("button", name="Lưu", exact=True).click()
     expect(page.get_by_role("alert")).to_contain_text("Không thể lưu")
+
+
+def test_item_has_right_edit_button_multi_file_upload_and_clear_review(page):
+    card = page.locator('[data-item-card][data-group-id="core"]', has_text="Logo & biểu tượng")
+    edit = card.get_by_role("button", name="Sửa hạng mục Logo & biểu tượng")
+    card_box = card.bounding_box()
+    edit_box = edit.bounding_box()
+    assert edit_box["x"] >= card_box["x"] + card_box["width"] - edit_box["width"] - 14
+
+    edit.click()
+    uploader = page.get_by_label("Tải ảnh hoặc PDF cho hạng mục")
+    uploader.set_input_files([
+        {
+            "name": "logo-review.png",
+            "mimeType": "image/png",
+            "buffer": bytes.fromhex("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000d49444154789c6360f8cfc000000301010018dd8db10000000049454e44ae426082"),
+        },
+        {
+            "name": "brand-guide.pdf",
+            "mimeType": "application/pdf",
+            "buffer": b"%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\n%%EOF",
+        },
+    ])
+    expect(page.get_by_role("button", name="Xem logo-review.png")).to_be_visible()
+    expect(page.get_by_role("button", name="Xem brand-guide.pdf")).to_be_visible()
+
+    page.get_by_role("button", name="Xem logo-review.png").click()
+    review = page.get_by_role("dialog", name="Review sản phẩm")
+    expect(review).to_be_visible()
+    expect(review.get_by_alt_text("logo-review.png")).to_be_visible()
+    review.get_by_role("button", name="Phóng to ảnh").click()
+    expect(review.locator("[data-review-image]")).to_have_attribute("data-zoom", "1.25")
+    review.get_by_role("button", name="Tệp tiếp theo").click()
+    expect(review.locator('iframe[title="brand-guide.pdf"]')).to_be_visible()
+    review.get_by_role("button", name="Đóng review").click()
+
+    page.get_by_role("button", name="Hủy").click()
+    page.reload()
+    card = page.locator('[data-item-card][data-group-id="core"]', has_text="Logo & biểu tượng")
+    card.get_by_role("button", name="Sửa hạng mục Logo & biểu tượng").click()
+    expect(page.get_by_role("button", name="Xem logo-review.png")).to_be_visible()
+    page.get_by_role("button", name="Xóa brand-guide.pdf").click()
+    expect(page.get_by_role("button", name="Xem brand-guide.pdf")).to_have_count(0)
 
 
 def test_mobile_layout_focus_and_no_page_overflow(browser, site_url):
@@ -185,4 +228,12 @@ def test_mobile_layout_focus_and_no_page_overflow(browser, site_url):
     page.keyboard.press("Tab")
     assert page.evaluate("document.activeElement === document.querySelector('.skip-link')")
     assert page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches")
+    page.locator('[data-item-card][data-group-id="core"]', has_text="Logo & biểu tượng").get_by_role(
+        "button", name="Sửa hạng mục Logo & biểu tượng"
+    ).click()
+    drawer = page.locator("#editor-dialog")
+    drawer_box = drawer.bounding_box()
+    assert drawer_box["x"] <= 1
+    assert drawer_box["width"] >= 388
+    expect(page.get_by_label("Tải ảnh hoặc PDF cho hạng mục")).to_be_visible()
     context.close()
