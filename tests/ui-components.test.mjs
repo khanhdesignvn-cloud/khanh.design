@@ -14,7 +14,7 @@ const vite = await createServer({
   configFile: false,
   root,
   resolve: { alias: { "@": root } },
-  server: { middlewareMode: true },
+  server: { middlewareMode: true, hmr: false },
 });
 
 after(async () => {
@@ -34,6 +34,11 @@ async function readCssTree(directory) {
   );
   return contents.join("\n");
 }
+
+test("workspace map uses only defined layout coordinates", async () => {
+  const source = await readFile(path.join(root, "app/workspace.tsx"), "utf8");
+  assert.doesNotMatch(source, /top:yy\b/);
+});
 
 test("emits the catalog's animation and scrolling utilities", async () => {
   const css = await readCssTree(path.join(root, "dist"));
