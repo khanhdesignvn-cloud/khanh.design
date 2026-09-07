@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1d5e3c">
+  <title>Khe Sanh Farm · Sản phẩm và đặt hàng</title>
+  <meta name="description" content="Danh mục sản phẩm, đặt hàng và thanh toán Khe Sanh Farm.">
+  <style>
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#1d5e3c;font-family:Arial,sans-serif}
+    .shell{height:100dvh;display:grid;grid-template-rows:42px minmax(0,1fr)}
+    .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 14px;background:#fff;color:#17452f;border-bottom:1px solid #dfe9e2;font-size:12px;line-height:1}
+    .brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.02em}.dot{width:9px;height:9px;border-radius:50%;background:#b8d548;box-shadow:13px 0 0 #1d5e3c}
+    .actions{display:flex;align-items:center;gap:8px}.actions a{color:#17452f;text-decoration:none;border:1px solid #cfe0d4;border-radius:999px;padding:7px 11px;background:#fff}.actions a:hover,.actions a:focus-visible{background:#eef7f0;outline:2px solid #b8d548;outline-offset:1px}
+    .frame{position:relative;min-height:0;background:#1d5e3c}.frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+    .loading{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:13px;letter-spacing:.08em;pointer-events:none;transition:opacity .25s}.ready .loading{opacity:0}
+    @media(max-width:640px){.shell{grid-template-rows:38px minmax(0,1fr)}.bar{padding:0 9px}.brand{font-size:11px}.actions a{padding:6px 8px}.hide-mobile{display:none}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="bar">
+      <div class="brand"><span class="dot" aria-hidden="true"></span><span>Khe Sanh Farm</span></div>
+      <nav class="actions" aria-label="Liên kết trình bày">
+        <a href="../100/" class="hide-mobile">Bộ nhận diện</a>
+        <a href="https://khanhdesignvn-cloud.github.io/khesanhfarm/#san-pham" target="_blank" rel="noopener">Mở toàn màn hình</a>
+      </nav>
+    </header>
+    <section class="frame" id="frame">
+      <div class="loading">ĐANG MỞ KHE SANH FARM…</div>
+      <iframe
+        id="farm"
+        src="https://khanhdesignvn-cloud.github.io/khesanhfarm/#san-pham"
+        title="Danh mục sản phẩm và đặt hàng Khe Sanh Farm"
+        allow="clipboard-read; clipboard-write"
+        loading="eager"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </section>
+  </main>
+  <script>
+    const frame=document.getElementById('frame');
+    document.getElementById('farm').addEventListener('load',()=>frame.classList.add('ready'));
+  </script>
+</body>
+</html>
