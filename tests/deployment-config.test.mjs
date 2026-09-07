@@ -20,6 +20,8 @@ test("deployment config accepts real Cloudflare resource identifiers", async () 
   assert.match(source, /D1_DATABASE_ID/);
   assert.match(source, /D1_DATABASE_NAME/);
   assert.match(source, /R2_BUCKET_NAME/);
+  const worker = await readFile(path.join(root, "worker/index.ts"), "utf8");
+  assert.doesNotMatch(worker, /\bIMAGES\b/);
 });
 
 test("security headers prevent framing, sniffing and permission abuse", async () => {
