@@ -1,7 +1,7 @@
 'use client';
 import './hkm.css';
 import {useState, useEffect, useRef} from 'react';
-import {Plus, Trash2, ImagePlus, Printer, Loader2, X, FolderPlus} from 'lucide-react';
+import {Plus, Trash2, ImagePlus, Printer, Loader2, X, FolderPlus, Pencil} from 'lucide-react';
 import {
   HkmData, HkmQuote, HkmLine, HkmSection, emptyHkmData, fmtMoney, fmtDate,
   parseQty, lineTotal, numToWordsVn, newQuote, newSection, newLine, HKM, todayIso,
@@ -24,6 +24,7 @@ export default function HkmQuotes() {
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState('');
   const [active, setActive] = useState('');
+  const [renaming, setRenaming] = useState(false);
   const lock = useRef(false), timer = useRef<number | null>(null), dataRef = useRef(data);
   dataRef.current = data;
   const quote = data.quotes.find(q => q.id === active) || data.quotes[0];
@@ -92,12 +93,20 @@ export default function HkmQuotes() {
     <header className="hkm-topbar">
       <div className="hkm-brand">HOÀNG KIM MINH <span>FURNITURE</span></div>
       <div className="hkm-tabs">
-        {data.quotes.map(q => (
-          <button key={q.id} className={'hkm-tab ' + (q.id === quote?.id ? 'active' : '')} onClick={() => setActive(q.id)} title={q.customer.name || q.name}>
-            {q.customer.name || q.name}
-          </button>
-        ))}
-        <button className="hkm-tab hkm-tab-add" onClick={addQuote} title="Thêm khách hàng mới"><Plus size={16} /></button>
+        <select className="hkm-tab-select" value={quote?.id || ''} onChange={e => { if (e.target.value === '__add__') addQuote(); else setActive(e.target.value); }}>
+          {data.quotes.map(q => (
+            <option key={q.id} value={q.id}>{q.customer.name.trim() || 'Khách chưa đặt tên'}</option>
+          ))}
+          <option value="__add__">＋ Thêm khách mới</option>
+        </select>
+        {renaming ? (
+          <input autoFocus className="hkm-rename-input" value={quote?.customer.name || ''} placeholder="Tên khách hàng"
+            onChange={e => patchCustomer({name: e.target.value})}
+            onBlur={() => setRenaming(false)}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setRenaming(false); }} />
+        ) : (
+          <button className="hkm-rename-btn" onClick={() => setRenaming(true)} title="Đổi tên khách hàng"><Pencil size={15} /></button>
+        )}
       </div>
       <div className="hkm-actions">
         <button className="hkm-print-btn" onClick={() => window.print()}><Printer size={16} /> Xuất PDF</button>
