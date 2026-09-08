@@ -24,3 +24,7 @@ timeout \
   --kill-after="${SITES_BUILD_KILL_AFTER:-10s}" \
   "${SITES_BUILD_TIMEOUT:-3m}" \
   "${vinext}" build
+
+# wrangler 4.x rejects the "legacy_env" field that vinext still emits.
+# Removing it is a no-op: legacy_env=true was already the default behaviour.
+sed -i 's/"legacy_env":true,//' "${SITES_PROJECT_ROOT}/dist/server/wrangler.json"
