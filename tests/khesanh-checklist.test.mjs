@@ -28,3 +28,16 @@ test('new items default to the unassigned status, not active work', () => {
   const workspace = fs.readFileSync(new URL('../app/workspace.tsx', import.meta.url), 'utf8');
   assert.match(workspace, /status:statuses\[0\]/);
 });
+
+test('item codes are computed from position, not baked into names', () => {
+  const project = JSON.parse(fs.readFileSync(new URL('../app/data/khesanh-project.json', import.meta.url), 'utf8'));
+  for (const group of project.groups) {
+    assert.doesNotMatch(group.name, /^\d{2} · /, `group name should be clean: ${group.name}`);
+    for (const item of group.items) {
+      assert.doesNotMatch(item.name, /^\d{2}\.\d{2} · /, `item name should be clean: ${item.name}`);
+    }
+  }
+  const model = fs.readFileSync(new URL('../app/model.ts', import.meta.url), 'utf8');
+  assert.match(model, /export const groupCode=\(i:number\)=>String\(i\+1\)\.padStart\(2,'0'\)/);
+  assert.match(model, /export const itemCode=\(gi:number,ii:number\)=>/);
+});
