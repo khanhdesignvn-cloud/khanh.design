@@ -13,7 +13,7 @@ export default function HkmQuotes(){
  const lock=useRef(false),timer=useRef<number|null>(null),dataRef=useRef(data);dataRef.current=data;
  const quote=data.quotes.find(q=>q.id===active)||data.quotes[0];
 
- async function load(){setError('');try{const r=await fetch('/api/hkm');const j=await r.json();if(!r.ok)throw Error(j.error);setData(j.data);setRevision(j.revision||0);setActive(j.data.quotes[0]?.id||'');setLoaded(true);}catch(e){setError((e as Error).message);setLoaded(true)}}
+ async function load(){setError('');try{const r=await fetch('/api/hkm');const j=await r.json();if(!r.ok)throw Error(j.error);const d:HkmData=(j.data&&j.data.quotes&&j.data.quotes.length)?j.data:{quotes:[newQuote()]};setData(d);setRevision(j.revision||0);setActive(d.quotes[0].id);setLoaded(true);}catch(e){setError((e as Error).message);setLoaded(true)}}
  useEffect(()=>{load()},[]);
 
  function mutate(next:HkmData){setData(next);if(timer.current)window.clearTimeout(timer.current);setSaving(true);timer.current=window.setTimeout(flushSave,700);}
