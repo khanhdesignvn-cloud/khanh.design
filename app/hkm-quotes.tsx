@@ -194,8 +194,7 @@ export default function HkmQuotes() {
     {quote && <div className="hkm-print">
       <div className="hkm-print-header">
         <div className="hkm-print-logo">
-          <span className="hkm-print-mark" />
-          <div className="hkm-print-brand">HOÀNG KIM MINH<br /><b>FURNITURE</b></div>
+          <img src={HKM.logo} alt="Hoàng Kim Minh Furniture" className="hkm-print-logo-img" />
         </div>
         <div className="hkm-print-header-info">
           <div>{HKM.showroom}</div>
@@ -269,7 +268,7 @@ export default function HkmQuotes() {
       </div>
 
       <div className="hkm-print-footer">
-        <div className="hkm-print-footer-left">{HKM.company}</div>
+        <div className="hkm-print-footer-left">{HKM.company} · {HKM.mst}</div>
         <div className="hkm-print-footer-right">{HKM.footer}</div>
       </div>
     </div>}

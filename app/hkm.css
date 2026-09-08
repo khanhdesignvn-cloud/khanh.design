@@ -10,13 +10,14 @@
 @keyframes hkmspin{to{transform:rotate(360deg)}}
 
 /* ---- top bar ---- */
-.hkm-topbar{display:flex;align-items:center;gap:18px;padding:12px 20px;background:#fff;border-bottom:1px solid #e4e4e4;position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.hkm-topbar{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff;border-bottom:1px solid #e4e4e4;position:sticky;top:0;z-index:10;flex-wrap:wrap}
 .hkm-brand{font-weight:800;letter-spacing:.5px;font-size:17px;color:var(--ink);white-space:nowrap}
 .hkm-brand span{display:block;font-size:10px;font-weight:600;letter-spacing:3px;color:var(--gold-dark)}
-.hkm-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
-.hkm-tab{background:#f1f1f1;border:1px solid #e0e0e0;border-radius:7px;padding:8px 13px;font-size:13px;color:#333;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.hkm-tabs{display:flex;gap:8px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hkm-tabs::-webkit-scrollbar{display:none}
+.hkm-tab{flex-shrink:0;background:#f1f1f1;border:1px solid #e0e0e0;border-radius:8px;padding:9px 15px;font-size:13px;color:#333;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
 .hkm-tab.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff;font-weight:600}
-.hkm-tab-add{display:grid;place-items:center;width:36px;padding:8px}
+.hkm-tab-add{display:grid;place-items:center;width:40px;flex-shrink:0;padding:9px}
 .hkm-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
 .hkm-print-btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold-dark);border:1px solid var(--gold-dark);color:#fff;border-radius:7px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
 .hkm-print-btn:hover{background:#7a6020}
@@ -67,7 +68,7 @@ input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold
 .hkm-del-quote{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8a7a0;color:#b42318;border-radius:7px;padding:8px 13px;font-size:13px;cursor:pointer}
 .hkm-del-quote:disabled{opacity:.4;cursor:not-allowed}
 .hkm-site{font-size:13px;color:var(--gold-dark);text-decoration:none}
-@media(max-width:760px){.hkm-totals{grid-template-columns:1fr}.hkm-topbar{gap:10px}.hkm-brand span{display:none}}
+@media(max-width:760px){.hkm-totals{grid-template-columns:1fr}.hkm-topbar{gap:8px;padding:10px 12px}.hkm-brand{font-size:15px}.hkm-brand span{display:none}.hkm-tabs{order:3;flex-basis:100%;gap:8px}.hkm-tab{max-width:200px}.hkm-actions{margin-left:auto}.hkm-print-btn{padding:8px 11px;font-size:12px}}
 
 /* ================= PRINT (khổ A4, tone Hoàng Kim Minh) ================= */
 .hkm-print{display:none}
@@ -80,11 +81,9 @@ input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold
   .hkm-print,.hkm-print *{visibility:visible!important}
 
   /* header tối full-bleed */
-  .hkm-print-header{background:var(--ink);color:var(--cream);padding:14mm 14mm 11mm;display:flex;justify-content:space-between;align-items:flex-start}
-  .hkm-print-logo{display:flex;align-items:center;gap:12px}
-  .hkm-print-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));transform:rotate(45deg);border-radius:3px;flex:none}
-  .hkm-print-brand{font-size:22px;font-weight:800;letter-spacing:1px;line-height:1.1;color:#fff}
-  .hkm-print-brand b{display:block;font-size:10px;letter-spacing:6px;color:var(--gold);font-weight:700;margin-top:2px}
+  .hkm-print-header{background:var(--ink);color:var(--cream);padding:10mm 14mm 9mm;display:flex;justify-content:space-between;align-items:center}
+  .hkm-print-logo{display:flex;align-items:center}
+  .hkm-print-logo-img{height:14mm;width:auto;display:block}
   .hkm-print-header-info{text-align:right;font-size:10px;color:#B9B3A9;line-height:1.8}
 
   /* title */

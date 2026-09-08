@@ -38,12 +38,15 @@ export const emptyHkmData: HkmData = { quotes: [] };
 export const HKM = {
   brand: 'HOÀNG KIM MINH',
   brandSub: 'FURNITURE',
+  logo: '/hkm-logo.png',
   showroom: 'Showroom Nội thất – Phụ kiện bếp · 100 Quang Trung, TP. Quảng Ngãi',
   contact: 'Liên hệ · 0982 50 60 79 – Mr. Đạt',
   website: 'www.hoangkimminh.vn',
   hotline: '0982 506 079',
-  company: 'Công ty TNHH Nội thất Hoàng Kim Minh',
-  footer: '100 Quang Trung, TP. Quảng Ngãi · 0982 50 60 79',
+  company: 'CÔNG TY TNHH NỘI THẤT HOÀNG KIM MINH',
+  mst: 'MST: 4300906843',
+  legalAddress: '338/2/4 Nguyễn Nghiêm, phường Nguyễn Nghiêm, TP. Quảng Ngãi',
+  footer: '338/2/4 Nguyễn Nghiêm, phường Nguyễn Nghiêm, TP. Quảng Ngãi · 0982 506 079',
 };
 
 export const fmtMoney = (n: number) => Number(n || 0).toLocaleString('vi-VN');
