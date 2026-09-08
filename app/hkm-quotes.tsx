@@ -57,14 +57,14 @@ export default function HkmQuotes() {
     finally { lock.current = false; setSaving(false); }
   }
 
-  const up = (fn: (d: HkmData) => HkmData) => mutate(fn(structuredClone(data)));
+  const up = (fn: (d: HkmData) => HkmQuote[]) => mutate({quotes: fn(structuredClone(data))});
   function patchQuote(p: Partial<HkmQuote>) { up(d => d.quotes.map(q => q.id === quote.id ? {...q, ...p} : q)); }
   function patchCustomer(p: Partial<HkmQuote['customer']>) { up(d => d.quotes.map(q => q.id === quote.id ? {...q, customer: {...q.customer, ...p}} : q)); }
   function patchSection(sid: string, p: Partial<HkmSection>) { up(d => d.quotes.map(q => q.id === quote.id ? {...q, sections: q.sections.map(s => s.id === sid ? {...s, ...p} : s)} : q)); }
   function patchItem(sid: string, iid: string, p: Partial<HkmLine>) { up(d => d.quotes.map(q => q.id === quote.id ? {...q, sections: q.sections.map(s => s.id === sid ? {...s, items: s.items.map(l => l.id === iid ? {...l, ...p} : l)} : s)} : q)); }
 
   function addQuote() { const q = newQuote(); up(d => d.quotes.concat(q)); setActive(q.id); }
-  function removeQuote() { if (!quote || data.quotes.length <= 1) return; up(d => ({quotes: d.quotes.filter(q => q.id !== quote.id)})); setActive(data.quotes.find(q => q.id !== quote.id)?.id || ''); }
+  function removeQuote() { if (!quote || data.quotes.length <= 1) return; up(d => d.quotes.filter(q => q.id !== quote.id)); setActive(data.quotes.find(q => q.id !== quote.id)?.id || ''); }
   function addSection() { patchQuote({sections: [...quote.sections, newSection()]}); }
   function removeSection(sid: string) { if (quote.sections.length <= 1) return; patchQuote({sections: quote.sections.filter(s => s.id !== sid)}); }
   function addItem(sid: string) { patchQuote({sections: quote.sections.map(s => s.id === sid ? {...s, items: [...s.items, newLine()]} : s)}); }
