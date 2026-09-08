@@ -1,78 +1,145 @@
-/* Hoàng Kim Minh Furniture — báo giá */
-.hkm{min-height:100dvh;display:flex;flex-direction:column;background:#f0f2f5;color:#1a1a1a}
+/* Hoàng Kim Minh Furniture — báo giá nội thất */
+:root{
+  --gold:#BFA067; --gold-dark:#8A7226; --gold-light:#D6BD8C;
+  --ink:#161616; --ink-2:#3C3830; --ink-3:#6E6A63; --ink-4:#8C877E;
+  --cream:#EFE9DD; --pill:#E6E0D5; --line:#E6E0D5; --paper:#FBFAF8;
+}
+.hkm{min-height:100dvh;display:flex;flex-direction:column;background:#f0f2f5;color:var(--ink)}
 .hkm-loading{display:grid;place-items:center;gap:12px;color:#666}
+.spin{animation:hkmspin 1s linear infinite}
+@keyframes hkmspin{to{transform:rotate(360deg)}}
+
+/* ---- top bar ---- */
 .hkm-topbar{display:flex;align-items:center;gap:18px;padding:12px 20px;background:#fff;border-bottom:1px solid #e4e4e4;position:sticky;top:0;z-index:10;flex-wrap:wrap}
-.hkm-brand{font-weight:800;letter-spacing:.5px;font-size:17px;color:#1a1a1a;white-space:nowrap}
-.hkm-brand span{display:block;font-size:10px;font-weight:600;letter-spacing:3px;color:#B8995C}
+.hkm-brand{font-weight:800;letter-spacing:.5px;font-size:17px;color:var(--ink);white-space:nowrap}
+.hkm-brand span{display:block;font-size:10px;font-weight:600;letter-spacing:3px;color:var(--gold-dark)}
 .hkm-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
 .hkm-tab{background:#f1f1f1;border:1px solid #e0e0e0;border-radius:7px;padding:8px 13px;font-size:13px;color:#333;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
-.hkm-tab.active{background:#B8995C;border-color:#B8995C;color:#fff;font-weight:600}
+.hkm-tab.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff;font-weight:600}
 .hkm-tab-add{display:grid;place-items:center;width:36px;padding:8px}
 .hkm-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
-.hkm-print-btn{display:inline-flex;align-items:center;gap:7px;background:#B8995C;border:1px solid #B8995C;color:#fff;border-radius:7px;padding:9px 14px;font-size:13px;font-weight:600}
-.hkm-print-btn:hover{background:#a8874e}
+.hkm-print-btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold-dark);border:1px solid var(--gold-dark);color:#fff;border-radius:7px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.hkm-print-btn:hover{background:#7a6020}
 .hkm-saved{font-size:12px;color:#7b7b7b}.hkm-saved.err{color:#b42318}
-.hkm-editor{padding:20px;display:flex;flex-direction:column;gap:16px;max-width:1100px;width:100%;margin:0 auto}
+
+/* ---- editor ---- */
+.hkm-editor{padding:20px;display:flex;flex-direction:column;gap:16px;max-width:1180px;width:100%;margin:0 auto}
+.hkm-card{background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .hkm-quote-head{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
-.hkm-quote-head .hkm-customer-name{flex:1;min-width:220px;font-size:18px;font-weight:700}
-.hkm-quote-head label,.hkm-customer label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
-.hkm-quote-head input,.hkm-customer input{min-width:150px}
-.hkm-customer{display:flex;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:14px}
+.hkm-quote-head label,.hkm-customer label,.hkm-total-labels label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
+.hkm-quote-head label.grow{flex:1;min-width:240px}
+.hkm-customer{display:flex;gap:12px;flex-wrap:wrap}
 .hkm-customer label{flex:1;min-width:160px}
-input,textarea{background:#fff;border:1px solid #d8d8d8;border-radius:6px;padding:8px 10px;font-size:14px;color:#1a1a1a;width:100%}
-input:focus,textarea:focus{outline:2px solid #B8995C;border-color:#B8995C}
-.hkm-table-wrap{background:#fff;border:1px solid #e4e4e4;border-radius:10px;overflow:auto}
-.hkm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
-.hkm-table th{background:#faf6ef;color:#8a6d3b;text-align:left;padding:9px 10px;border-bottom:2px solid #B8995C;font-weight:600;white-space:nowrap}
+input,textarea{background:#fff;border:1px solid #d8d8d8;border-radius:6px;padding:8px 10px;font-size:14px;color:var(--ink);width:100%;font-family:inherit}
+input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.hkm-section-head{display:flex;align-items:center;gap:12px}
+.hkm-section-name{flex:1;max-width:340px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
+.hkm-section-name input{font-size:16px;font-weight:700}
+.hkm-section-count{font-size:12px;color:var(--gold-dark)}
+.hkm-table-wrap{overflow:auto;border:1px solid #eaeaea;border-radius:8px}
+.hkm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+.hkm-table th{background:#faf6ef;color:var(--gold-dark);text-align:left;padding:9px 10px;border-bottom:2px solid var(--gold);font-weight:600;white-space:nowrap}
 .hkm-table td{padding:8px 10px;border-bottom:1px solid #efefef;vertical-align:middle}
 .hkm-table input,.hkm-table textarea{border:1px solid transparent;background:transparent;border-radius:4px;padding:6px 8px}
 .hkm-table input:hover,.hkm-table textarea:hover{border-color:#e0e0e0;background:#fafafa}
-.hkm-table input:focus,.hkm-table textarea:focus{border-color:#B8995C;background:#fff}
-.hkm-col-img{width:64px}.hkm-col-unit{width:70px}.hkm-col-num{width:120px;text-align:right}
-.hkm-img-cell{width:64px}
-.hkm-thumb{position:relative;width:52px;height:52px}
-.hkm-thumb img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0}
-.hkm-img-x{position:absolute;top:-6px;right:-6px;background:#b42318;color:#fff;border:0;border-radius:50%;width:20px;height:20px;display:grid;place-items:center;padding:0}
-.hkm-img-add{display:grid;place-items:center;width:52px;height:52px;border:1px dashed #c9b28a;border-radius:6px;color:#B8995C;cursor:pointer}
+.hkm-table input:focus,.hkm-table textarea:focus{border-color:var(--gold);background:#fff}
+.hkm-col-img{width:58px}.hkm-col-unit{width:64px}.hkm-col-qty{width:64px}.hkm-col-num{width:118px;text-align:right}
+.hkm-img-cell{width:58px}
+.hkm-thumb{position:relative;width:48px;height:48px}
+.hkm-thumb img{width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0}
+.hkm-img-x{position:absolute;top:-6px;right:-6px;background:#b42318;color:#fff;border:0;border-radius:50%;width:20px;height:20px;display:grid;place-items:center;padding:0;cursor:pointer}
+.hkm-img-add{display:grid;place-items:center;width:48px;height:48px;border:1px dashed var(--gold);border-radius:6px;color:var(--gold-dark);cursor:pointer}
 .hkm-center{text-align:center}.hkm-right{text-align:right}
-.hkm-line-total{font-weight:600;white-space:nowrap;color:#1a1a1a}
-.hkm-del{border:0;background:transparent;color:#999;padding:4px}.hkm-del:hover{color:#b42318}
-.hkm-add-row{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:#fff;border:1px dashed #B8995C;color:#B8995C;border-radius:7px;padding:8px 14px;font-size:13px;font-weight:600}
-.hkm-totals{display:grid;grid-template-columns:1fr 340px;gap:16px}
-.hkm-total-labels{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:14px}
-.hkm-total-labels label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
-.hkm-total-box{background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:16px;align-self:start}
+.hkm-line-total{font-weight:600;white-space:nowrap;color:var(--ink)}
+.hkm-del{border:0;background:transparent;color:#999;padding:4px;cursor:pointer}.hkm-del:hover{color:#b42318}
+.hkm-add-row{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:#fff;border:1px dashed var(--gold);color:var(--gold-dark);border-radius:7px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.hkm-add-section{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px dashed var(--gold-dark);color:var(--gold-dark);border-radius:9px;padding:12px;font-size:14px;font-weight:600;cursor:pointer}
+.hkm-totals{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+.hkm-total-labels{background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:14px}
+.hkm-total-box{background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:16px}
 .hkm-total-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0;font-size:14px}
 .hkm-total-row label{display:flex;align-items:center;gap:6px;font-size:13px}
 .hkm-total-row input{width:64px;text-align:right;padding:5px 7px}
 .hkm-total-row b{white-space:nowrap}
-.hkm-grand{border-top:2px solid #B8995C;margin-top:6px;padding-top:10px;font-size:16px}
+.hkm-grand{border-top:2px solid var(--gold);margin-top:6px;padding-top:10px;font-size:16px}
 .hkm-words{font-size:12px;color:#666;font-style:italic;margin:8px 0 0}
 .hkm-footer-row{display:flex;justify-content:space-between;align-items:center}
-.hkm-del-quote{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8a7a0;color:#b42318;border-radius:7px;padding:8px 13px;font-size:13px}
-.hkm-site{font-size:13px;color:#8a6d3b;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
-.hkm-print{display:none}
+.hkm-del-quote{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8a7a0;color:#b42318;border-radius:7px;padding:8px 13px;font-size:13px;cursor:pointer}
+.hkm-del-quote:disabled{opacity:.4;cursor:not-allowed}
+.hkm-site{font-size:13px;color:var(--gold-dark);text-decoration:none}
 @media(max-width:760px){.hkm-totals{grid-template-columns:1fr}.hkm-topbar{gap:10px}.hkm-brand span{display:none}}
 
-/* In PDF khổ A4 */
+/* ================= PRINT (khổ A4, tone Hoàng Kim Minh) ================= */
+.hkm-print{display:none}
+
 @media print{
- @page{size:A4;margin:14mm 12mm}
- body *{visibility:hidden}
- .hkm-print,.hkm-print *{visibility:visible}
- .hkm-print{display:block;position:absolute;left:0;top:0;width:100%;color:#111;font-size:12px}
- .hkm-print-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #B8995C;padding-bottom:12px}
- .hkm-print-logo{font-size:16px;font-weight:800;line-height:1.1;color:#8a6d3b}
- .hkm-print-logo span{font-size:11px;letter-spacing:3px}
- .hkm-print-title h1{font-size:26px;margin:0;letter-spacing:4px;color:#1a1a1a}
- .hkm-print-title p{margin:4px 0 0;font-size:12px;color:#555}
- .hkm-print-contact{text-align:right;font-size:12px;color:#8a6d3b;line-height:1.6}
- .hkm-print-customer{display:flex;flex-wrap:wrap;gap:6px 22px;padding:12px 0;border-bottom:1px solid #ddd;font-size:12px}
- .hkm-print-table{width:100%;border-collapse:collapse;margin-top:12px}
- .hkm-print-table th{background:#f4ede0;color:#8a6d3b;border:1px solid #cbb;padding:7px 8px;text-align:left;font-size:11px}
- .hkm-print-table td{border:1px solid #ccc;padding:6px 8px;vertical-align:middle}
- .hkm-print-table img{width:42px;height:42px;object-fit:cover;border:1px solid #ddd;border-radius:3px}
- .hkm-print-totals{text-align:right;margin-top:12px;font-size:12px;line-height:1.8}
- .hkm-print-grand{font-size:16px;font-weight:800;color:#8a6d3b}
- .hkm-print-notes{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:12px;line-height:1.7}
- .hkm-print-foot{margin-top:20px;text-align:center;font-size:11px;color:#8a6d3b;border-top:1px solid #B8995C;padding-top:8px}
+  @page{size:A4;margin:0}
+  .hkm{background:#fff;min-height:0}
+  .hkm-topbar,.hkm-editor{display:none!important}
+  .hkm-print{display:block!important;color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.5}
+
+  /* header tối full-bleed */
+  .hkm-print-header{background:var(--ink);color:var(--cream);padding:14mm 14mm 11mm;display:flex;justify-content:space-between;align-items:flex-start}
+  .hkm-print-logo{display:flex;align-items:center;gap:12px}
+  .hkm-print-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));transform:rotate(45deg);border-radius:3px;flex:none}
+  .hkm-print-brand{font-size:22px;font-weight:800;letter-spacing:1px;line-height:1.1;color:#fff}
+  .hkm-print-brand b{display:block;font-size:10px;letter-spacing:6px;color:var(--gold);font-weight:700;margin-top:2px}
+  .hkm-print-header-info{text-align:right;font-size:10px;color:#B9B3A9;line-height:1.8}
+
+  /* title */
+  .hkm-print-title{padding:12mm 14mm 7mm}
+  .hkm-print-title h1{font-size:30px;margin:0;color:var(--ink);letter-spacing:1px;font-weight:800}
+  .hkm-print-title p{margin:5px 0 0;color:var(--ink-3);font-size:12.5px}
+
+  /* meta 3 cột */
+  .hkm-print-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:7mm 14mm;margin-bottom:6mm}
+  .hkm-print-meta-col span{display:block;font-size:9.5px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+  .hkm-print-meta-col b{font-size:13.5px;color:var(--ink);font-weight:700}
+
+  /* section */
+  .hkm-print-section{padding:0 14mm 4mm}
+  .hkm-print-sec-head{display:flex;align-items:baseline;gap:12px;padding:5px 0;border-bottom:1.5px solid var(--gold);margin-bottom:2px}
+  .hkm-print-sec-name{font-size:16px;font-weight:800;color:var(--ink)}
+  .hkm-print-sec-count{font-size:11px;color:var(--gold-dark);font-weight:600}
+
+  /* item */
+  .hkm-print-item{padding:8px 0 7px;border-bottom:1px solid #F2EEE7;break-inside:avoid;page-break-inside:avoid}
+  .hkm-print-item-top{display:flex;align-items:baseline;gap:10px}
+  .hkm-print-item-num{color:var(--gold);font-weight:800;font-size:15px;min-width:26px;flex:none}
+  .hkm-print-item-title{font-weight:700;font-size:13px;color:var(--ink);flex:1}
+  .hkm-print-item-qty{color:var(--ink-2);font-size:12px;white-space:nowrap}
+  .hkm-print-item-body{display:flex;justify-content:space-between;gap:16px;padding-left:36px}
+  .hkm-print-item-specs{color:var(--ink-3);font-size:11px;line-height:1.65}
+  .hkm-print-item-prices{text-align:right;min-width:130px;flex:none}
+  .hkm-print-item-total{font-weight:700;font-size:13px;color:var(--ink)}
+  .hkm-print-item-unit{color:var(--ink-4);font-size:11px;margin-top:2px}
+  .hkm-print-item-tags{display:flex;gap:8px;padding-left:36px;margin-top:6px;flex-wrap:wrap}
+  .hkm-print-pill{background:var(--pill);color:var(--ink-2);font-size:10px;padding:2px 9px;border-radius:3px}
+  .hkm-print-warranty{background:#fff;border:1px solid var(--gold);color:var(--gold-dark)}
+
+  /* totals */
+  .hkm-print-total{padding:8mm 14mm 5mm;text-align:right}
+  .hkm-print-total-note{font-size:11px;color:var(--ink-3);font-style:italic}
+  .hkm-print-total-line{display:flex;justify-content:flex-end;gap:20px;font-size:12px;margin-top:4px}
+  .hkm-print-total-row{display:flex;justify-content:flex-end;align-items:baseline;gap:20px;margin-top:9px}
+  .hkm-print-total-label{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:1px}
+  .hkm-print-total-value{font-size:24px;font-weight:800;color:var(--ink)}
+  .hkm-print-total-value small{font-size:13px;font-weight:700}
+  .hkm-print-total-words{font-size:11px;color:var(--ink-3);font-style:italic;margin-top:5px}
+
+  /* terms */
+  .hkm-print-terms{padding:5mm 14mm 7mm}
+  .hkm-print-terms-title{font-size:13px;font-weight:800;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px}
+  .hkm-print-terms ul{margin:0;padding-left:18px}
+  .hkm-print-terms li{font-size:11px;color:var(--ink-2);line-height:1.75}
+
+  /* sign */
+  .hkm-print-sign{padding:7mm 14mm 10mm;text-align:right}
+  .hkm-print-sign-role{font-size:12px;font-weight:800;color:var(--gold-dark);letter-spacing:5px}
+  .hkm-print-sign-name{font-size:15px;font-weight:700;color:var(--ink);margin-top:5px}
+
+  /* footer tối */
+  .hkm-print-footer{background:var(--ink);color:var(--cream);padding:6mm 14mm;display:flex;justify-content:space-between;font-size:10px}
+  .hkm-print-footer-left{color:var(--gold);font-weight:700}
+  .hkm-print-footer-right{color:#B9B3A9}
 }
