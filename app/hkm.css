@@ -1,0 +1,78 @@
+/* Hoàng Kim Minh Furniture — báo giá */
+.hkm{min-height:100dvh;display:flex;flex-direction:column;background:#f0f2f5;color:#1a1a1a}
+.hkm-loading{display:grid;place-items:center;gap:12px;color:#666}
+.hkm-topbar{display:flex;align-items:center;gap:18px;padding:12px 20px;background:#fff;border-bottom:1px solid #e4e4e4;position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.hkm-brand{font-weight:800;letter-spacing:.5px;font-size:17px;color:#1a1a1a;white-space:nowrap}
+.hkm-brand span{display:block;font-size:10px;font-weight:600;letter-spacing:3px;color:#B8995C}
+.hkm-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+.hkm-tab{background:#f1f1f1;border:1px solid #e0e0e0;border-radius:7px;padding:8px 13px;font-size:13px;color:#333;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.hkm-tab.active{background:#B8995C;border-color:#B8995C;color:#fff;font-weight:600}
+.hkm-tab-add{display:grid;place-items:center;width:36px;padding:8px}
+.hkm-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
+.hkm-print-btn{display:inline-flex;align-items:center;gap:7px;background:#B8995C;border:1px solid #B8995C;color:#fff;border-radius:7px;padding:9px 14px;font-size:13px;font-weight:600}
+.hkm-print-btn:hover{background:#a8874e}
+.hkm-saved{font-size:12px;color:#7b7b7b}.hkm-saved.err{color:#b42318}
+.hkm-editor{padding:20px;display:flex;flex-direction:column;gap:16px;max-width:1100px;width:100%;margin:0 auto}
+.hkm-quote-head{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.hkm-quote-head .hkm-customer-name{flex:1;min-width:220px;font-size:18px;font-weight:700}
+.hkm-quote-head label,.hkm-customer label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
+.hkm-quote-head input,.hkm-customer input{min-width:150px}
+.hkm-customer{display:flex;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:14px}
+.hkm-customer label{flex:1;min-width:160px}
+input,textarea{background:#fff;border:1px solid #d8d8d8;border-radius:6px;padding:8px 10px;font-size:14px;color:#1a1a1a;width:100%}
+input:focus,textarea:focus{outline:2px solid #B8995C;border-color:#B8995C}
+.hkm-table-wrap{background:#fff;border:1px solid #e4e4e4;border-radius:10px;overflow:auto}
+.hkm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+.hkm-table th{background:#faf6ef;color:#8a6d3b;text-align:left;padding:9px 10px;border-bottom:2px solid #B8995C;font-weight:600;white-space:nowrap}
+.hkm-table td{padding:8px 10px;border-bottom:1px solid #efefef;vertical-align:middle}
+.hkm-table input,.hkm-table textarea{border:1px solid transparent;background:transparent;border-radius:4px;padding:6px 8px}
+.hkm-table input:hover,.hkm-table textarea:hover{border-color:#e0e0e0;background:#fafafa}
+.hkm-table input:focus,.hkm-table textarea:focus{border-color:#B8995C;background:#fff}
+.hkm-col-img{width:64px}.hkm-col-unit{width:70px}.hkm-col-num{width:120px;text-align:right}
+.hkm-img-cell{width:64px}
+.hkm-thumb{position:relative;width:52px;height:52px}
+.hkm-thumb img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0}
+.hkm-img-x{position:absolute;top:-6px;right:-6px;background:#b42318;color:#fff;border:0;border-radius:50%;width:20px;height:20px;display:grid;place-items:center;padding:0}
+.hkm-img-add{display:grid;place-items:center;width:52px;height:52px;border:1px dashed #c9b28a;border-radius:6px;color:#B8995C;cursor:pointer}
+.hkm-center{text-align:center}.hkm-right{text-align:right}
+.hkm-line-total{font-weight:600;white-space:nowrap;color:#1a1a1a}
+.hkm-del{border:0;background:transparent;color:#999;padding:4px}.hkm-del:hover{color:#b42318}
+.hkm-add-row{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:#fff;border:1px dashed #B8995C;color:#B8995C;border-radius:7px;padding:8px 14px;font-size:13px;font-weight:600}
+.hkm-totals{display:grid;grid-template-columns:1fr 340px;gap:16px}
+.hkm-total-labels{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:14px}
+.hkm-total-labels label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#666}
+.hkm-total-box{background:#fff;border:1px solid #e4e4e4;border-radius:10px;padding:16px;align-self:start}
+.hkm-total-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0;font-size:14px}
+.hkm-total-row label{display:flex;align-items:center;gap:6px;font-size:13px}
+.hkm-total-row input{width:64px;text-align:right;padding:5px 7px}
+.hkm-total-row b{white-space:nowrap}
+.hkm-grand{border-top:2px solid #B8995C;margin-top:6px;padding-top:10px;font-size:16px}
+.hkm-words{font-size:12px;color:#666;font-style:italic;margin:8px 0 0}
+.hkm-footer-row{display:flex;justify-content:space-between;align-items:center}
+.hkm-del-quote{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8a7a0;color:#b42318;border-radius:7px;padding:8px 13px;font-size:13px}
+.hkm-site{font-size:13px;color:#8a6d3b;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.hkm-print{display:none}
+@media(max-width:760px){.hkm-totals{grid-template-columns:1fr}.hkm-topbar{gap:10px}.hkm-brand span{display:none}}
+
+/* In PDF khổ A4 */
+@media print{
+ @page{size:A4;margin:14mm 12mm}
+ body *{visibility:hidden}
+ .hkm-print,.hkm-print *{visibility:visible}
+ .hkm-print{display:block;position:absolute;left:0;top:0;width:100%;color:#111;font-size:12px}
+ .hkm-print-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #B8995C;padding-bottom:12px}
+ .hkm-print-logo{font-size:16px;font-weight:800;line-height:1.1;color:#8a6d3b}
+ .hkm-print-logo span{font-size:11px;letter-spacing:3px}
+ .hkm-print-title h1{font-size:26px;margin:0;letter-spacing:4px;color:#1a1a1a}
+ .hkm-print-title p{margin:4px 0 0;font-size:12px;color:#555}
+ .hkm-print-contact{text-align:right;font-size:12px;color:#8a6d3b;line-height:1.6}
+ .hkm-print-customer{display:flex;flex-wrap:wrap;gap:6px 22px;padding:12px 0;border-bottom:1px solid #ddd;font-size:12px}
+ .hkm-print-table{width:100%;border-collapse:collapse;margin-top:12px}
+ .hkm-print-table th{background:#f4ede0;color:#8a6d3b;border:1px solid #cbb;padding:7px 8px;text-align:left;font-size:11px}
+ .hkm-print-table td{border:1px solid #ccc;padding:6px 8px;vertical-align:middle}
+ .hkm-print-table img{width:42px;height:42px;object-fit:cover;border:1px solid #ddd;border-radius:3px}
+ .hkm-print-totals{text-align:right;margin-top:12px;font-size:12px;line-height:1.8}
+ .hkm-print-grand{font-size:16px;font-weight:800;color:#8a6d3b}
+ .hkm-print-notes{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:12px;line-height:1.7}
+ .hkm-print-foot{margin-top:20px;text-align:center;font-size:11px;color:#8a6d3b;border-top:1px solid #B8995C;padding-top:8px}
+}
