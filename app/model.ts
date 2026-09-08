@@ -7,7 +7,7 @@ export function normalizeData(data:Data):Data{return {...data,projects:data.proj
 export type Attachment={id:string;name:string;url:string;type:'image'|'pdf'|'drive'};
 export type Item={id:string;name:string;status:string;note:string;images:string[];files?:Attachment[];driveUrl?:string};
 export type Group={id:string;name:string;items:Item[]};
-export type Project={id:string;name:string;subtitle:string;groups:Group[];driveFolder?:string;cover?:string};
+export type Project={id:string;name:string;subtitle:string;groups:Group[];driveFolder?:string;cover?:string;shareToken?:string};
 export type Data={projects:Project[]};
 export const driveValid=(value:string)=>{if(!value)return true;try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password}catch{return false}};
 export const groupCode=(i:number)=>String(i+1).padStart(2,'0');
