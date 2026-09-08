@@ -1,0 +1,482 @@
+{
+  "id": "khesanh",
+  "name": "100 năm cà phê Khe Sanh",
+  "subtitle": "Cà phê Khe Sanh – Hương vị hòa bình · 1926–2026 · 61 hạng mục / 8 nhóm",
+  "groups": [
+    {
+      "id": "KS100-01",
+      "name": "01 · Nhận diện & thiết kế chung",
+      "items": [
+        {
+          "id": "KS100-01.01",
+          "name": "01.01 · Logo kỷ niệm 100 năm",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: 100 NĂM CÀ PHÊ KHE SANH / 1926-2026. Thông điệp chủ đạo đi kèm: Cà phê Khe Sanh - Hương vị hòa bình.\n\nTHIẾT KẾ & BÀN GIAO: Bản ngang, dọc, đơn sắc, âm bản; bảng cấu trúc và khoảng trống. Bàn giao vector, PDF, PNG nền trong.\n\nCẦN CHỐT: Ban tổ chức duyệt biểu tượng, cách viết hoa và quan hệ với nhận diện Lễ hội Vì Hòa bình 2026.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.02",
+          "name": "01.02 · Key visual tổng",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Cà phê Khe Sanh - Hương vị hòa bình. 1926-2026. Trong khuôn khổ Lễ hội Vì Hòa bình năm 2026. Dòng cảm xúc đề xuất: Từ bàn tay vun trồng, lan tỏa hương vị hòa bình.\n\nTHIẾT KẾ & BÀN GIAO: Một bố cục chính và các biến thể ngang, dọc, vuông; hệ hình hạt cà phê, chim bồ câu và những bàn tay sẻ chia. Tách lớp để dùng in ấn và chuyển động.\n\nCẦN CHỐT: Chốt quyền sử dụng ảnh, họa tiết bản địa, logo đối tác; câu cảm xúc là nội dung sáng tạo chờ duyệt.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.03",
+          "name": "01.03 · Bộ màu, chữ và pattern",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Hệ nhận diện gợi vùng cà phê, sự sống và tinh thần hòa bình. Nhãn ứng dụng mẫu: Vun trồng / Sẻ chia / Hương vị / Hòa bình.\n\nTHIẾT KẾ & BÀN GIAO: Bảng màu in và số; cấp chữ tiêu đề, nội dung, chú thích; pattern lớn/nhỏ; icon bản đồ, lịch, cà phê, chỉ dẫn.\n\nCẦN CHỐT: Chốt bảng màu sự kiện riêng với giao diện website quản lý; kiểm tra dấu tiếng Việt và giấy phép font.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.04",
+          "name": "01.04 · Hướng dẫn sử dụng nhận diện",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Một hệ nhận diện, nhiều điểm chạm. Mọi ứng dụng cần giữ đúng tên sự kiện, tỷ lệ logo và khả năng đọc ở khoảng cách sử dụng.\n\nTHIẾT KẾ & BÀN GIAO: Sổ hướng dẫn gồm logo, màu, font, pattern, vị trí logo đơn vị, ví dụ đúng/sai và mẫu ứng dụng; PDF tham chiếu cho nhà cung cấp.\n\nCẦN CHỐT: Nhận bộ logo chính thức của các đơn vị và thứ bậc hiển thị đã duyệt.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.05",
+          "name": "01.05 · Poster tổng sự kiện",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÀ PHÊ KHE SANH - HƯƠNG VỊ HÒA BÌNH / 1926-2026 / 24-26.10.2026 / Xã Khe Sanh, tỉnh Quảng Trị. Khai mạc - Triển lãm - Hội thi nhà nông - Hội thảo phát triển cà phê. Khám phá chương trình tại [QR].\n\nTHIẾT KẾ & BÀN GIAO: Poster in, bản vuông mạng xã hội và bản dọc; có vùng dành cho logo, QR và đầu mối thông tin.\n\nCẦN CHỐT: Chốt địa điểm chi tiết, URL công khai và thông tin liên hệ; không ghi đăng ký miễn phí hoặc giá vé khi chưa có quyết định.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.06",
+          "name": "01.06 · Lịch chương trình tổng",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: 24/10, 20:10: Lễ khai mạc. Từ tối 24/10 đến 26/10: Trưng bày, triển lãm. Sáng 26/10: Hội thi Nhà nông đua tài. Chiều 26/10: Hội thảo phát triển ngành hàng cà phê.\n\nTHIẾT KẾ & BÀN GIAO: Một trang lịch tổng; bản màn hình và tờ gấp. Mỗi hoạt động có thời gian, địa điểm, chủ đề và mã màu/biểu tượng phân biệt.\n\nCẦN CHỐT: Bổ sung giờ mở cửa triển lãm, giờ hội thi/hội thảo và lịch bổ trợ. Không tự thêm hoạt động ngày 25/10.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.07",
+          "name": "01.07 · Cổng chào, phướn và banner",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CHÀO MỪNG / Cà phê Khe Sanh - Hương vị hòa bình / 1926-2026 / 24-26.10.2026. Phiên bản phướn rút gọn ưu tiên tên, mốc 100 năm và hình chủ đạo.\n\nTHIẾT KẾ & BÀN GIAO: Phối cảnh, mặt đứng, bản triển khai từng kích thước; xác định vùng an toàn chữ và tách file sản xuất từng loại.\n\nCẦN CHỐT: Khảo sát vị trí, kích thước, kết cấu, số lượng; duyệt kỹ thuật với đơn vị thi công trước khi xuất file.",
+          "images": []
+        },
+        {
+          "id": "KS100-01.08",
+          "name": "01.08 · Bản đồ và chỉ dẫn chung",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: BẠN ĐANG Ở ĐÂY / Sân khấu khai mạc / Triển lãm / Khu thưởng thức cà phê / Thông tin hỗ trợ / Nhà vệ sinh / Y tế / Lối ra.\n\nTHIẾT KẾ & BÀN GIAO: Bản đồ tổng theo mặt bằng thật; biển hướng đi kèm mũi tên, mã khu; bản QR xem trên điện thoại và sơ đồ tiện ích.\n\nCẦN CHỐT: Ban tổ chức cung cấp mặt bằng, lối tiếp cận, phân luồng và phương án an toàn; không tự xác định lối thoát.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-02",
+      "name": "02 · Lễ khai mạc",
+      "items": [
+        {
+          "id": "KS100-02.01",
+          "name": "02.01 · Backdrop và LED chính",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: LỄ KHAI MẠC / 100 NĂM CÀ PHÊ KHE SANH / 1926-2026 / Cà phê Khe Sanh - Hương vị hòa bình / Khe Sanh, ngày 24 tháng 10 năm 2026.\n\nTHIẾT KẾ & BÀN GIAO: Bố cục sân khấu chính, màn chờ, màn phát biểu và bản in dự phòng. Tách vùng chữ khỏi vị trí đứng của đại biểu.\n\nCẦN CHỐT: Chốt sơ đồ sân khấu, độ phân giải LED, vị trí máy quay và hệ logo; địa điểm cụ thể chưa nêu trong kế hoạch.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.02",
+          "name": "02.02 · Thiệp mời khai mạc",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: TRÂN TRỌNG KÍNH MỜI [Họ tên / đơn vị] tham dự Lễ khai mạc 100 năm cà phê Khe Sanh (1926-2026), chủ đề “Cà phê Khe Sanh - Hương vị hòa bình”. Thời gian: 20 giờ 10, ngày 24/10/2026. Địa điểm: [Địa điểm cụ thể], xã Khe Sanh, tỉnh Quảng Trị. Trân trọng đón tiếp!\n\nTHIẾT KẾ & BÀN GIAO: Thiệp in, phong bì và thiệp điện tử; trường cá nhân hóa tên; thêm đầu mối xác nhận tham dự.\n\nCẦN CHỐT: Chốt danh sách, người ký mời, giờ đón khách và đầu mối RSVP. Giờ đón khách tách rõ với giờ khai mạc.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.03",
+          "name": "02.03 · Tờ chương trình khai mạc",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Chào mừng đại biểu / Nghi thức khai mạc / Chương trình chính luận nghệ thuật “Cà phê Hòa bình - Make coffee not war” / Nghi thức tôn vinh người trồng cà phê / Công bố định hướng lễ hội thường niên “Hương cà phê Khe Sanh”.\n\nTHIẾT KẾ & BÀN GIAO: Tờ chương trình dễ đọc; bố cục có giờ, tên phần và ghi chú. Ghi 90 phút cho chương trình chính luận nghệ thuật, không mặc định cho toàn bộ buổi lễ.\n\nCẦN CHỐT: Thứ tự trên là khung biên tập; cập nhật theo kịch bản tổng duyệt và thời lượng từng phần.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.04",
+          "name": "02.04 · Hình ảnh chương trình nghệ thuật",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÀ PHÊ HÒA BÌNH - MAKE COFFEE NOT WAR. Khung kể chuyện đề xuất: Đất lành vun hương / Bàn tay gìn giữ / Cùng nhau sẻ chia / Hương vị hòa bình.\n\nTHIẾT KẾ & BÀN GIAO: Moodboard, storyboard, hình nền LED và chuyển cảnh theo từng tiết mục; bản tĩnh dự phòng; đồ họa tránh cạnh tranh với nghệ sĩ.\n\nCẦN CHỐT: Tên chương và hình ảnh là đề xuất; phối hợp Báo và Phát thanh, Truyền hình Quảng Trị theo kịch bản chính thức.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.05",
+          "name": "02.05 · Nghi thức tôn vinh và công bố",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: TRÂN TRỌNG NHỮNG BÀN TAY VUN TRỒNG. HƯƠNG CÀ PHÊ KHE SANH / Công bố định hướng tổ chức thường niên. Dòng dẫn đề xuất: Cùng gìn giữ văn hóa cà phê, cùng vun đắp tương lai bền vững.\n\nTHIẾT KẾ & BÀN GIAO: Màn hình riêng cho tôn vinh và công bố; tên cá nhân/đơn vị nếu có; bản trình chiếu theo tín hiệu điều hành.\n\nCẦN CHỐT: Chốt tên nghi thức, đạo cụ, danh sách và cách xướng tên; không mô tả định hướng là lịch tổ chức thường niên đã cố định.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.06",
+          "name": "02.06 · Đồ họa truyền hình và livestream",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Trực tiếp: Lễ khai mạc 100 năm cà phê Khe Sanh. Nhãn tên: [Họ tên] / [Chức danh, đơn vị]. Màn kết: Cảm ơn quý vị đã đồng hành cùng cà phê Khe Sanh.\n\nTHIẾT KẾ & BÀN GIAO: Mở đầu, bảng tên, tiêu đề phân đoạn, màn chờ và màn kết; khung an toàn truyền hình và bản livestream.\n\nCẦN CHỐT: Chốt chuẩn tín hiệu, bộ nhận diện kênh, danh sách đại biểu và cách viết chức danh với đơn vị sản xuất.",
+          "images": []
+        },
+        {
+          "id": "KS100-02.07",
+          "name": "02.07 · Khánh tiết, lễ tân và thẻ đeo",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: ĐÓN TIẾP ĐẠI BIỂU / BAN TỔ CHỨC / KHÁCH MỜI / BÁO CHÍ / HỖ TRỢ. Biển bàn: [Họ tên] / [Chức danh, đơn vị].\n\nTHIẾT KẾ & BÀN GIAO: Thẻ đeo, dây đeo, biển bàn, sơ đồ chỗ ngồi và bảng đón tiếp; dùng chữ và ký hiệu để phân biệt nhóm.\n\nCẦN CHỐT: Chốt danh sách và phân quyền khu vực; dùng thông tin tối thiểu trên thẻ công khai, không in số cá nhân khi không cần.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-03",
+      "name": "03 · Trưng bày & triển lãm",
+      "items": [
+        {
+          "id": "KS100-03.01",
+          "name": "03.01 · Bảng tên và lời dẫn triển lãm",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: KÝ ỨC 100 NĂM CÀ PHÊ KHE SANH - TỪ LỊCH SỬ ĐẾN HỘI NHẬP. Từ những tư liệu của hành trình bắt đầu năm 1926 đến câu chuyện sản phẩm hôm nay, triển lãm mời bạn cảm nhận giá trị lao động, sự gắn kết cộng đồng và tinh thần hòa bình qua cà phê Khe Sanh.\n\nTHIẾT KẾ & BÀN GIAO: Bảng đầu vào, lời dẫn và sơ đồ nội dung; phiên bản chữ ngắn cho biển và chữ đầy đủ cho catalogue.\n\nCẦN CHỐT: Đơn vị phụ trách trưng bày duyệt lời dẫn, tên gọi và mặt bằng; ngôn ngữ bổ sung theo thành phần khách thực tế.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.02",
+          "name": "03.02 · Timeline 1926-2026",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: 1926-2026 / MỘT THẾ KỶ VUN TRỒNG, LAN TỎA HƯƠNG VỊ HÒA BÌNH. Mỗi mốc trình bày: [Năm] - [Sự kiện đã xác minh] - [Ý nghĩa đối với cà phê Khe Sanh] - [Nguồn tư liệu].\n\nTHIẾT KẾ & BÀN GIAO: Thiết kế trục thời gian, ô ảnh, chú thích và dấu nguồn; chừa khả năng bổ sung mốc mà không phá bố cục.\n\nCẦN CHỐT: Chỉ mốc 1926 và 2026 được dùng từ kế hoạch; không tự viết nhân vật, sản lượng hoặc sự kiện lịch sử trung gian.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.03",
+          "name": "03.03 · Panel ảnh và hiện vật",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Tên ảnh / hiện vật]. [Địa điểm, thời gian]. Một lát cắt trong hành trình cà phê Khe Sanh: [Mô tả 40-60 từ theo tư liệu]. Tác giả / đơn vị cung cấp: [Tên].\n\nTHIẾT KẾ & BÀN GIAO: Mẫu panel ảnh lớn, ảnh nhóm và nhãn hiện vật nhỏ; đánh mã để đối chiếu danh mục trưng bày.\n\nCẦN CHỐT: Nhận ảnh gốc, niên đại, xuất xứ, quyền sử dụng và chú thích đã duyệt; không dùng ảnh minh họa như ảnh tư liệu.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.04",
+          "name": "03.04 · Khu trình chiếu phim tư liệu",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HÀNH TRÌNH CÀ PHÊ KHE SANH TỪ NĂM 1926. Mời quý khách theo dõi phim tư liệu về lịch sử hình thành và phát triển cà phê Khe Sanh. Lịch chiếu: [Giờ]. Thời lượng: [Bản trình chiếu được duyệt].\n\nTHIẾT KẾ & BÀN GIAO: Bảng giới thiệu, màn chờ, lịch chiếu, thumbnail và phụ đề tiêu đề; bố trí chữ phù hợp màn hình thực tế.\n\nCẦN CHỐT: Kế hoạch giao sản xuất phim tài liệu 30 phút; xác nhận khu triển lãm dùng bản đầy đủ hay bản trích.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.05",
+          "name": "03.05 · Gian hàng cà phê, OCOP và nông sản",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Mã gian] / [Tên đơn vị] / [Địa phương]. Sản phẩm: [Tên]. Quy cách: [Khối lượng]. Câu chuyện sản phẩm: [Nguồn gốc, người làm, điểm đặc trưng đã xác nhận]. Liên hệ: [QR].\n\nTHIẾT KẾ & BÀN GIAO: Bảng gian, bảng giới thiệu, tem kệ, thẻ sản phẩm và danh sách gian hàng đồng bộ.\n\nCẦN CHỐT: Chốt đơn vị, sản phẩm, giá và QR; chỉ hiển thị hạng sao OCOP hoặc chứng nhận khi có thông tin được xác nhận.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.06",
+          "name": "03.06 · Bản đồ số cà phê Khe Sanh",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: KHÁM PHÁ VÙNG CÀ PHÊ KHE SANH. Quét mã để tìm hiểu vùng trồng, cơ sở sản xuất và điểm trải nghiệm. Chọn một điểm để xem câu chuyện, sản phẩm và thông tin liên hệ.\n\nTHIẾT KẾ & BÀN GIAO: Thiết kế bản đồ trưng bày và giao diện điểm thông tin; mã QR dẫn đến hệ thống đã hoạt động; chú giải và hướng dẫn thao tác.\n\nCẦN CHỐT: Nhận tọa độ, ranh giới, dữ liệu và nền tảng vận hành. Thiết kế QR không đồng nghĩa đã xây dựng hệ thống bản đồ số.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.07",
+          "name": "03.07 · Truy xuất và phát triển bền vững",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HIỂU NGUỒN GỐC - TRÂN TRỌNG GIÁ TRỊ. Các cụm nội dung: Mã số vùng trồng / Câu chuyện số của sản phẩm / Chỉ dẫn địa lý cà phê Khe Sanh / Sản xuất thích ứng với yêu cầu EUDR.\n\nTHIẾT KẾ & BÀN GIAO: Panel thông tin, sơ đồ quy trình truy xuất, thẻ QR sản phẩm; mỗi chủ đề có đoạn giải thích do đơn vị chuyên môn duyệt.\n\nCẦN CHỐT: Nhận nội dung hiện hành từ cơ quan phụ trách; không tự tuyên bố sản phẩm đạt EUDR, hữu cơ hay chỉ dẫn địa lý.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.08",
+          "name": "03.08 · Khu giới thiệu cà phê Lào",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: KẾT NỐI VĂN HÓA CÀ PHÊ. [Tên tỉnh / đơn vị, CHDCND Lào]. Khám phá sản phẩm, cách thưởng thức và câu chuyện cà phê từ những người bạn Lào.\n\nTHIẾT KẾ & BÀN GIAO: Bảng đơn vị, thẻ sản phẩm, lời giới thiệu và bảng hoạt động; bố cục có chỗ cho bản dịch được duyệt.\n\nCẦN CHỐT: Kế hoạch nêu mời tham gia; chỉ đưa tên, logo, quốc kỳ và nội dung song ngữ sau khi xác nhận đoàn thực tế.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.09",
+          "name": "03.09 · Khu thưởng thức cà phê",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÙNG THƯỞNG THỨC, CÙNG SẺ CHIA HƯƠNG VỊ HÒA BÌNH. Nhìn sắc cà phê - Cảm nhận hương thơm - Nhấp một ngụm nhỏ - Ghi lại cảm nhận riêng. Mẫu thử: [Tên] / [Giống] / [Sơ chế] / [Mức rang].\n\nTHIẾT KẾ & BÀN GIAO: Menu thử nếm, nhãn mẫu, phiếu cảm nhận và hướng dẫn; trường đánh dấu hương thơm, chua, ngọt, đắng, hậu vị.\n\nCẦN CHỐT: Chốt loại mẫu, lịch, cách phục vụ, có/không thu phí; mô tả hương vị phải theo sản phẩm thật.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.10",
+          "name": "03.10 · Không gian văn hóa bản địa",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: SẮC MÀU VĂN HÓA VÙNG CÀ PHÊ. Khám phá ẩm thực truyền thống, nhạc cụ và nghề thủ công qua câu chuyện của cộng đồng địa phương. Hoạt động hôm nay: [Tên / giờ / người giới thiệu].\n\nTHIẾT KẾ & BÀN GIAO: Bảng khu, lịch trình diễn, thẻ món ăn, nhãn sản phẩm thủ công, bảng giới thiệu nghệ nhân.\n\nCẦN CHỐT: Tên dân tộc, họa tiết, nhạc cụ và câu chuyện cần đại diện chuyên môn/cộng đồng xác nhận; không tự gán ý nghĩa.",
+          "images": []
+        },
+        {
+          "id": "KS100-03.11",
+          "name": "03.11 · Sơ đồ triển lãm và phương án bốn khu",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Phương án biên tập đề xuất: 01 Ký ức vun hương / 02 Hạt cà phê kết nối / 03 Hương vị sẻ chia / 04 Sắc màu chung sống. Khu giới thiệu cà phê Lào bố trí theo quy mô tham gia.\n\nTHIẾT KẾ & BÀN GIAO: Sơ đồ phân khu, luồng tham quan, mã gian, biển chỉ dẫn; liên kết mỗi khu với danh sách panel và thiết bị.\n\nCẦN CHỐT: Bốn tên khu là đề xuất thiết kế, không phải phân khu đã được quy định trong kế hoạch. Cần duyệt mặt bằng trước.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-04",
+      "name": "04 · Hội thi Nhà nông đua tài",
+      "items": [
+        {
+          "id": "KS100-04.01",
+          "name": "04.01 · Backdrop hội thi",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HỘI THI “NHÀ NÔNG ĐUA TÀI - CÀ PHÊ KHE SANH”. Chủ đề: Cà phê Khe Sanh - Từ bàn tay nông dân đến thương hiệu bền vững. Khe Sanh, ngày 26 tháng 10 năm 2026.\n\nTHIẾT KẾ & BÀN GIAO: Backdrop chính, màn chờ và banner giới thiệu; có phiên bản không ngày để phục vụ thông báo trước thi nếu cần.\n\nCẦN CHỐT: Chốt giờ bắt đầu, không gian tổ chức, hệ logo và kích thước sân khấu.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.02",
+          "name": "04.02 · Poster và thông báo tham gia",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÙNG CHIA SẺ TRI THỨC, CÙNG NÂNG TẦM CÀ PHÊ KHE SANH. Nội dung: câu chuyện sản phẩm; kỹ thuật trồng, chăm sóc, thu hoạch; thị trường và liên kết sản xuất. Đăng ký: [Đầu mối] trước [Hạn].\n\nTHIẾT KẾ & BÀN GIAO: Poster, bài mạng xã hội và phiếu đăng ký theo mẫu ban tổ chức; nêu đối tượng, cách tham gia và liên hệ.\n\nCẦN CHỐT: Nhận thể lệ, đối tượng, số đội, hạn đăng ký; không tự đặt điều kiện dự thi hoặc cơ cấu giải.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.03",
+          "name": "04.03 · Thể lệ và lịch thi",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HƯỚNG DẪN THAM GIA. Đối tượng / Thành phần đội / Nội dung thi / Thời gian từng phần / Cách tính điểm / Quy định xử lý tình huống / Cơ cấu giải / Đầu mối hỗ trợ.\n\nTHIẾT KẾ & BÀN GIAO: Dàn trang thể lệ, bản tóm tắt một trang và lịch đội thi; có số phiên bản để tránh dùng nhầm.\n\nCẦN CHỐT: Toàn bộ quy định do Hội Nông dân tỉnh và ban tổ chức hội thi cung cấp, duyệt trước phát hành.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.04",
+          "name": "04.04 · Bảng tên đội và số báo danh",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: ĐỘI [Tên] / [Xã, HTX hoặc đơn vị] / SỐ BÁO DANH [Mã]. Bảng giới thiệu ngắn: Sản phẩm của chúng tôi - [Tên sản phẩm].\n\nTHIẾT KẾ & BÀN GIAO: Bảng bàn đội, biển cầm tay nếu dùng, số báo danh và slide giới thiệu đội theo cùng mã.\n\nCẦN CHỐT: Chốt tên chính thức, số thành viên và thứ tự lên sân khấu; kiểm tra trùng mã.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.05",
+          "name": "04.05 · Slide phần thi và câu hỏi",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Các nhãn màn hình: Câu chuyện sản phẩm / Kiến thức nhà nông / Kết nối thị trường / Giao lưu kinh nghiệm. Mẫu câu hỏi: [Câu hỏi] / [Phương án nếu có] / [Thời gian trả lời].\n\nTHIẾT KẾ & BÀN GIAO: Template câu hỏi, đồng hồ, đáp án, chuyển phần và bảng điểm; tách bộ chiếu thí sinh khỏi bản đáp án điều hành.\n\nCẦN CHỐT: Tên phần thi là khung gợi ý; chuyên gia duyệt câu hỏi, đáp án và thể lệ trước khi nhập nội dung.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.06",
+          "name": "04.06 · Phiếu chấm và bảng tổng hợp điểm",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: PHIẾU CHẤM / Đội [Mã] / Phần thi [Tên]. Cột: Tiêu chí - Điểm tối đa - Điểm chấm - Nhận xét. Cuối phiếu: Tổng điểm / Giám khảo / Chữ ký.\n\nTHIẾT KẾ & BÀN GIAO: Mẫu in, bảng tổng hợp và màn hình kết quả; bố cục đủ chỗ ghi tay.\n\nCẦN CHỐT: Chốt tiêu chí, trọng số, cách xử lý đồng điểm và người xác nhận; không tự đặt thang điểm.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.07",
+          "name": "04.07 · Trao thưởng và vinh danh",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: VINH DANH “NÔNG DÂN TRỒNG CÀ PHÊ TIÊU BIỂU”. Trân trọng ghi nhận [Họ tên / đơn vị] vì những đóng góp trong [Nội dung được phê duyệt]. Bảng giải: [Tên giải] / [Đội hoặc cá nhân].\n\nTHIẾT KẾ & BÀN GIAO: Chứng nhận hoặc mẫu văn bản theo thẩm quyền, bảng giải, màn hình vinh danh và bìa đựng.\n\nCẦN CHỐT: Nhận quyết định, danh sách, tên giải, mức thưởng và người ký; mẫu ghi nhận doanh nghiệp/HTX tách với danh hiệu cá nhân.",
+          "images": []
+        },
+        {
+          "id": "KS100-04.08",
+          "name": "04.08 · Đồ họa livestream hội thi",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: TRỰC TIẾP / Nhà nông đua tài - Cà phê Khe Sanh. Đội đang thi: [Tên]. Phần thi: [Tên]. Kết quả chính thức: [Nội dung đã xác nhận].\n\nTHIẾT KẾ & BÀN GIAO: Màn mở đầu, bảng tên đội, bảng điểm, nhãn phần thi và màn trao giải; phối hợp đơn vị livestream.\n\nCẦN CHỐT: Chỉ phát kết quả đã được ban giám khảo xác nhận; cập nhật tên đội theo danh sách cuối.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-05",
+      "name": "05 · Hội thảo & kết nối đầu tư",
+      "items": [
+        {
+          "id": "KS100-05.01",
+          "name": "05.01 · Backdrop hội thảo",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HỘI THẢO / PHÁT TRIỂN NGÀNH HÀNG CÀ PHÊ ĐẶC SẢN, CÀ PHÊ NÔNG LÂM KẾT HỢP. Chủ đề: Phát triển cà phê Khe Sanh bền vững - Kết nối đầu tư, nâng tầm giá trị. Khe Sanh, ngày 26 tháng 10 năm 2026.\n\nTHIẾT KẾ & BÀN GIAO: Backdrop, slide mở đầu, màn chờ và banner đứng; phân cấp rõ tên hội thảo và chủ đề.\n\nCẦN CHỐT: Chốt tên hiển thị cuối cùng, địa điểm cụ thể, giờ bắt đầu, hệ logo và danh sách đối tác.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.02",
+          "name": "05.02 · Thư mời và lịch làm việc",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Trân trọng kính mời [Họ tên / đơn vị] tham dự hội thảo về phát triển cà phê Khe Sanh bền vững. Nội dung trọng tâm: thị trường, cà phê nông lâm kết hợp, kết nối đầu tư và liên kết tiêu thụ. Thời gian: chiều 26/10/2026, lúc [Giờ]. Địa điểm: [Địa chỉ].\n\nTHIẾT KẾ & BÀN GIAO: Thư mời in/điện tử và agenda; trường xác nhận tham dự, thông tin hỗ trợ.\n\nCẦN CHỐT: Chốt diễn giả, phiên thảo luận, thứ tự ký kết và người ký mời; không đưa đối tác chưa xác nhận vào lịch.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.03",
+          "name": "05.03 · Bộ tài liệu đại biểu",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Mục lục đề xuất: 1. Chương trình; 2. Giới thiệu ngành hàng; 3. Tham luận; 4. Danh mục dự án kêu gọi đầu tư; 5. Mô hình tiêu biểu; 6. Đầu mối kết nối.\n\nTHIẾT KẾ & BÀN GIAO: Bìa, mục lục, trang phân chương, trang nội dung và bản PDF có liên kết; mã QR tải tài liệu.\n\nCẦN CHỐT: Nhận tham luận và dữ liệu đã duyệt; phân biệt bản công khai với tài liệu chỉ dành cho đại biểu.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.04",
+          "name": "05.04 · Mẫu slide diễn giả",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Tên tham luận] / [Diễn giả, đơn vị]. Khung gợi ý: Bối cảnh - Vấn đề - Giải pháp - Cơ hội hợp tác - Đề xuất hành động. Trang cuối: Kết nối cùng [Đơn vị / liên hệ].\n\nTHIẾT KẾ & BÀN GIAO: Template tiêu đề, văn bản, biểu đồ, ảnh, trích dẫn nguồn và trang kết; bản tỷ lệ màn hình được xác nhận.\n\nCẦN CHỐT: Người trình bày chịu trách nhiệm dữ liệu chuyên môn; chốt thiết bị trình chiếu, font và định dạng nhận file.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.05",
+          "name": "05.05 · Ấn phẩm giới thiệu ngành hàng",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÀ PHÊ KHE SANH / Kết nối giá trị, phát triển bền vững. Cấu trúc: Vùng cà phê - Sản phẩm đặc sản - Nông lâm kết hợp - Định hướng hữu cơ - Chỉ dẫn địa lý - Cơ hội hợp tác.\n\nTHIẾT KẾ & BÀN GIAO: Brochure và bản PDF; mỗi mục có giới thiệu ngắn, ảnh thật, dữ liệu nguồn và đầu mối.\n\nCẦN CHỐT: Số liệu diện tích, sản lượng, chứng nhận và danh sách đơn vị phải được Sở chuyên môn xác nhận; không coi định hướng là chứng nhận.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.06",
+          "name": "05.06 · Danh mục dự án kêu gọi đầu tư",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CƠ HỘI ĐẦU TƯ NGÀNH CÀ PHÊ KHE SANH. Nhóm: Chế biến sâu / Logistics / Du lịch cà phê / Liên kết sản xuất - tiêu thụ. Mỗi dự án: [Tên] - [Mục tiêu] - [Địa điểm] - [Quy mô] - [Nhu cầu hợp tác] - [Đầu mối].\n\nTHIẾT KẾ & BÀN GIAO: Catalogue, thẻ dự án một trang và slide công bố; có mã dự án và ngày cập nhật.\n\nCẦN CHỐT: Dùng danh mục do cơ quan chủ trì cung cấp; không tự đặt vốn đầu tư, ưu đãi, quỹ đất hoặc cam kết hiệu quả.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.07",
+          "name": "05.07 · Hồ sơ mô hình nông lâm kết hợp",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: MÔ HÌNH CÀ PHÊ NÔNG LÂM KẾT HỢP TIÊU BIỂU / [Tên mô hình]. Người thực hiện - Địa điểm - Cách tổ chức sản xuất - Kết quả có minh chứng - Bài học - Cơ hội nhân rộng.\n\nTHIẾT KẾ & BÀN GIAO: Panel, hồ sơ ngắn và slide công bố; ảnh thực tế, sơ đồ mô hình, nguồn dữ liệu.\n\nCẦN CHỐT: Kế hoạch đặt mục tiêu công bố ít nhất 01 mô hình; tên và kết quả chỉ điền sau khi được lựa chọn chính thức.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.08",
+          "name": "05.08 · Bộ thiết kế lễ ký kết",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: LỄ KÝ KẾT / [Tên biên bản ghi nhớ hoặc cam kết]. Giữa [Đơn vị A] và [Đơn vị B]. Nội dung hiển thị rút gọn: [Tiêu thụ cà phê / hỗ trợ kỹ thuật / vốn / bao tiêu theo văn bản].\n\nTHIẾT KẾ & BÀN GIAO: Bìa hồ sơ, bảng tên đơn vị, nền LED và thứ tự ký; dự phòng bố cục nhiều bên.\n\nCẦN CHỐT: Chốt văn bản, tên pháp lý, người ký, số bên và thứ tự; nội dung thiết kế không thay thế hồ sơ ký kết.",
+          "images": []
+        },
+        {
+          "id": "KS100-05.09",
+          "name": "05.09 · Biển tên và hỗ trợ đại biểu",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Họ tên] / [Chức danh] / [Đơn vị]. Biển khu vực: Đăng ký đại biểu / Tài liệu / Phiên thảo luận / Kết nối đối tác.\n\nTHIẾT KẾ & BÀN GIAO: Biển bàn hai mặt, thẻ đại biểu, bảng đón tiếp và bản song ngữ nếu cần.\n\nCẦN CHỐT: Bản dịch tên, chức danh và thuật ngữ do đầu mối phụ trách duyệt; không tự phiên âm tên riêng.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-06",
+      "name": "06 · Truyền thông, phim & du lịch",
+      "items": [
+        {
+          "id": "KS100-06.01",
+          "name": "06.01 · Bộ bài trước sự kiện",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Hẹn gặp tại Khe Sanh, 24-26/10/2026! Cùng cảm nhận hương vị hòa bình từ cà phê Khe Sanh qua lễ khai mạc, triển lãm, hội thi nhà nông và hội thảo kết nối phát triển. Xem lịch và địa điểm tại [Link].\n\nTHIẾT KẾ & BÀN GIAO: Bài công bố, bốn bài hoạt động, bài lịch tổng và chuỗi đếm ngược; bản vuông/dọc theo kênh.\n\nCẦN CHỐT: Lập lịch đăng theo thông tin đã xác nhận; khi đổi lịch phải cập nhật cả ảnh và nội dung bài.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.02",
+          "name": "06.02 · Bộ bài câu chuyện cà phê",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Đằng sau mỗi hạt cà phê là một câu chuyện. Gặp [Nhân vật], tìm hiểu [Công đoạn / sản phẩm] và lắng nghe hành trình gắn bó với cà phê Khe Sanh. Đọc câu chuyện đầy đủ tại [Link].\n\nTHIẾT KẾ & BÀN GIAO: Template chân dung, trích dẫn, ảnh quy trình và carousel; khung kể: bàn tay vun trồng - giá trị lao động - sẻ chia hương vị - kết nối cộng đồng.\n\nCẦN CHỐT: Phỏng vấn và duyệt phát ngôn; không tự gán câu nói, thành tích hay hoàn cảnh cho nhân vật.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.03",
+          "name": "06.03 · Đồ họa phim tài liệu 30 phút",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Tiêu đề đề xuất: CÀ PHÊ KHE SANH - HƯƠNG VỊ HÒA BÌNH / 1926-2026. Chương đồ họa gợi ý: Đất lành vun hương / Con người gìn giữ / Hương vị sẻ chia / Hòa bình kết nối.\n\nTHIẾT KẾ & BÀN GIAO: Title, bản đồ, mốc thời gian, bảng tên nhân vật, chú thích tư liệu và credit. Tách file đồ họa cho đội dựng phim.\n\nCẦN CHỐT: Báo và Phát thanh, Truyền hình Quảng Trị chủ trì sản xuất; kịch bản và mốc lịch sử theo nội dung được duyệt.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.04",
+          "name": "06.04 · Đồ họa clip sản phẩm và mô hình",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Tên sản phẩm / mô hình]. Từ [Vùng trồng] đến [Sản phẩm / trải nghiệm], [Đơn vị] giới thiệu cách làm và câu chuyện của mình. Tìm hiểu thêm tại [QR / liên hệ].\n\nTHIẾT KẾ & BÀN GIAO: Bộ mở đầu, nhãn thông tin, phụ đề, khung ảnh, thumbnail và màn kết; phiên bản ngang/dọc theo kênh.\n\nCẦN CHỐT: Chốt clip, thời lượng, dữ liệu và quyền hình/nhạc; không thêm tuyên bố chất lượng chưa có căn cứ.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.05",
+          "name": "06.05 · Ấn phẩm tour và tuyến cà phê",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÀ PHÊ KHE SANH - HƯƠNG VỊ HÒA BÌNH / Khám phá vùng trồng - Gặp người làm cà phê - Tìm hiểu chế biến - Thưởng thức hương vị. Lịch trình: [Các điểm đã xác nhận]. Đặt dịch vụ: [Đơn vị / liên hệ].\n\nTHIẾT KẾ & BÀN GIAO: Tờ gấp, bản đồ tuyến, thẻ điểm đến và bản điện tử; nêu thời lượng, dịch vụ bao gồm, giá nếu được cung cấp.\n\nCẦN CHỐT: Đơn vị lữ hành xác nhận tuyến, khả năng đón khách, thời tiết, giá và lịch; không tự cam kết tour hoạt động.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.06",
+          "name": "06.06 · Trang thông tin sự kiện",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Chào mừng đến với “Cà phê Khe Sanh - Hương vị hòa bình”. Khám phá lịch hoạt động, không gian triển lãm, câu chuyện cà phê và thông tin dành cho khách tham dự.\n\nTHIẾT KẾ & BÀN GIAO: Nội dung trang gồm Tổng quan / Lịch / Bản đồ / Hoạt động / Du lịch / Tài liệu / Liên hệ; QR trỏ URL công khai ổn định.\n\nCẦN CHỐT: Chốt người cập nhật, tên miền và dữ liệu; website quản lý thiết kế nội bộ không mặc định là trang công khai sự kiện.",
+          "images": []
+        },
+        {
+          "id": "KS100-06.07",
+          "name": "06.07 · Truyền thông sau sự kiện",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Cảm ơn đã cùng lan tỏa hương vị hòa bình từ cà phê Khe Sanh. Cùng nhìn lại những cuộc gặp gỡ, trải nghiệm và kết nối trong chuỗi hoạt động 100 năm. Xem album và kết quả tại [Link].\n\nTHIẾT KẾ & BÀN GIAO: Bộ ảnh tổng kết, bài cảm ơn, infographics kết quả và thumbnail video; chia album theo bốn hoạt động.\n\nCẦN CHỐT: Chỉ công bố số khách, kết quả, giải thưởng và ký kết đã được xác nhận; kiểm tra tên nhà tài trợ trước đăng.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-07",
+      "name": "07 · Hoạt động bổ trợ & đề xuất",
+      "items": [
+        {
+          "id": "KS100-07.01",
+          "name": "07.01 · Thi cà phê đặc sản và thử nếm",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: THI CÀ PHÊ ĐẶC SẢN / THỬ NẾM CÀ PHÊ KHE SANH. Cùng khám phá giá trị hương vị qua các mẫu cà phê tham gia. Thời gian, địa điểm và đăng ký: [Thông tin được duyệt].\n\nTHIẾT KẾ & BÀN GIAO: Khi có kế hoạch chi tiết: poster, mã mẫu, nhãn bàn, phiếu thử nếm, bảng kết quả và chứng nhận theo thể lệ.\n\nCẦN CHỐT: Mục V.13, trang 10 giao Hội Cà phê huy động nguồn lực tổ chức; chưa có lịch, quy mô hay thể lệ cụ thể trong tài liệu.\n\nPHẠM VI: Ý tưởng bổ trợ, chỉ triển khai sau khi được duyệt thêm.",
+          "images": []
+        },
+        {
+          "id": "KS100-07.02",
+          "name": "07.02 · Hội thảo khoa học về chỉ dẫn địa lý",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: Khung tiêu đề theo nội dung đề xuất trong kế hoạch: Giá trị cà phê mang chỉ dẫn địa lý “Khe Sanh”. Trọng tâm, diễn giả và thời gian: [Chờ kế hoạch riêng].\n\nTHIẾT KẾ & BÀN GIAO: Chỉ chuẩn bị cấu trúc backdrop, thư mời và tài liệu khi được giao; kiểm tra có tích hợp vào hội thảo chính hay không.\n\nCẦN CHỐT: Mục V.5, trang 7 nêu phối hợp đề xuất; chưa coi đây là một hoạt động độc lập đã chốt.\n\nPHẠM VI: Ý tưởng bổ trợ, chỉ triển khai sau khi được duyệt thêm.",
+          "images": []
+        },
+        {
+          "id": "KS100-07.03",
+          "name": "07.03 · Hộ chiếu cà phê - đề xuất",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: HỘ CHIẾU HƯƠNG VỊ HÒA BÌNH. Mỗi hương vị, một kết nối. Ghé các điểm trải nghiệm, nhận dấu xác nhận và ghi lại hương vị bạn yêu thích.\n\nTHIẾT KẾ & BÀN GIAO: Bìa, bản đồ mini, ô đóng dấu theo điểm thực tế, trang ghi cảm nhận; hướng dẫn nhận quà chỉ thêm khi có chương trình.\n\nCẦN CHỐT: Ngoài danh mục cụ thể của kế hoạch; cần duyệt ngân sách, số điểm, nhân sự đóng dấu và cơ chế quà tặng.\n\nPHẠM VI: Ý tưởng bổ trợ, chỉ triển khai sau khi được duyệt thêm.",
+          "images": []
+        },
+        {
+          "id": "KS100-07.04",
+          "name": "07.04 · Bưu thiếp hòa bình - đề xuất",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: TỪ KHE SANH, TÔI GỬI... Một lời chúc, một ký ức, một niềm hy vọng. Người gửi: [Tùy chọn]. Lời nhắn: [Khoảng trống]. 100 năm cà phê Khe Sanh / 1926-2026.\n\nTHIẾT KẾ & BÀN GIAO: Bộ bưu thiếp minh họa, dấu kỷ niệm và bảng hướng dẫn viết/treo; chừa vùng viết tay rõ ràng.\n\nCẦN CHỐT: Ngoài danh mục cụ thể của kế hoạch; chốt nơi trưng bày, vật liệu, số lượng và cách lưu giữ lời nhắn.\n\nPHẠM VI: Ý tưởng bổ trợ, chỉ triển khai sau khi được duyệt thêm.",
+          "images": []
+        },
+        {
+          "id": "KS100-07.05",
+          "name": "07.05 · Quà tặng kỷ niệm - đề xuất",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: 100 NĂM CÀ PHÊ KHE SANH / 1926-2026. Dòng thiệp kèm: Cảm ơn bạn đã cùng sẻ chia hương vị hòa bình từ cà phê Khe Sanh. Trân trọng gửi tặng [Người / đơn vị].\n\nTHIẾT KẾ & BÀN GIAO: Ưu tiên chọn một bộ phù hợp ngân sách: hộp cà phê và thiệp, hoặc túi/sổ/huy hiệu; thiết kế theo mẫu vật thực tế.\n\nCẦN CHỐT: Chưa có danh mục quà trong kế hoạch; nhãn thực phẩm lấy thông tin do nhà sản xuất duyệt, không tự thêm chứng nhận.\n\nPHẠM VI: Ý tưởng bổ trợ, chỉ triển khai sau khi được duyệt thêm.",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "KS100-08",
+      "name": "08 · Slide duyệt & hồ sơ bàn giao",
+      "items": [
+        {
+          "id": "KS100-08.01",
+          "name": "08.01 · Bìa hồ sơ",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CÀ PHÊ KHE SANH - HƯƠNG VỊ HÒA BÌNH / 1926-2026. HỒ SƠ THIẾT KẾ VÀ TRIỂN KHAI. Phiên bản [Số] / Cập nhật [Ngày] / khanh.design.\n\nTHIẾT KẾ & BÀN GIAO: Bìa PDF, bìa slide và ảnh đại diện dự án; có mã phiên bản rõ ràng.\n\nCẦN CHỐT: Chốt tên hồ sơ và người tiếp nhận; tránh dùng từ “đã phê duyệt” cho bản đang trình.",
+          "images": []
+        },
+        {
+          "id": "KS100-08.02",
+          "name": "08.02 · Mục lục liên kết",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: 01 Nhận diện chung / 02 Khai mạc / 03 Triển lãm / 04 Hội thi / 05 Hội thảo / 06 Truyền thông / 07 Bổ trợ / 08 Bàn giao.\n\nTHIẾT KẾ & BÀN GIAO: Mục lục có số trang, mã nhóm và liên kết; mỗi nhóm có trang mở đầu và liên kết quay lại.\n\nCẦN CHỐT: Cập nhật trang sau khi xuất; giữ mã hạng mục thống nhất giữa PDF, mindmap và Drive.",
+          "images": []
+        },
+        {
+          "id": "KS100-08.03",
+          "name": "08.03 · Bảng tiến độ tổng",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: TỔNG QUAN TIẾN ĐỘ / Tổng [Số] hạng mục. Đang triển khai [Số] / Đợi duyệt [Số] / Hoàn thành [Số]. Nội dung cần quyết định tuần này: [Danh sách].\n\nTHIẾT KẾ & BÀN GIAO: Bảng trạng thái có ngày cập nhật; đỏ - đang triển khai, vàng - đợi duyệt, xanh lá - hoàn thành; luôn kèm chữ.\n\nCẦN CHỐT: Không điền tiến độ giả định. Hạng mục đề xuất chưa duyệt phạm vi theo dõi riêng bằng nhãn phạm vi, không tính như việc đã giao.",
+          "images": []
+        },
+        {
+          "id": "KS100-08.04",
+          "name": "08.04 · Showcase theo hạng mục",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: [Mã] / [Tên hạng mục]. Mục tiêu: [Mục đích]. Phương án: [Số]. Nội dung chính: [Tóm tắt]. Ứng dụng: [Vị trí]. Trạng thái: [Một trong ba trạng thái].\n\nTHIẾT KẾ & BÀN GIAO: Một trang có hình phẳng đọc được và mockup ứng dụng, kích thước, ghi chú thay đổi; link ảnh/PDF đầy đủ.\n\nCẦN CHỐT: Phân biệt hình minh họa với ảnh hiện trạng; không trình mockup như đã thi công.",
+          "images": []
+        },
+        {
+          "id": "KS100-08.05",
+          "name": "08.05 · Danh sách chờ duyệt",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: CẦN DUYỆT / [Mã, tên]. Đề xuất chọn [Phương án] vì [Lý do]. Cần phản hồi về [Nội dung cụ thể]. Người duyệt [Tên] / Hạn [Ngày].\n\nTHIẾT KẾ & BÀN GIAO: Bảng quyết định tập trung; cột ý kiến, kết luận và phiên bản được duyệt; đính kèm link đúng file.\n\nCẦN CHỐT: Chốt người có quyền duyệt từng nhóm; phản hồi phải gắn phiên bản để tránh sửa nhầm bản cũ.",
+          "images": []
+        },
+        {
+          "id": "KS100-08.06",
+          "name": "08.06 · Danh mục bàn giao sản xuất",
+          "status": "Chưa giao việc",
+          "note": "NỘI DUNG MẪU: BÀN GIAO / [Mã hạng mục]. File nguồn [Link] / PDF sản xuất [Link] / Ảnh xem trước [Link]. Kích thước [Số] / Chất liệu [Loại] / Số lượng [Số] / Đơn vị nhận [Tên].\n\nTHIẾT KẾ & BÀN GIAO: Bảng kê, thư mục theo mã, file nguồn và file xuất; ghi hệ màu, bleed, tỷ lệ hoặc độ phân giải theo yêu cầu nhà cung cấp.\n\nCẦN CHỐT: Chỉ đánh dấu hoàn thành khi nội dung được duyệt và đủ file; lưu xác nhận nhận file và bản cuối trước thi công.",
+          "images": []
+        }
+      ]
+    }
+  ]
+}
