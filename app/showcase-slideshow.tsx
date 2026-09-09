@@ -34,7 +34,7 @@ export default function ShowcaseSlideshow({slides,start,onClose,trigger}:{slides
     <DialogContent ref={container} className="showcase-slideshow" style={{translate:'none',transform:'none'}} showCloseButton={false}
       onCloseAutoFocus={event=>{event.preventDefault();trigger?.focus()}}
       onKeyDown={event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();advance(event.key==='ArrowRight'?1:-1)}}}>
-      <header className="showcase-slide-header"><div><DialogTitle>{slide.title}</DialogTitle><DialogDescription>{slide.file.name}</DialogDescription></div>
+      <header className="showcase-slide-header"><div><DialogTitle>{slide.file.name}</DialogTitle><DialogDescription>{slide.title}</DialogDescription></div>
         <button aria-label={fullscreen?'Thoát toàn màn hình':'Toàn màn hình'} onClick={()=>void toggleFullscreen()}>{fullscreen?<Minimize/>:<Maximize/>}</button>
         <button aria-label="Đóng trình chiếu" onClick={()=>void close()}><X/></button>
       </header>
