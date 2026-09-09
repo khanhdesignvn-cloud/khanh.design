@@ -3,7 +3,7 @@ import './showcase.css';
 import {useState} from 'react';
 import ShowcaseSlideshow,{type ShowcaseSlide} from './showcase-slideshow';
 import {ArrowUpRight, Images} from 'lucide-react';
-import {attachments, driveValid, type Group, type Item} from './model';
+import {groupLabel,attachments, driveValid, type Group, type Item} from './model';
 
 export default function Showcase({groups,onItem,onEmpty}:{groups:Group[];onItem:(group:string,item:Item)=>void;onEmpty:()=>void}) {
   const [presentation,setPresentation]=useState<{slides:ShowcaseSlide[];start:number;trigger:HTMLElement}|null>(null);
@@ -17,7 +17,7 @@ export default function Showcase({groups,onItem,onEmpty}:{groups:Group[];onItem:
   return <div className="showcase showcase-gallery">
     {cards.map(({group,item,files})=><article key={item.id} className="showcase-card">
       <button className="showcase-description" onClick={()=>onItem(group.id,item)}>
-        <small>{group.name} · {files.filter(f=>f.type==='image').length} ảnh</small>
+        <small>{groupLabel(group)} · {files.filter(f=>f.type==='image').length} ảnh</small>
         <h3>{item.name}</h3><span className="status">{item.status}</span>
       </button>
       <div className="showcase-images">{files.filter(f=>f.type==='image').map((file,index)=><button key={`${file.id}-${index}`} className="showcase-image" onClick={event=>{setPresentation({slides,trigger:event.currentTarget,start:slides.findIndex(s=>s.itemId===item.id&&s.imageIndex===index)})}} aria-label={`Xem ${file.name} · ${item.name}`}>

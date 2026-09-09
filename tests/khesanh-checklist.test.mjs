@@ -14,16 +14,16 @@ test('Khe Sanh checklist contains all 61 documented items in 8 groups', () => {
   assert.equal(items[0].id, 'KS100-01.01');
   assert.equal(items.at(-1).id, 'KS100-08.06');
   for (const item of items) {
-    assert.equal(item.status, 'Chưa giao việc');
+    assert.equal(item.status, 'Đang triển khai');
     assert.match(item.note, /NỘI DUNG MẪU:/);
     assert.match(item.note, /THIẾT KẾ & BÀN GIAO:/);
     assert.match(item.note, /CẦN CHỐT:/);
   }
 });
 
-test('new items default to the unassigned status, not active work', () => {
+test('new items default to the approved two-status active workflow', () => {
   const model = fs.readFileSync(new URL('../app/model.ts', import.meta.url), 'utf8');
-  assert.match(model, /statuses=\['Chưa giao việc','Đang triển khai','Đợi duyệt','Hoàn thành'\]/);
+  assert.match(model, /statuses=\['Đang triển khai','Hoàn thành'\]/);
   assert.match(model, /initial:Data=\{projects:\[khesanhProject/);
   const workspace = fs.readFileSync(new URL('../app/workspace.tsx', import.meta.url), 'utf8');
   assert.match(workspace, /status:statuses\[0\]/);

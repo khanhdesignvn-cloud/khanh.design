@@ -5,7 +5,7 @@ export function zoomPosition(old:number,next:number,left:number,top:number,x:num
 export function useMapNavigation(enabled:boolean){
  const viewport=useRef<HTMLDivElement>(null),[zoom,setZoom]=useState(1),scale=useRef(1),pending=useRef<{left:number;top:number}|null>(null);
  const apply=(z:number,x?:number,y?:number)=>{const v=viewport.current;if(!v)return;const next=clampZoom(z);const position=pending.current||{left:v.scrollLeft,top:v.scrollTop};pending.current=zoomPosition(scale.current,next,position.left,position.top,x??v.clientWidth/2,y??v.clientHeight/2);scale.current=next;setZoom(next)};
- const fit=()=>{const v=viewport.current;if(v){const next=clampZoom(Math.min((v.clientWidth-24)/1260,(v.clientHeight-24)/(v.firstElementChild?.firstElementChild?.clientHeight||600),1));pending.current={left:0,top:0};if(next===scale.current){v.scrollTo(0,0);pending.current=null}else{scale.current=next;setZoom(next)}}};
+ const fit=()=>{const v=viewport.current;if(v){const next=clampZoom(Math.min((v.clientWidth-24)/(v.firstElementChild?.firstElementChild?.clientWidth||1260),(v.clientHeight-24)/(v.firstElementChild?.firstElementChild?.clientHeight||600),1));pending.current={left:0,top:0};if(next===scale.current){v.scrollTo(0,0);pending.current=null}else{scale.current=next;setZoom(next)}}};
  useLayoutEffect(()=>{if(viewport.current&&pending.current){viewport.current.scrollLeft=pending.current.left;viewport.current.scrollTop=pending.current.top;pending.current=null}},[zoom]);
  useEffect(()=>{const v=viewport.current;if(!enabled||!v)return;const points=new Map<number,{x:number;y:number}>();let moved=false,blockUntil=0,travel=0;
  const autoFitTimer=v.clientWidth<=640?window.setTimeout(fit,0):0;
