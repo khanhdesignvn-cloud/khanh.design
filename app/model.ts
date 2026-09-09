@@ -1,8 +1,8 @@
 import khesanhProject from './data/khesanh-project.json';
 
-export const statuses=['Chưa giao việc','Đang triển khai','Đợi duyệt','Hoàn thành'];
-export const legacyStatuses=['Chưa bắt đầu','Đang thiết kế','Chờ duyệt','Cần chỉnh sửa'];
-export const normalizeStatus=(s:string)=>s==='Chưa bắt đầu'?'Chưa giao việc':s==='Chờ duyệt'?'Đợi duyệt':['Đang thiết kế','Cần chỉnh sửa'].includes(s)?'Đang triển khai':s;
+export const statuses=['Đang triển khai','Hoàn thành'];
+export const legacyStatuses=['Chưa bắt đầu','Đang thiết kế','Chờ duyệt','Cần chỉnh sửa','Chưa giao việc','Đợi duyệt'];
+export const normalizeStatus=(s:string)=>s==='Hoàn thành'?'Hoàn thành':'Đang triển khai';
 export function normalizeData(data:Data):Data{return {...data,projects:data.projects.map(p=>({...p,groups:p.groups.map(g=>({...g,items:g.items.map(i=>({...i,status:normalizeStatus(i.status)}))}))}))};}
 export type Attachment={id:string;name:string;url:string;type:'image'|'pdf'|'drive'};
 export type Item={id:string;name:string;status:string;note:string;images:string[];files?:Attachment[];driveUrl?:string};

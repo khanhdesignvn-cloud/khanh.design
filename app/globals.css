@@ -138,8 +138,8 @@ html[data-theme=dark] :is(.danger,.remove-small,.add-small){color:#ededed!import
 @media(max-width:700px){.login-link span{display:inline;font-size:12px}.session-controls{gap:3px}.project-title-only{min-width:60px}.login-link{padding:6px 2px}.theme-toggle{width:28px;padding:0}.theme-toggle span{display:none}}
 @media print{.report-slide,.report-slide *{color:#111!important}.report-slide{background:white!important}}
 @media print{html[data-theme=dark] .report-slide,html[data-theme=dark] .report-slide *{color:#111!important;background-color:transparent}html[data-theme=dark] .report-slide{background:#fff!important}}
-/* Three workflow colors apply consistently in both themes. */
-.status.s0{--status-ink:#b42318;--status-fill:#fff0ee}.status.s1{--status-ink:#795500;--status-fill:#fff7d1}.status.s2{--status-ink:#15703d;--status-fill:#eaf8ef}
-html[data-theme=dark] .status.s0{--status-ink:#ff9b91;--status-fill:#44221f}html[data-theme=dark] .status.s1{--status-ink:#f4d25e;--status-fill:#3e3519}html[data-theme=dark] .status.s2{--status-ink:#85dba5;--status-fill:#193d29}
-html .status,html[data-theme=dark] .status,html[data-theme=dark] .item-node .status{color:var(--status-ink)!important;background:var(--status-fill);padding:3px 7px;border-radius:4px;font-size:12px;line-height:1.4}.status.s0 i{background:#e53935!important}.status.s1 i{background:#efbe22!important}.status.s2 i{background:#2cab60!important}.status i{width:7px;height:7px}.report-stats{grid-template-columns:repeat(3,1fr)}.canvas{touch-action:none;overscroll-behavior:contain;user-select:none}.canvas .item-node{user-select:none}
-@media(max-width:700px){.report-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.report-stats>div{padding:12px 8px}.report-stats span{font-size:12px}}
+/* Two workflow colors apply consistently in both themes. */
+.status.s0{--status-ink:#b42318;--status-fill:#fff0ee}.status.s1{--status-ink:#15703d;--status-fill:#eaf8ef}
+html[data-theme=dark] .status.s0{--status-ink:#ff9b91;--status-fill:#44221f}html[data-theme=dark] .status.s1{--status-ink:#85dba5;--status-fill:#193d29}
+html .status,html[data-theme=dark] .status,html[data-theme=dark] .item-node .status{color:var(--status-ink)!important;background:var(--status-fill);padding:3px 7px;border-radius:4px;font-size:12px;line-height:1.4}.status.s0 i{background:#e53935!important}.status.s1 i{background:#2cab60!important}.status i{width:7px;height:7px}.report-stats{grid-template-columns:repeat(2,1fr)}.canvas{touch-action:none;overscroll-behavior:contain;user-select:none}.canvas .item-node{user-select:none}
+@media(max-width:700px){.report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.report-stats>div{padding:12px 8px}.report-stats span{font-size:12px}}
