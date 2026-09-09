@@ -24,11 +24,36 @@ export function layoutHierarchy(groups:Group[],collapsed:string[]){
  return {placed,categories,nextY:y,height:Math.max(580,y+55)};
 }
 export type Project={id:string;name:string;subtitle:string;groups:Group[];driveFolder?:string;cover?:string;shareToken?:string};
+// Public API contract: explicitly copy presentation fields, never spread stored
+// records. Future audit/member/internal metadata must remain private by default.
+// `note` is the existing public design note; internal notes use separate fields.
+export function publicProject(p:Project):Project {
+ return {id:p.id,name:p.name,subtitle:p.subtitle,
+  ...(p.driveFolder?{driveFolder:p.driveFolder}:{}),...(p.cover?{cover:p.cover}:{}),
+  groups:p.groups.map(g=>({id:g.id,name:g.name,...(g.category?{category:g.category}:{}),
+   items:g.items.map(i=>({id:i.id,name:i.name,status:normalizeStatus(i.status),note:i.note,images:[...i.images],
+    ...(i.driveUrl?{driveUrl:i.driveUrl}:{}),
+    ...(i.files?{files:i.files.map(f=>({id:f.id,name:f.name,url:f.url,type:f.type}))}:{})
+   }))
+  }))};
+}
 export type Data={projects:Project[]};
 export const driveValid=(value:string)=>{if(!value)return true;try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password}catch{return false}};
 export const groupCode=(i:number)=>String(i+1).padStart(2,'0');
 export const itemCode=(gi:number,ii:number)=>`${groupCode(gi)}.${String(ii+1).padStart(2,'0')}`;
 export const attachments=(item:Item):Attachment[]=>[...item.images.map(url=>({id:url,name:'Ảnh thiết kế',url,type:'image' as const})),...(item.files||[])];
+export type AttachmentFilter='all'|'missing'|'attached';
+const searchText=(value:string)=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLocaleLowerCase('vi');
+export function searchWorkspace(data:Data,query:string,status='Tất cả trạng thái',fileFilter:AttachmentFilter='all') {
+ const words=searchText(query.trim()).split(/\s+/).filter(Boolean);
+ return data.projects.flatMap(project=>project.groups.flatMap((group,gi)=>group.items.flatMap((item,ii)=>{
+  const code=itemCode(gi,ii),breadcrumb=[project.name,group.category,group.name].filter(Boolean).join(' / ');
+  const haystack=searchText([breadcrumb,item.name,item.note,code].join(' '));
+  const hasFiles=attachments(item).length>0||!!item.driveUrl;
+  if(!words.every(word=>haystack.includes(word))||(status!=='Tất cả trạng thái'&&normalizeStatus(item.status)!==status)||(fileFilter==='missing'&&hasFiles)||(fileFilter==='attached'&&!hasFiles))return [];
+  return [{projectId:project.id,groupId:group.id,item,code,breadcrumb}];
+ })));
+}
 export type DragNode={kind:'group'|'item';id:string;group?:string};
 export function moveNode(data:Data,projectId:string,from:DragNode,to:DragNode):Data {const next=structuredClone(data);const p=next.projects.find(p=>p.id===projectId);if(!p||from.id===to.id)return data;if(from.kind==='group'){const target=to.kind==='group'?to.id:to.group;const a=p.groups.findIndex(g=>g.id===from.id),b=p.groups.findIndex(g=>g.id===target);if(a<0||b<0||a===b)return data;const category=p.groups[b].category;const [g]=p.groups.splice(a,1);if(category)g.category=category;else delete g.category;p.groups.splice(b,0,g);}else{const src=p.groups.find(g=>g.id===from.group),dest=p.groups.find(g=>g.id===(to.kind==='group'?to.id:to.group));if(!src||!dest)return data;const a=src.items.findIndex(i=>i.id===from.id);if(a<0)return data;const [item]=src.items.splice(a,1);const b=to.kind==='item'?dest.items.findIndex(i=>i.id===to.id):-1;dest.items.splice(b<0?dest.items.length:b,0,item);}return next;}
 export const initial:Data={projects:[khesanhProject as unknown as Project]};

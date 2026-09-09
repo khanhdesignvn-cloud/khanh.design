@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+import fs from 'node:fs';
+const source=fs.readFileSync(new URL('../app/model.ts',import.meta.url),'utf8').replace("import khesanhProject from './data/khesanh-project.json';",'const khesanhProject={};');
+const model=await import('data:text/javascript;base64,'+Buffer.from(ts.transpile(source,{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022})).toString('base64'));
+const a={id:'a',name:'Hạt rang',status:'Hoàn thành',note:'Yêu cầu màu xanh',images:[]};
+const b={id:'b',name:'Lá',status:'Đang triển khai',note:'',images:[],driveUrl:'https://drive.google.com/drive/folders/example'};
+const data={projects:[{id:'p',name:'Farm',subtitle:'',groups:[{id:'g',name:'Cao cấp',category:'Cà phê',items:[a,b]}]}]};
+test('search uses authorized input, Vietnamese breadcrumbs, public notes and positional codes, never filenames',()=>{
+ assert.equal(typeof model.searchWorkspace,'function','workspace search is missing');
+ for(const query of ['ca phe','CAO CẤP','mau xanh','01.01','Farm'])assert.ok(model.searchWorkspace(data,query).some(r=>r.item.id==='a'),query);
+ const result=model.searchWorkspace(data,'mau xanh')[0];
+ assert.equal(result.breadcrumb,'Farm / Cà phê / Cao cấp');
+ assert.equal(model.searchWorkspace({projects:[]},'Farm').length,0);
+ const withFile=structuredClone(data);withFile.projects[0].groups[0].items[0].files=[{id:'f',name:'secret-original.png',type:'image',url:'/api/image/abc'}];
+ assert.equal(model.searchWorkspace(withFile,'secret-original').length,0);
+ assert.deepEqual(model.searchWorkspace(data,'','Hoàn thành').map(r=>r.item.id),['a']);
+ assert.deepEqual(model.searchWorkspace(data,'','Tất cả trạng thái','missing').map(r=>r.item.id),['a']);
+ assert.deepEqual(model.searchWorkspace(data,'','Tất cả trạng thái','attached').map(r=>r.item.id),['b']);
+});
