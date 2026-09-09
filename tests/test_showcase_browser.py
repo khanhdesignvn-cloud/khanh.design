@@ -34,14 +34,14 @@ class ShowcaseBrowser(unittest.TestCase):
             if req.request.method not in ('GET', 'HEAD'):
                 self.mutations.append(req.request.url)
                 req.abort()
-            elif '/api/workspace' in req.request.url:
-                req.fulfill(json=FIXTURE)
+            elif '/api/project/' in req.request.url:
+                req.fulfill(json={'data':FIXTURE['data']['projects'][0]})
             elif '/fixture/' in req.request.url:
                 req.fulfill(content_type='image/svg+xml', body='<svg xmlns="http://www.w3.org/2000/svg" width="300" height="800"><rect width="300" height="800" fill="#215534"/><text x="12" y="40" fill="white">Showcase fixture</text></svg>')
             else:
                 req.continue_()
         self.page.route('**/*', route)
-        self.page.goto(BASE + '/admin')
+        self.page.goto(BASE + '/p/showcase-fixture')
         self.page.get_by_role('tab', name='Showcase', exact=True).click()
         expect(self.page.get_by_text('Logo kỷ niệm', exact=True)).to_be_visible()
 
@@ -69,11 +69,11 @@ class ShowcaseBrowser(unittest.TestCase):
         dialog = self.page.get_by_role('dialog')
         expect(dialog).to_be_visible()
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/design-2.png')
-        expect(dialog.get_by_role('heading')).to_have_text('Logo kỷ niệm')
+        expect(dialog.get_by_role('heading')).to_have_text('design-2.png')
         expect(dialog.get_by_text('2 / 4', exact=True)).to_be_visible()
         self.page.keyboard.press('ArrowRight')
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/design-3.png')
-        expect(dialog.get_by_role('heading')).to_have_text('Thiệp mời')
+        expect(dialog.get_by_role('heading')).to_have_text('design-3.png')
         dialog.get_by_role('button', name='Ảnh tiếp').click()
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/legacy.png')
         dialog.get_by_role('button', name='Ảnh tiếp').click()
