@@ -20,10 +20,10 @@ export default function Showcase({groups,onItem,onEmpty}:{groups:Group[];onItem:
         <small>{groupLabel(group)} · {files.filter(f=>f.type==='image').length} ảnh</small>
         <h3>{item.name}</h3><span className="status">{item.status}</span>
       </button>
-      <div className="showcase-images">{files.filter(f=>f.type==='image').map((file,index)=><button key={`${file.id}-${index}`} className="showcase-image" onClick={event=>{setPresentation({slides,trigger:event.currentTarget,start:slides.findIndex(s=>s.itemId===item.id&&s.imageIndex===index)})}} aria-label={`Xem ${file.name} · ${item.name}`}>
-        <img src={file.url} alt={file.name} loading="lazy"/><span>{file.name}</span>
+      <div className="showcase-images">{files.filter(f=>f.type==='image').map((file,index)=><button key={`${file.id}-${index}`} className="showcase-image" onClick={event=>{setPresentation({slides,trigger:event.currentTarget,start:slides.findIndex(s=>s.itemId===item.id&&s.imageIndex===index)})}} aria-label={`Xem ${item.name} · Ảnh ${index+1}`}>
+        <img src={file.url} alt={`${item.name} · Ảnh ${index+1}`} loading="lazy"/>
       </button>)}</div>
-      <div className="showcase-links">{files.filter(f=>f.type!=='image').filter(f=>f.type!=='drive'||driveValid(f.url)).map((file,index)=><a key={`${file.id}-${index}`} href={file.url} target="_blank" rel="noopener noreferrer">{file.name}<small>{file.type==='pdf'?'PDF':'Google Drive'}</small><ArrowUpRight size={16}/></a>)}
+      <div className="showcase-links">{files.filter(f=>f.type!=='image').filter(f=>f.type!=='drive'||driveValid(f.url)).map((file,index)=><a key={`${file.id}-${index}`} href={file.url} target="_blank" rel="noopener noreferrer">{file.type==='pdf'?'Tài liệu PDF':'Google Drive'} {index+1}<small>{file.type==='pdf'?'PDF':'Google Drive'}</small><ArrowUpRight size={16}/></a>)}
         {item.driveUrl&&driveValid(item.driveUrl)&&<a href={item.driveUrl} target="_blank" rel="noopener noreferrer">Thư mục Google Drive<ArrowUpRight size={16}/></a>}
       </div>
     </article>)}

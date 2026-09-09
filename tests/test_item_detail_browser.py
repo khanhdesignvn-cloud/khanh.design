@@ -5,7 +5,7 @@ import os
 import unittest
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
-from test_showcase_browser import FIXTURE
+from test_showcase_browser import FIXTURE, assert_private_ui
 BASE = os.environ.get('ITEM_BASE_URL', 'http://127.0.0.1:8795')
 OUT = Path(os.environ.get('ITEM_EVIDENCE', '/tmp/item-detail-evidence'))
 
@@ -34,6 +34,24 @@ class ItemDetailBrowser(unittest.TestCase):
     def tearDown(self):
         self.assertEqual(self.errors,[])
         self.assertEqual(self.mutations,[])
+    def test_pdf_preview_and_report_hide_filenames(self):
+        self.page.locator('.table-name').filter(has_text='Thiệp mời').click()
+        assert_private_ui(self, self.page)
+        self.page.locator('.file-tile').nth(1).click()
+        expect(self.page.locator('.lightbox iframe')).to_have_attribute('title', 'Tài liệu PDF')
+        expect(self.page.locator('.lightbox a')).to_have_attribute('href', '/fixture/guide.pdf')
+        assert_private_ui(self, self.page)
+        self.page.locator('.lightbox').get_by_role('button', name='Close', exact=True).click()
+        expect(self.page.locator('.lightbox')).not_to_be_visible()
+        self.page.locator('.detail-panel').get_by_role('button', name='Close', exact=True).click()
+        expect(self.page.locator('.detail-panel')).not_to_be_visible()
+        self.page.get_by_role('tab', name='Slide tổng', exact=True).click()
+        for _ in range(4):
+            self.page.locator('.slide-navigation').get_by_role('button', name='Tiếp').click()
+            assert_private_ui(self, self.page)
+        self.page.locator('.report-slide.current .report-gallery button').first.click()
+        assert_private_ui(self, self.page)
+
     def test_drive_original_link(self):
         self.page.locator('.table-name').filter(has_text='Tài liệu riêng').click()
         link=self.page.get_by_role('link',name='TẢI FILE GỐC',exact=True)
@@ -47,10 +65,12 @@ class ItemDetailBrowser(unittest.TestCase):
 
     def test_item_scoped_slideshow(self):
         self.page.locator('.table-name').filter(has_text='Logo kỷ niệm').click()
-        trigger=self.page.locator('.file-tile').filter(has_text='design-2.png')
+        assert_private_ui(self, self.page)
+        trigger=self.page.locator('.file-tile').nth(1)
         trigger.click()
         viewer=self.page.locator('.showcase-slideshow')
         expect(viewer).to_be_visible()
+        assert_private_ui(self, self.page)
         expect(viewer.get_by_text('2 / 2',exact=True)).to_be_visible()
         stage=viewer.locator('.showcase-slide-stage img')
         expect(stage).to_have_attribute('src','/fixture/design-2.png')
@@ -91,9 +111,10 @@ class ItemDetailBrowser(unittest.TestCase):
     def test_mobile_item_swipe(self):
         self.page.set_viewport_size({'width':390,'height':844})
         self.page.locator('.table-name').filter(has_text='Logo kỷ niệm').click()
-        self.page.locator('.file-tile').filter(has_text='design-2.png').click()
+        self.page.locator('.file-tile').nth(1).click()
         viewer=self.page.locator('.showcase-slideshow')
         expect(viewer).to_be_visible()
+        assert_private_ui(self, self.page)
         self.assertEqual(viewer.locator('.showcase-slide-controls span').evaluate('(e)=>getComputedStyle(e).color'),'rgb(245, 245, 245)')
         box=viewer.locator('.showcase-slide-stage').bounding_box()
         assert box

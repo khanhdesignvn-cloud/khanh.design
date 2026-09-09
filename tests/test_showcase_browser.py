@@ -19,6 +19,13 @@ FIXTURE = {'data': {'projects': [{'id': 'khesanh', 'name': 'Showcase fixture', '
     {'id': 'g2', 'name': 'Ấn phẩm', 'items': [item('b', 'Thiệp mời', [image(3), {'id': 'pdf', 'name': 'guide.pdf', 'url': '/fixture/guide.pdf', 'type': 'pdf'}, {'id': 'drive', 'name': 'Drive source', 'url': 'https://drive.google.com/file/d/fixture/view', 'type': 'drive'}]), item('c', 'Tài liệu riêng', [], driveUrl='https://drive.google.com/drive/folders/fixture'), item('d', 'Ảnh cũ', [], ['/fixture/legacy.png'])]}
 ]}]}, 'revision': 42}
 
+def assert_private_ui(test, page):
+    names = ['design-1.png', 'design-2.png', 'design-3.png', 'guide.pdf', 'Drive source', 'legacy.png']
+    ui = page.locator('body').inner_text() + '\n'.join(line for line in page.locator('body').aria_snapshot().splitlines() if not line.lstrip().startswith('- /url:'))
+    ui += page.locator('[alt], [title], [aria-label]').evaluate_all("els => els.map(e => [e.getAttribute('alt'), e.getAttribute('title'), e.getAttribute('aria-label')].join(' ')).join(' ') ")
+    for name in names:
+        test.assertNotIn(name, ui)
+
 class ShowcaseBrowser(unittest.TestCase):
     def setUp(self):
         self.pw = sync_playwright().start()
@@ -53,27 +60,30 @@ class ShowcaseBrowser(unittest.TestCase):
             pass  # addCleanup also runs if setUp fails.
 
     def test_all_images_grouped_without_cropping_and_separate_links(self):
+        assert_private_ui(self, self.page)
         cards = self.page.locator('.showcase-card')
         expect(cards).to_have_count(4)
         expect(cards.nth(0).locator('img')).to_have_count(2)
         expect(self.page.locator('.showcase img')).to_have_count(4)
         for img in self.page.locator('.showcase img').all():
             self.assertEqual(img.evaluate('(e)=>getComputedStyle(e).objectFit'), 'contain')
-        expect(self.page.get_by_role('link', name='guide.pdf')).to_have_attribute('href', '/fixture/guide.pdf')
-        expect(self.page.get_by_role('link', name='Drive source')).to_have_attribute('target', '_blank')
+        expect(self.page.get_by_role('link', name='Tài liệu PDF 1')).to_have_attribute('href', '/fixture/guide.pdf')
+        expect(self.page.get_by_role('link', name='Google Drive 2')).to_have_attribute('target', '_blank')
         expect(self.page.get_by_role('link', name='Thư mục Google Drive')).to_have_attribute('href', 'https://drive.google.com/drive/folders/fixture')
 
     def test_exact_image_continuous_order_controls_keyboard_focus_and_fullscreen(self):
-        trigger = self.page.get_by_role('button', name='Xem design-2.png · Logo kỷ niệm', exact=True)
+        trigger = self.page.get_by_role('button', name='Xem Logo kỷ niệm · Ảnh 2', exact=True)
         trigger.click()
         dialog = self.page.get_by_role('dialog')
         expect(dialog).to_be_visible()
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/design-2.png')
-        expect(dialog.get_by_role('heading')).to_have_text('design-2.png')
+        expect(dialog.get_by_role('heading')).to_have_text('Logo kỷ niệm')
+        assert_private_ui(self, self.page)
         expect(dialog.get_by_text('2 / 4', exact=True)).to_be_visible()
         self.page.keyboard.press('ArrowRight')
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/design-3.png')
-        expect(dialog.get_by_role('heading')).to_have_text('design-3.png')
+        expect(dialog.get_by_role('heading')).to_have_text('Thiệp mời')
+        assert_private_ui(self, self.page)
         dialog.get_by_role('button', name='Ảnh tiếp').click()
         expect(dialog.locator('img')).to_have_attribute('src', '/fixture/legacy.png')
         dialog.get_by_role('button', name='Ảnh tiếp').click()
@@ -95,7 +105,7 @@ class ShowcaseBrowser(unittest.TestCase):
 
     def test_mobile_swipe_no_crop_no_overflow_and_focus_trap(self):
         self.page.set_viewport_size({'width': 390, 'height': 844})
-        self.page.get_by_role('button', name='Xem design-2.png · Logo kỷ niệm', exact=True).click()
+        self.page.get_by_role('button', name='Xem Logo kỷ niệm · Ảnh 2', exact=True).click()
         dialog = self.page.get_by_role('dialog')
         expect(dialog).to_be_visible()
         stage = dialog.locator('.showcase-slide-stage')
@@ -132,7 +142,8 @@ class ShowcaseBrowser(unittest.TestCase):
         expect(self.page.locator('.showcase img')).to_have_count(1)
         self.page.locator('.showcase-image').click()
         dialog = self.page.get_by_role('dialog')
-        expect(dialog.get_by_text('legacy.png', exact=True)).to_be_visible()
+        expect(dialog.get_by_role('heading')).to_have_text('Ảnh cũ')
+        assert_private_ui(self, self.page)
         expect(dialog.get_by_text('1 / 1', exact=True)).to_be_visible()
         expect(dialog.get_by_role('button', name='Ảnh tiếp')).to_be_disabled()
         expect(dialog.get_by_role('button', name='Ảnh trước')).to_be_disabled()
