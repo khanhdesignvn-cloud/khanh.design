@@ -17,7 +17,7 @@
 - [x] Metadata-only assignment of current real design and Farm projects.
 - [x] In-place deployment, assets identical, secrets/runtime preserved.
 - [x] Real HTTPS shares on desktop/mobile, fixture course (not stored), live image download/Drive/slideshow and Farm hierarchy verified.
-- [ ] Commit pushed and remote verified (final delivery gate).
+- [x] Application and verification commit `3dd7fc9` pushed; `git ls-remote` matched local HEAD. Final documentation-only closeout follows (does not change deployed build).
 
 ## Operations
 
