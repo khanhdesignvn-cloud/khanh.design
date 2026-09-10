@@ -29,7 +29,7 @@ class ItemDetailBrowser(unittest.TestCase):
             else: r.continue_()
         self.page.route('**/*', route)
         self.page.goto(BASE+'/p/item-detail-fixture')
-        self.page.get_by_role('tab',name='Sản phẩm',exact=True).click()
+        self.page.get_by_role('tab',name='Hạng mục',exact=True).click()
         OUT.mkdir(exist_ok=True)
     def tearDown(self):
         self.assertEqual(self.errors,[])

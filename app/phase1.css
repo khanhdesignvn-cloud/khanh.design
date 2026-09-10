@@ -1,0 +1,14 @@
+/* Phase 1: a fixed navigation stack with independently scrolling content. */
+.project-intro{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:14px 18px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--border)}
+.project-intro h1{font-size:22px;line-height:1.2;margin:3px 0;font-weight:600;overflow-wrap:anywhere}
+.project-intro p{font-size:13px;margin:5px 0 0;max-width:70ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.presentation-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-foreground)}
+.intro-progress{min-width:160px;display:grid;gap:5px;font-size:12px}.intro-progress small{font-size:11px}.intro-progress progress{width:100%;height:5px;accent-color:#327849}
+.project-breadcrumb,.detail-breadcrumb{display:flex;align-items:center;gap:7px;font-size:12px;flex-wrap:wrap;overflow-wrap:anywhere}.project-breadcrumb{flex-shrink:0;padding:7px 18px;background:var(--card);border-bottom:1px solid var(--border)}
+.project-breadcrumb button,.detail-breadcrumb button{text-decoration:underline;text-underline-offset:3px;text-align:left}.project-breadcrumb span{color:var(--muted-foreground)}
+.workarea .toolbar{flex-shrink:0}.workarea .tools{flex-wrap:wrap}.group-filter{max-width:230px;min-width:0}.workarea .view-tabs{white-space:nowrap}.workarea .toolbar>[data-slot=tabs]{min-width:0;overflow:auto;max-width:100%}
+.detail-breadcrumb{margin-top:10px}.detail-breadcrumb svg{flex-shrink:0}.project-dialog select{border:1px solid var(--border);padding:10px;border-radius:6px;background:var(--card);color:var(--foreground)}
+[data-presentation=course] .table-group-head{border-left:4px solid #576c97}[data-presentation=catalog] .table-group-head{border-left:4px solid #537b62}[data-presentation=design] .table-group-head{border-left:4px solid #89758c}
+@media(max-width:700px){.project-intro{padding:10px 12px;gap:10px}.project-intro h1{font-size:17px}.project-intro p{font-size:12px;-webkit-line-clamp:2}.intro-progress{min-width:100px;max-width:120px;font-size:11px}.intro-progress small{font-size:10px}.project-breadcrumb{padding:6px 12px;font-size:11px;max-height:48px;overflow:auto}.workarea .tools{display:flex;gap:6px}.workarea .tools .search{flex:1 1 100%;width:100%;max-width:none}.workarea .group-filter{max-width:100%;flex:1 1 100%;width:100%}.workarea .attachment-filter{font-size:12px}.workarea .view-tabs{width:max-content}.legend .saved{display:none}}
+@media(max-height:600px){.project-intro{display:none}.workarea .toolbar{padding:5px}.project-breadcrumb{padding:4px 12px}}
+@media print{.project-intro,.project-breadcrumb{display:none!important}}

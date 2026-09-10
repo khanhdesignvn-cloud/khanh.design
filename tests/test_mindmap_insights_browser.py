@@ -38,7 +38,7 @@ class InsightsBrowser(unittest.TestCase):
             page.get_by_role('textbox',name='Tìm hạng mục').fill('')
             page.get_by_label('Lọc tệp đính kèm').select_option('missing')
             expect(page.locator('.insight-result')).to_have_count(1)
-            page.get_by_role('tab',name='Sản phẩm',exact=True).click()
+            page.get_by_role('tab',name='Hạng mục',exact=True).click()
             expect(page.locator('.table-name')).to_have_count(1)
             page.get_by_label('Lọc tệp đính kèm').select_option('all')
             page.get_by_role('textbox',name='Tìm hạng mục').fill('01.02')

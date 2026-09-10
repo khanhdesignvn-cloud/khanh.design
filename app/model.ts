@@ -23,12 +23,22 @@ export function layoutHierarchy(groups:Group[],collapsed:string[]){
  }
  return {placed,categories,nextY:y,height:Math.max(580,y+55)};
 }
-export type Project={id:string;name:string;subtitle:string;groups:Group[];driveFolder?:string;cover?:string;shareToken?:string};
+export type PresentationType='design'|'course'|'catalog';
+export const presentationTypes:PresentationType[]=['design','course','catalog'];
+export const validPresentation=(v:unknown)=>v===undefined||(typeof v==='string'&&presentationTypes.includes(v as PresentationType));
+export const presentationProfiles={
+ design:{type:'design',label:'Thiết kế',item:'Hạng mục',group:'Nhóm thiết kế',gallery:'Showcase',report:'Slide tổng',heading:'Hồ sơ thiết kế',files:'Thiết kế & tài liệu'},
+ course:{type:'course',label:'Khóa học',item:'Bài học',group:'Học phần',gallery:'Học liệu',report:'Đề cương',heading:'Chương trình đào tạo',files:'Học liệu & tài liệu'},
+ catalog:{type:'catalog',label:'Danh mục sản phẩm',item:'Sản phẩm',group:'Dòng sản phẩm',gallery:'Bộ sưu tập',report:'Hồ sơ sản phẩm',heading:'Danh mục sản phẩm',files:'Hình ảnh & tài liệu'}
+} as const;
+export function presentationFor(p:{presentation?:PresentationType}){return presentationProfiles[p.presentation||'design']||presentationProfiles.design;}
+export type Project={id:string;name:string;subtitle:string;presentation?:PresentationType;updatedAt?:string;groups:Group[];driveFolder?:string;cover?:string;shareToken?:string};
 // Public API contract: explicitly copy presentation fields, never spread stored
 // records. Future audit/member/internal metadata must remain private by default.
 // `note` is the existing public design note; internal notes use separate fields.
 export function publicProject(p:Project):Project {
  return {id:p.id,name:p.name,subtitle:p.subtitle,
+  ...(p.presentation&&validPresentation(p.presentation)?{presentation:p.presentation}:{}),...(p.updatedAt?{updatedAt:p.updatedAt}:{}),
   ...(p.driveFolder?{driveFolder:p.driveFolder}:{}),...(p.cover?{cover:p.cover}:{}),
   groups:p.groups.map(g=>({id:g.id,name:g.name,...(g.category?{category:g.category}:{}),
    items:g.items.map(i=>({id:i.id,name:i.name,status:normalizeStatus(i.status),note:i.note,images:[...i.images],
@@ -38,6 +48,10 @@ export function publicProject(p:Project):Project {
   }))};
 }
 export type Data={projects:Project[]};
+export function stampProjects(next:Data,previous:Data,now:string):Data{
+ const content=(p:Project)=>JSON.stringify({...p,updatedAt:undefined});
+ return {...next,projects:next.projects.map(p=>{const old=previous.projects.find(x=>x.id===p.id);const updatedAt=old&&content(old)===content(p)?old.updatedAt:now;const result={...p};delete result.updatedAt;if(updatedAt)result.updatedAt=updatedAt;return result;})};
+}
 export const driveValid=(value:string)=>{if(!value)return true;try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password}catch{return false}};
 export const groupCode=(i:number)=>String(i+1).padStart(2,'0');
 export const itemCode=(gi:number,ii:number)=>`${groupCode(gi)}.${String(ii+1).padStart(2,'0')}`;

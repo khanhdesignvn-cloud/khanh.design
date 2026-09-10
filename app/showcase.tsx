@@ -3,9 +3,9 @@ import './showcase.css';
 import {useState} from 'react';
 import ShowcaseSlideshow,{type ShowcaseSlide} from './showcase-slideshow';
 import {ArrowUpRight, Images} from 'lucide-react';
-import {groupLabel,attachments, driveValid, type Group, type Item} from './model';
+import {presentationFor,groupLabel,attachments, driveValid, type Group, type Item} from './model';
 
-export default function Showcase({groups,onItem,onEmpty}:{groups:Group[];onItem:(group:string,item:Item)=>void;onEmpty:()=>void}) {
+export default function Showcase({groups,onItem,onEmpty,isAdmin=false,profile=presentationFor({})}:{groups:Group[];isAdmin?:boolean;profile?:ReturnType<typeof presentationFor>;onItem:(group:string,item:Item)=>void;onEmpty:()=>void}) {
   const [presentation,setPresentation]=useState<{slides:ShowcaseSlide[];start:number;trigger:HTMLElement}|null>(null);
   const cards=groups.flatMap(group=>group.items.map(item=>({group,item,files:attachments(item).map(file=>{
     if(file.type!=='image'||!item.images.includes(file.url))return file;
@@ -27,7 +27,7 @@ export default function Showcase({groups,onItem,onEmpty}:{groups:Group[];onItem:
         {item.driveUrl&&driveValid(item.driveUrl)&&<a href={item.driveUrl} target="_blank" rel="noopener noreferrer">Thư mục Google Drive<ArrowUpRight size={16}/></a>}
       </div>
     </article>)}
-    {!cards.length&&<div className="empty"><Images size={38}/><h3>Showcase của dự án</h3><p>Thêm ảnh, PDF hoặc liên kết Google Drive vào từng hạng mục để trưng bày thiết kế.</p><button className="outline" onClick={onEmpty}>Chọn hạng mục <ArrowUpRight size={16}/></button></div>}
+    {!cards.length&&<div className="empty"><Images size={38}/><h3>{profile.gallery}</h3><p>{isAdmin?"Thêm ảnh, PDF hoặc liên kết Google Drive vào từng hạng mục để trưng bày thiết kế.":"Chưa có tài liệu được công bố trong mục này."}</p><button className="outline" onClick={onEmpty}>Xem danh sách <ArrowUpRight size={16}/></button></div>}
     {presentation&&<ShowcaseSlideshow {...presentation} onClose={()=>setPresentation(null)}/>}
   </div>;
 }

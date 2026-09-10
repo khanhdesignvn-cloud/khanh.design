@@ -28,7 +28,7 @@ with sync_playwright() as pw:
      assert f['name'] not in ui, f['name']
 
  page.goto(BASE+'/p/'+TOKEN)
- page.get_by_role('tab',name='Sản phẩm',exact=True).click()
+ page.get_by_role('tab',name='Hạng mục',exact=True).click()
  page.locator('.table-name').filter(has_text=item['name']).click()
  link=page.get_by_role('link',name='TẢI FILE GỐC',exact=True)
  expect(link).to_have_attribute('href',item['driveUrl'])

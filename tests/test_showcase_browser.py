@@ -152,9 +152,9 @@ class ShowcaseBrowser(unittest.TestCase):
         self.page.keyboard.press('Escape')
         search.fill('No matching item')
         expect(self.page.locator('.showcase img')).to_have_count(0)
-        expect(self.page.get_by_text('Showcase của dự án', exact=True)).to_be_visible()
-        self.page.get_by_role('button', name='Chọn hạng mục').click()
-        expect(self.page.get_by_role('tab', name='Sản phẩm', exact=True)).to_have_attribute('data-state', 'active')
+        expect(self.page.get_by_role('heading',name='Showcase',exact=True)).to_be_visible()
+        self.page.get_by_role('button', name='Xem danh sách').click()
+        expect(self.page.get_by_role('tab', name='Hạng mục', exact=True)).to_have_attribute('data-state', 'active')
 
 if __name__ == '__main__':
     unittest.main()
