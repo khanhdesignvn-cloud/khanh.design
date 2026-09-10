@@ -34,7 +34,10 @@ with sync_playwright() as pw:
  expect(link).to_have_attribute('href',item['driveUrl'])
  # Wait until the sheet's entrance transition is finished before evidence.
  page.wait_for_function("document.querySelector('.detail-panel').getBoundingClientRect().right <= innerWidth+1")
- link.hover();page.wait_for_timeout(650)
+ link.hover()
+ # Poll the animation endpoint: a fixed sleep can sample an intermediate frame
+ # when several Chromium regression suites compete for CPU.
+ expect(link).to_have_css('background-position','100% 50%',timeout=5000)
  hover=link.evaluate('(e)=>({position:getComputedStyle(e).backgroundPosition,transform:getComputedStyle(e).transform})');print('hover',hover)
  assert hover['position'].startswith('100%')
  privacy();page.screenshot(path=str(OUT/'drive-desktop.png'))
